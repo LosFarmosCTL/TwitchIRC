@@ -384,6 +384,24 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.pinnedChat == .init())
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
+
+    /// Tests a message with a GIF.
+    func testParsedValues12() throws {
+        let string = #"@badge-info=subscriber/30;badges=broadcaster/1,subscriber/0;color=#033700;display-name=TwitchDev;emotes=;first-msg=0;flags=;gifs=0-33|joSNxeswxuc74Juo8X|https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif?cid=095d7a5dzizsiwgabonagkmigggv8v1spfai91ac3x0dsiy0&ep=v1_gifs_trending&rid=giphy.gif&ct=g;id=401abf17-7e99-45d6-9bdf-43934e839327;mod=0;returning-chatter=0;room-id=12826;subscriber=1;tmi-sent-ts=1783632907018;turbo=0;user-id=141981764;user-type= :twitchdev!twitchdev@twitchdev.tmi.twitch.tv PRIVMSG #twitch :[Y A Y Yes GIF by Djemilah Birnie]"#
+
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+
+        XCTAssertEqual(msg.gifs, "0-33|joSNxeswxuc74Juo8X|https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif?cid=095d7a5dzizsiwgabonagkmigggv8v1spfai91ac3x0dsiy0&ep=v1_gifs_trending&rid=giphy.gif&ct=g")
+        let gifs = msg.parseGifs()
+        XCTAssertEqual(gifs.count, 1)
+        let gif = try XCTUnwrap(gifs.first)
+        XCTAssertEqual(gif.id, "joSNxeswxuc74Juo8X")
+        XCTAssertEqual(gif.url, "https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif?cid=095d7a5dzizsiwgabonagkmigggv8v1spfai91ac3x0dsiy0&ep=v1_gifs_trending&rid=giphy.gif&ct=g")
+        XCTAssertEqual(gif.text, "[Y A Y Yes GIF by Djemilah Birnie]")
+        XCTAssertEqual(gif.startIndex, 0)
+        XCTAssertEqual(gif.endIndex, 33)
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
 }
 
 // MARK: - Emote Equatable
