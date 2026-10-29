@@ -555,6 +555,8 @@ public struct UserNotice: MessageWithBadges {
         case midnightSquid(MidnightSquidInfo)
         case charityDonation(CharityDonationInfo)
         case viewerMilestone(ViewerMilestoneInfo)
+        /// A forwarded notice. The source payload is nil when the source notice type is unrecognized.
+        indirect case sharedChatNotice(sourceNotice: MessageID?)
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -583,6 +585,11 @@ public struct UserNotice: MessageWithBadges {
     public var messageId: MessageID!
     /// Broadcaster's Twitch identifier.
     public var roomId = String()
+    /// Shared Chat origin metadata; empty for notices without source tags.
+    public var source = SharedChatSource()
+    /// The raw `source-msg-id` notice category, including unknown categories.
+    /// This is distinct from the source message's UUID in `source.id`.
+    public var sourceMessageId = String()
     /// System's description of this message.
     public var systemMessage = String()
     /// The timestamp of the message.
@@ -616,10 +623,12 @@ public struct UserNotice: MessageWithBadges {
         }
         
         var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
+        let messageId = parser.optionalString(for: "msg-id")
+        self.sourceMessageId = parser.string(for: "source-msg-id")
         
         let occasionalSubDependentKeyGroups: [[String]]
         
-        switch parser.optionalString(for: "msg-id") {
+        switch messageId == "sharedchatnotice" ? self.sourceMessageId : messageId {
         case "sub":
             self.messageId = .sub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
@@ -805,7 +814,15 @@ public struct UserNotice: MessageWithBadges {
                 copoReward: parser.uint(for: "msg-param-copoReward")
             ))
             occasionalSubDependentKeyGroups = []
-        default: return nil
+        default:
+            guard messageId == "sharedchatnotice" else {
+                return nil
+            }
+            occasionalSubDependentKeyGroups = []
+        }
+
+        if messageId == "sharedchatnotice" {
+            self.messageId = .sharedChatNotice(sourceNotice: self.messageId)
         }
         
         self.badgeInfo = parser.array(for: "badge-info")
@@ -818,6 +835,7 @@ public struct UserNotice: MessageWithBadges {
         self.id = parser.string(for: "id")
         self.userLogin = parser.string(for: "login")
         self.roomId = parser.string(for: "room-id")
+        self.source = SharedChatSource(parser: &parser)
         self.systemMessage = parser.string(for: "system-msg")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
         self.userId = parser.string(for: "user-id")
@@ -826,7 +844,7 @@ public struct UserNotice: MessageWithBadges {
         let occasionalKeys: [[String]] = occasionalSubDependentKeyGroups + [["flags"]]
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
-            groupsOfExcludedUnavailableKeys: occasionalKeys
+            groupsOfExcludedUnavailableKeys: occasionalKeys + [SharedChatSource.tagKeys, ["source-msg-id"]]
         )
     }
 }

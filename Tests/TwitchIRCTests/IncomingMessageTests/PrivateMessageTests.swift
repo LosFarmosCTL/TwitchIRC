@@ -34,6 +34,11 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.tmiSentTs, 1507246572675)
         XCTAssertEqual(msg.clientNonce, "")
         XCTAssertEqual(msg.userId, "1337")
+        XCTAssertEqual(msg.source.id, "")
+        XCTAssertEqual(msg.source.roomId, "")
+        XCTAssertEqual(msg.source.badges, [])
+        XCTAssertEqual(msg.source.badgeInfo, [])
+        XCTAssertFalse(msg.sourceOnly)
         XCTAssertTrue(msg.replyParent == .init())
         XCTAssertEqual(msg.parseEmotes(), parsedEmotes)
         

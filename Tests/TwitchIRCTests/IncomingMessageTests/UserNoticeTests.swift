@@ -38,6 +38,11 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
         XCTAssertEqual(un.tmiSentTs, 1507246572675)
         XCTAssertEqual(un.userId, "1337")
+        XCTAssertEqual(un.sourceMessageId, "")
+        XCTAssertEqual(un.source.id, "")
+        XCTAssertEqual(un.source.roomId, "")
+        XCTAssertEqual(un.source.badges, [])
+        XCTAssertEqual(un.source.badgeInfo, [])
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
         let info: Action.ReSubInfo = try unwrapInnerValue(action: un.messageId)
@@ -574,6 +579,8 @@ private extension UserNotice.MessageID {
             return value
         case let .viewerMilestone(value):
             return value
+        case let .sharedChatNotice(sourceNotice):
+            return sourceNotice as Any
         }
     }
 }

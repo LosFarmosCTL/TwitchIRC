@@ -122,6 +122,10 @@ public struct PrivateMessage: MessageWithBadges {
     public var customRewardId = String()
     /// Broadcaster's Twitch identifier.
     public var roomId = String()
+    /// Shared Chat origin metadata; empty for messages without source tags.
+    public var source = SharedChatSource()
+    /// Whether this Shared Chat message is restricted to the source channel.
+    public var sourceOnly = Bool()
     /// The timestamp of the message.
     public var tmiSentTs = UInt()
     /// Not sure exactly but some kind of identifier?!
@@ -197,6 +201,8 @@ public struct PrivateMessage: MessageWithBadges {
         self.crowdChantParentMessageId = parser.string(for: "crowd-chant-parent-msg-id")
         self.customRewardId = parser.string(for: "custom-reward-id")
         self.roomId = parser.string(for: "room-id")
+        self.source = SharedChatSource(parser: &parser)
+        self.sourceOnly = parser.bool(for: "source-only")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
         self.clientNonce = parser.string(for: "client-nonce")
         self.userId = parser.string(for: "user-id")
@@ -227,7 +233,7 @@ public struct PrivateMessage: MessageWithBadges {
 
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
-            groupsOfExcludedUnavailableKeys: occasionalKeys
+            groupsOfExcludedUnavailableKeys: occasionalKeys + [SharedChatSource.tagKeys, ["source-only"]]
         )
     }
 }
