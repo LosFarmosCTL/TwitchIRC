@@ -44,6 +44,53 @@ final class NoticeTests: XCTestCase {
         }
     }
     
+    func testKnownIdentifierWithAdditionalTagsInAnyOrder() throws {
+        let tagLists = [
+            "msg-id=slow_off;room-id=123;future-tag=value",
+            "room-id=123;msg-id=slow_off;future-tag=value",
+            "room-id=123;future-tag=value;msg-id=slow_off",
+        ]
+
+        for tags in tagLists {
+            let string = "@\(tags) :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
+            let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
+
+            switch notice.kind {
+            case let .local(channel, message, messageId):
+                XCTAssertEqual(channel, "dallas")
+                XCTAssertEqual(message, "This room is no longer in slow mode.")
+                XCTAssertEqual(messageId, .slowOff)
+            default:
+                XCTFail("Expected `Kind.local` for tags: \(tags)")
+            }
+        }
+    }
+
+    func testUnknownIdentifierIsPreservedInAnyTagOrder() throws {
+        let identifier = "future_Notice_v2__Beta"
+        let tagLists = [
+            "msg-id=\(identifier)",
+            "msg-id=\(identifier);room-id=123;future-tag=value",
+            "room-id=123;msg-id=\(identifier);future-tag=value",
+            "room-id=123;future-tag=value;msg-id=\(identifier)",
+        ]
+
+        for tags in tagLists {
+            // Known human-readable text must not classify an unknown identifier.
+            let string = "@\(tags) :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
+            let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
+
+            switch notice.kind {
+            case let .unknownLocal(channel, message, messageId):
+                XCTAssertEqual(channel, "dallas")
+                XCTAssertEqual(message, "This room is no longer in slow mode.")
+                XCTAssertEqual(messageId, identifier)
+            default:
+                XCTFail("Expected `Kind.unknownLocal` for tags: \(tags)")
+            }
+        }
+    }
+
     func testParsedValues3() throws {
         let string = ":tmi.twitch.tv NOTICE * :Login authentication failed"
         let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
