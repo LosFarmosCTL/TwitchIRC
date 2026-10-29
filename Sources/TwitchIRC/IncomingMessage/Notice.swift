@@ -365,6 +365,10 @@ public struct Notice {
     
     /// The notice's kind. Also contains the related info.
     public var kind: Kind!
+    /// The local notice identifier exactly as received, including underscores.
+    public var rawMessageId: String?
+    /// Timestamp in milliseconds since the Unix epoch, when supplied.
+    public var tmiSentTs: UInt?
     
     public init() { }
     
@@ -377,6 +381,8 @@ public struct Notice {
                   !messageIdValue.isEmpty else {
                 return nil
             }
+            self.rawMessageId = messageIdValue
+            self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
             if let messageId = MessageID(rawValue: messageIdValue) {
                 self.kind = .local(
                     channel: String(channel),

@@ -2,6 +2,18 @@
 import XCTest
 
 final class RoomStateTests: XCTestCase {
+
+    func testPartialUpdatePreservesOmittedSettings() throws {
+        let state: RoomState = try TestUtils.parseAndUnwrap(
+            string: "@room-id=324;slow=0 :tmi.twitch.tv ROOMSTATE #dallas"
+        )
+        XCTAssertEqual(state.slow, 0)
+        XCTAssertNil(state.emoteOnly)
+        XCTAssertNil(state.followersOnly)
+        XCTAssertNil(state.r9k)
+        XCTAssertNil(state.subsOnly)
+        XCTAssertTrue(state.parsingLeftOvers.isEmpty)
+    }
     
     func testParsedValues1() throws {
         let string = "@emote-only=1;followers-only=-1;r9k=1;slow=10;subs-only=1;room-id=324 :tmi.twitch.tv ROOMSTATE #dallas"

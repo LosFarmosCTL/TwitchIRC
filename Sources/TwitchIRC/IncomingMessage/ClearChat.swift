@@ -10,6 +10,12 @@ public struct ClearChat {
     /// The duration of the ban/timeout.
     /// If `nil` and `user` available, then the user is permanently banned.
     public var banDuration = Optional<UInt>.none
+    /// Broadcaster's Twitch identifier, when supplied.
+    public var roomId: String?
+    /// The cleared user's Twitch identifier, when supplied.
+    public var targetUserId: String?
+    /// Timestamp in milliseconds since the Unix epoch, when supplied.
+    public var tmiSentTs: UInt?
     
     // MARK: Convenience stuff
     public var userIsPermanentlyBanned: Bool {
@@ -30,9 +36,12 @@ public struct ClearChat {
             self.channel = String(contentRhs.dropFirst())
         }
         
-        if contentLhs.count > 16 {
-            let banDurationString = contentLhs.dropFirst(14).dropLast(2)
-            self.banDuration = UInt(banDurationString)
+        if contentLhs.hasPrefix("@") {
+            var parser = ParametersParser(String(contentLhs.dropFirst().dropLast(2)))
+            self.banDuration = parser.optionalUInt(for: "ban-duration")
+            self.roomId = parser.optionalString(for: "room-id")
+            self.targetUserId = parser.optionalString(for: "target-user-id")
+            self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
         }
     }
 }

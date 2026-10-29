@@ -2,6 +2,16 @@
 import XCTest
 
 final class ClearChatTests: XCTestCase {
+
+    func testTaggedTimeoutPreservesIdentityAndTimestamp() throws {
+        let cc: ClearChat = try TestUtils.parseAndUnwrap(
+            string: "@room-id=324;target-user-id=42;tmi-sent-ts=1700000000000;ban-duration=60 :tmi.twitch.tv CLEARCHAT #dallas :ronni"
+        )
+        XCTAssertEqual(cc.banDuration, 60)
+        XCTAssertEqual(cc.roomId, "324")
+        XCTAssertEqual(cc.targetUserId, "42")
+        XCTAssertEqual(cc.tmiSentTs, 1700000000000)
+    }
     
     func testParsedValues1() throws {
         let string = ":tmi.twitch.tv CLEARCHAT #dallas"

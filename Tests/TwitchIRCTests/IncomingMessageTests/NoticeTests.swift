@@ -15,9 +15,11 @@ final class NoticeTests: XCTestCase {
     }
     
     func testParsedValues1() throws {
-        let string = "@msg-id=slow_off :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
+        let string = "@msg-id=slow_off;tmi-sent-ts=1700000000000 :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
         
         let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
+        XCTAssertEqual(notice.rawMessageId, "slow_off")
+        XCTAssertEqual(notice.tmiSentTs, 1700000000000)
         
         switch notice.kind {
         case let .local(channel, message, messageId):
