@@ -8,16 +8,20 @@ public struct ClearChat {
   public private(set) var userLogin = Optional<String>.none
   /// The duration of the ban/timeout.
   /// If `nil` and `user` available, then the user is permanently banned.
+  /// IRC tag: `ban-duration`.
   public private(set) var banDuration = Optional<UInt>.none
   /// Broadcaster's Twitch identifier, when supplied.
-  public private(set) var roomId: String?
+  /// IRC tag: `room-id`.
+  public private(set) var roomID: String?
   /// The cleared user's Twitch identifier, when supplied.
-  public private(set) var targetUserId: String?
-  /// Timestamp in milliseconds since the Unix epoch, when supplied.
-  public private(set) var tmiSentTs: UInt?
+  /// IRC tag: `target-user-id`.
+  public private(set) var targetUserID: String?
+  /// The server timestamp, in milliseconds since the Unix epoch; nil when absent.
+  /// IRC tag: `tmi-sent-ts`.
+  public private(set) var timestampMilliseconds: UInt?
 
   /// Unconsumed tags and recoverable field-decoding issues.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   // MARK: Convenience stuff
   public var userIsPermanentlyBanned: Bool {
@@ -43,10 +47,10 @@ public struct ClearChat {
     if contentLhs.hasPrefix("@") {
       var parser = ParametersParser(String(contentLhs.dropFirst().dropLast(2)))
       self.banDuration = parser.optionalUInt(for: "ban-duration")
-      self.roomId = parser.optionalString(for: "room-id")
-      self.targetUserId = parser.optionalString(for: "target-user-id")
-      self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
-      self.parsingLeftOvers = parser.getLeftOvers(
+      self.roomID = parser.optionalString(for: "room-id")
+      self.targetUserID = parser.optionalString(for: "target-user-id")
+      self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
+      self.parsingLeftovers = parser.getLeftOvers(
         excludedUnavailableKeys: ["ban-duration", "room-id", "target-user-id", "tmi-sent-ts"])
     }
   }
@@ -55,18 +59,18 @@ public struct ClearChat {
     channel: String,
     userLogin: String? = Optional<String>.none,
     banDuration: UInt? = Optional<UInt>.none,
-    roomId: String? = nil,
-    targetUserId: String? = nil,
-    tmiSentTs: UInt? = nil,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    roomID: String? = nil,
+    targetUserID: String? = nil,
+    timestampMilliseconds: UInt? = nil,
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.channel = channel
     self.userLogin = userLogin
     self.banDuration = banDuration
-    self.roomId = roomId
-    self.targetUserId = targetUserId
-    self.tmiSentTs = tmiSentTs
-    self.parsingLeftOvers = parsingLeftOvers
+    self.roomID = roomID
+    self.targetUserID = targetUserID
+    self.timestampMilliseconds = timestampMilliseconds
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

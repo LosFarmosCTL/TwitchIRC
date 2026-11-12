@@ -1,5 +1,6 @@
 extension Notice {
-  public enum MessageID: String, CaseIterable, Sendable {
+  /// A recognized notice code from the IRC `msg-id` tag.
+  public enum Code: String, CaseIterable, Sendable {
     /// <user> is already banned in this channel.
     case alreadyBanned = "alreadybanned"
     /// This room is not in emote-only mode.

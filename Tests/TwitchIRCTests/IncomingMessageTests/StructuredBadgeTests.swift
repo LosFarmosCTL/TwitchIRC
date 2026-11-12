@@ -39,7 +39,7 @@ final class StructuredBadgeTests: XCTestCase {
 
   func testRoleChecksMatchExactSets() {
     let source = SharedChatSource(
-      id: nil, roomId: nil,
+      id: nil, roomID: nil,
       badges: ["subscriber_extra", "vip_extra", "staff_extra", "broadcaster_extra"].map {
         Badge(setID: $0, version: "1")
       })

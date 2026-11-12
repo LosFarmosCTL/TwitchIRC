@@ -66,7 +66,7 @@ final class ParametersParserTests: XCTestCase {
     /// `user-type` is equal to `mod`
     /// so trying to get it as any Representable type like `SubPlan` must fail.
     XCTAssertEqual(
-      parser.representable(for: "user-type", as: UserNotice.MessageID.SubPlan.self),
+      parser.representable(for: "user-type", as: UserNotice.Kind.SubPlan.self),
       nil
     )
     /// There is no such key as `non-existent-key`
@@ -106,11 +106,11 @@ final class ParametersParserTests: XCTestCase {
   }
 
   private func assertLeftOvers(parser: inout ParametersParser) {
-    /// Testing ParsingLeftOvers
+    /// Testing ParsingLeftovers
 
     let leftOvers = parser.getLeftOvers()
 
-    typealias UnusedPair = ParsingLeftOvers.UnusedPair
+    typealias UnusedPair = ParsingLeftovers.UnusedPair
     XCTAssertEqual(
       leftOvers.unusedPairs.debugDescription,
       [
@@ -130,7 +130,7 @@ final class ParametersParserTests: XCTestCase {
       leftOvers.unavailableKeys,
       ["limit", "prize", "non-existent-key"]
     )
-    typealias UnparsedKey = ParsingLeftOvers.UnparsedKey
+    typealias UnparsedKey = ParsingLeftovers.UnparsedKey
     XCTAssertEqual(
       leftOvers.unparsedKeys.debugDescription,
       [
@@ -147,12 +147,12 @@ final class ParametersParserTests: XCTestCase {
     XCTAssertEqual(leftOvers.isEmpty, false)
   }
 
-  func testParsingLeftOversIsEmpty() throws {
-    let emptyLeftOvers = ParsingLeftOvers()
+  func testParsingLeftoversIsEmpty() throws {
+    let emptyLeftOvers = ParsingLeftovers()
     XCTAssertEqual(emptyLeftOvers.isEmpty, true)
   }
 
-  func testParsingLeftOversValuesWithParameterParserWithGroupedUnavailableKeys1() throws {
+  func testParsingLeftoversValuesWithParameterParserWithGroupedUnavailableKeys1() throws {
     let params =
       "badge-info=;badges=moderator/1;color=#1E90FF;display-name=MahdiMMBM;emotes=;first-msg=0;flags=;id=7fd9a2fa-d537-4a31-b847-7e081c4c088d;reply-parent-display-name=jay_999666;reply-parent-msg-body=!gc;reply-parent-msg-id=92d75439-9bfa-42d2-b20c-7dc4a2c07f6b;reply-parent-user-id=621834053;reply-parent-user-login=jay_999666;room-id=751562865;subscriber=0;tmi-sent-ts=1642084941607;turbo=0;user-id=519827148;user-type=mod"
 
@@ -187,7 +187,7 @@ final class ParametersParserTests: XCTestCase {
     XCTAssertEqual(leftOvers.unavailableKeys, [])
   }
 
-  func testParsingLeftOversValuesWithParameterParserWithGroupedUnavailableKeys2() throws {
+  func testParsingLeftoversValuesWithParameterParserWithGroupedUnavailableKeys2() throws {
     let params =
       "badge-info=;badges=moderator/1;color=#1E90FF;display-name=MahdiMMBM;emotes=;first-msg=0;flags=;id=7fd9a2fa-d537-4a31-b847-7e081c4c088d;reply-parent-display-name=jay_999666;reply-parent-msg-id=92d75439-9bfa-42d2-b20c-7dc4a2c07f6b;reply-parent-user-id=621834053;room-id=751562865;subscriber=0;tmi-sent-ts=1642084941607;turbo=0;user-id=519827148;user-type=mod"
 
@@ -228,7 +228,7 @@ final class ParametersParserTests: XCTestCase {
     )
   }
 
-  func testParsingLeftOversValuesWithParameterParserWithGroupedUnavailableKeys3() throws {
+  func testParsingLeftoversValuesWithParameterParserWithGroupedUnavailableKeys3() throws {
     let params =
       "badge-info=;badges=moderator/1;color=#1E90FF;display-name=MahdiMMBM;emotes=;flags=;id=7fd9a2fa-d537-4a31-b847-7e081c4c088d;room-id=751562865;subscriber=0;tmi-sent-ts=1642084941607;turbo=0;user-id=519827148;user-type=mod"
 

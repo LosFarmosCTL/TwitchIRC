@@ -5,21 +5,28 @@ public struct Whisper: MessageWithBadges {
   /// The message sent.
   public private(set) var message = String()
   /// Sender's badges.
+  /// IRC tag: `badges`.
   public private(set) var badges = [Badge]()
   /// Sender's in-chat name color.
+  /// IRC tag: `color`.
   public private(set) var color: String?
   /// Sender's display name with uppercased/Han characters.
+  /// IRC tag: `display-name`.
   public private(set) var displayName = String()
   /// Sender's emotes.
+  /// IRC tag: `emotes`; offsets refer to this message's exposed text.
   public private(set) var emotes = [Emote]()
   /// Message's identifier.
-  public private(set) var messageId: String?
+  /// IRC tag: `message-id`.
+  public private(set) var messageID: String?
   /// This whisper-thread's identifier.
-  public private(set) var threadId: String?
+  /// IRC tag: `thread-id`.
+  public private(set) var threadID: String?
   /// Sender's Twitch identifier.
-  public private(set) var userId = String()
+  /// IRC tag: `user-id`.
+  public private(set) var userID = String()
   /// Contains info about unused info and parsing problems.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   internal init() {}
 
@@ -41,12 +48,12 @@ public struct Whisper: MessageWithBadges {
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emotes = parser.emotes(in: self.message)
-    self.messageId = parser.optionalNonEmptyString(for: "message-id")
-    self.threadId = parser.optionalNonEmptyString(for: "thread-id")
-    self.userId = parser.string(for: "user-id")
+    self.messageID = parser.optionalNonEmptyString(for: "message-id")
+    self.threadID = parser.optionalNonEmptyString(for: "thread-id")
+    self.userID = parser.string(for: "user-id")
 
     let deprecatedKeys = ["turbo", "user-type"]
-    self.parsingLeftOvers = parser.getLeftOvers(
+    self.parsingLeftovers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       excludedUnavailableKeys: ["color", "message-id", "thread-id"]
     )
@@ -59,10 +66,10 @@ public struct Whisper: MessageWithBadges {
     color: String? = nil,
     displayName: String = String(),
     emotes: [Emote] = [],
-    messageId: String? = nil,
-    threadId: String? = nil,
-    userId: String,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    messageID: String? = nil,
+    threadID: String? = nil,
+    userID: String,
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.receiver = receiver
     self.message = message
@@ -70,10 +77,10 @@ public struct Whisper: MessageWithBadges {
     self.color = color
     self.displayName = displayName
     self.emotes = emotes
-    self.messageId = messageId
-    self.threadId = threadId
-    self.userId = userId
-    self.parsingLeftOvers = parsingLeftOvers
+    self.messageID = messageID
+    self.threadID = threadID
+    self.userID = userID
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

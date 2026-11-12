@@ -16,11 +16,11 @@ final class WhisperTests: XCTestCase {
     XCTAssertNil(whisper.color)
     XCTAssertEqual(whisper.displayName, "drizzlepickles")
     XCTAssertEqual(whisper.emotes, [])
-    XCTAssertEqual(whisper.messageId, "1")
-    XCTAssertEqual(whisper.threadId, "684111155_699948886")
-    XCTAssertEqual(whisper.userId, "699948886")
+    XCTAssertEqual(whisper.messageID, "1")
+    XCTAssertEqual(whisper.threadID, "684111155_699948886")
+    XCTAssertEqual(whisper.userID, "699948886")
     XCTAssertTrue(
-      whisper.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(whisper.parsingLeftOvers)")
+      whisper.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(whisper.parsingLeftovers)")
   }
 
   func testParsedValues2() throws {
@@ -35,10 +35,10 @@ final class WhisperTests: XCTestCase {
     XCTAssertEqual(whisper.color, "#1E90FF")
     XCTAssertEqual(whisper.displayName, "MahdiMMBM")
     XCTAssertEqual(whisper.emotes, expectedEmotes("30259:0-6,8-14", in: whisper.message))
-    XCTAssertEqual(whisper.messageId, "3")
-    XCTAssertEqual(whisper.threadId, "519827148_684111155")
-    XCTAssertEqual(whisper.userId, "519827148")
+    XCTAssertEqual(whisper.messageID, "3")
+    XCTAssertEqual(whisper.threadID, "519827148_684111155")
+    XCTAssertEqual(whisper.userID, "519827148")
     XCTAssertTrue(
-      whisper.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(whisper.parsingLeftOvers)")
+      whisper.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(whisper.parsingLeftovers)")
   }
 }

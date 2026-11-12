@@ -18,20 +18,20 @@ final class MessageConstructionTests: XCTestCase {
   func testMinimalPrivateMessageConstruction() {
     let message = PrivateMessage(
       channel: "channel", message: "Hello", userLogin: "viewer",
-      id: "message", roomId: "room", userId: "user")
+      id: "message", roomID: "room", userID: "user")
     XCTAssertNil(message.replyParent)
     XCTAssertNil(message.replyThreadParent)
     XCTAssertNil(message.pinnedChat)
     XCTAssertNil(message.source)
-    XCTAssertNil(message.tmiSentTs)
+    XCTAssertNil(message.timestampMilliseconds)
   }
 
   func testPublicUserNoticeConstruction() {
     let notice = UserNotice(
       channel: "channel", id: "message", userLogin: "moderator",
-      messageId: .modiversary(.init(months: 12)), rawMessageId: "modiversary",
-      roomId: "room", source: .init(id: "source", roomId: "room"), userId: "user")
-    let category: UserNotice.MessageID = notice.messageId
+      kind: .modiversary(.init(months: 12)), rawKind: "modiversary",
+      roomID: "room", source: .init(id: "source", roomID: "room"), userID: "user")
+    let category: UserNotice.Kind = notice.kind
     guard case .modiversary(let anniversary) = category else {
       return XCTFail("Expected a Modiversary payload")
     }

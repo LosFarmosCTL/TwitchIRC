@@ -22,9 +22,9 @@ extension ParametersParser {
     return result
   }
 
-  mutating func gifs(in message: String) -> [Gif] {
+  mutating func gifs(in message: String) -> [GIF] {
     let value = string(for: "gifs")
-    var result: [Gif] = []
+    var result: [GIF] = []
     for entry in value.split(separator: ",", omittingEmptySubsequences: false) where !value.isEmpty
     {
       let parts = entry.split(separator: "|", maxSplits: 2, omittingEmptySubsequences: false)
@@ -34,7 +34,7 @@ extension ParametersParser {
         recordInvalid(key: "gifs", value: String(entry), expectedType: "GIF range, ID and URL")
         continue
       }
-      result.append(Gif(id: String(parts[1]), url: String(parts[2]), text: text, range: range))
+      result.append(GIF(id: String(parts[1]), url: String(parts[2]), text: text, range: range))
     }
     return result
   }

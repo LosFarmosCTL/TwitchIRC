@@ -13,7 +13,7 @@ final class RoomStateTests: XCTestCase {
     XCTAssertNil(state.followersOnly)
     XCTAssertNil(state.r9k)
     XCTAssertNil(state.subsOnly)
-    XCTAssertTrue(state.parsingLeftOvers.isEmpty)
+    XCTAssertTrue(state.parsingLeftovers.isEmpty)
   }
 
   func testParsedValues1() throws {
@@ -26,13 +26,13 @@ final class RoomStateTests: XCTestCase {
     XCTAssertEqual(roomState.emoteOnly, true)
     XCTAssertEqual(roomState.followersOnly, -1)
     XCTAssertEqual(roomState.r9k, true)
-    XCTAssertEqual(roomState.roomId, "324")
+    XCTAssertEqual(roomState.roomID, "324")
     XCTAssertEqual(roomState.slow, 10)
     XCTAssertEqual(roomState.subsOnly, true)
     XCTAssertNil(roomState.rituals)
     XCTAssertTrue(
-      roomState.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
+      roomState.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(roomState.parsingLeftovers)")
   }
 
   /// Test independency from the sequence `@emote-only`.
@@ -47,12 +47,12 @@ final class RoomStateTests: XCTestCase {
     XCTAssertEqual(roomState.emoteOnly, true)
     XCTAssertEqual(roomState.followersOnly, 10)
     XCTAssertEqual(roomState.r9k, true)
-    XCTAssertEqual(roomState.roomId, "324")
+    XCTAssertEqual(roomState.roomID, "324")
     XCTAssertEqual(roomState.slow, 10)
     XCTAssertEqual(roomState.subsOnly, true)
     XCTAssertNil(roomState.rituals)
     XCTAssertTrue(
-      roomState.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
+      roomState.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(roomState.parsingLeftovers)")
   }
 }

@@ -9,17 +9,17 @@ final class UserNoticeModiversaryTests: XCTestCase {
 
   func testOfficialModiversaryExample() throws {
     let notice: UserNotice = try TestUtils.parseAndUnwrap(string: officialExample)
-    guard case .modiversary(let info) = notice.messageId else {
+    guard case .modiversary(let info) = notice.kind else {
       return XCTFail("Expected a Modiversary payload")
     }
     XCTAssertEqual(info.months, 108)
-    XCTAssertEqual(notice.rawMessageId, "modiversary")
+    XCTAssertEqual(notice.rawKind, "modiversary")
     XCTAssertEqual(notice.message, "I'm celebrating my 9 year Mod Anniversary!")
     XCTAssertEqual(notice.systemMessage, #"has\sbeen\sa\smoderator\sfor\s24\smonths!"#)
     XCTAssertEqual(notice.channel, "twitchdev")
     XCTAssertEqual(notice.userLogin, "bluelava")
     XCTAssertTrue(notice.isMod)
-    XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
+    XCTAssertTrue(notice.parsingLeftovers.isEmpty, "\(notice.parsingLeftovers)")
   }
 
   func testForwardedModiversaryWithoutUserMessage() throws {
@@ -33,7 +33,7 @@ final class UserNoticeModiversaryTests: XCTestCase {
       .replacingOccurrences(
         of: "#twitchdev :I'm celebrating my 9 year Mod Anniversary!", with: "#twitchrivals")
     let notice: UserNotice = try TestUtils.parseAndUnwrap(string: message)
-    guard case .sharedChatNotice(let sourceNotice) = notice.messageId,
+    guard case .sharedChatNotice(let sourceNotice) = notice.kind,
       case .modiversary(let info)? = sourceNotice
     else {
       return XCTFail("Expected a forwarded Modiversary payload")
@@ -41,11 +41,11 @@ final class UserNoticeModiversaryTests: XCTestCase {
     XCTAssertEqual(info.months, 108)
     XCTAssertEqual(notice.message, "")
     XCTAssertEqual(notice.channel, "twitchrivals")
-    XCTAssertEqual(notice.rawMessageId, "sharedchatnotice")
-    XCTAssertEqual(notice.sourceMessageId, "modiversary")
+    XCTAssertEqual(notice.rawKind, "sharedchatnotice")
+    XCTAssertEqual(notice.sourceKind, "modiversary")
     XCTAssertEqual(notice.source?.id, "origin-id")
-    XCTAssertEqual(notice.source?.roomId, "141981764")
-    XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
+    XCTAssertEqual(notice.source?.roomID, "141981764")
+    XCTAssertTrue(notice.parsingLeftovers.isEmpty, "\(notice.parsingLeftovers)")
   }
 
   func testMissingOrMalformedMonthsRemainDiagnosable() throws {
@@ -53,17 +53,17 @@ final class UserNoticeModiversaryTests: XCTestCase {
       let message = officialExample.replacingOccurrences(
         of: "msg-param-months=108;", with: replacement)
       let notice: UserNotice = try TestUtils.parseAndUnwrap(string: message)
-      guard case .modiversary(let info) = notice.messageId else {
+      guard case .modiversary(let info) = notice.kind else {
         return XCTFail("Expected a Modiversary payload")
       }
       XCTAssertEqual(info.months, 0)
       if replacement.isEmpty {
-        XCTAssertEqual(notice.parsingLeftOvers.unavailableKeys, ["msg-param-months"])
-        XCTAssertTrue(notice.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertEqual(notice.parsingLeftovers.unavailableKeys, ["msg-param-months"])
+        XCTAssertTrue(notice.parsingLeftovers.unparsedKeys.isEmpty)
       } else {
-        XCTAssertTrue(notice.parsingLeftOvers.unavailableKeys.isEmpty)
-        XCTAssertEqual(notice.parsingLeftOvers.unparsedKeys.map(\.key), ["msg-param-months"])
-        XCTAssertEqual(notice.parsingLeftOvers.unparsedKeys.map(\.value), ["invalid"])
+        XCTAssertTrue(notice.parsingLeftovers.unavailableKeys.isEmpty)
+        XCTAssertEqual(notice.parsingLeftovers.unparsedKeys.map(\.key), ["msg-param-months"])
+        XCTAssertEqual(notice.parsingLeftovers.unparsedKeys.map(\.value), ["invalid"])
       }
     }
   }

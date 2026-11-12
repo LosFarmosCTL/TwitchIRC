@@ -1,11 +1,13 @@
 /// An IRC message to be sent to Twitch.
 public enum OutgoingMessage {
   /// Sends a message to a channel. Channel name must be lowercased.
+  /// `messageIDToReply` maps to the IRC `reply-parent-msg-id` tag.
+  /// `clientNonce` maps to the IRC `client-nonce` tag.
   /// `clientNonce` if provided, will be available in the next `userState` you receive.
   case privateMessage(
     to: String,
     message: String,
-    messageIdToReply: String? = nil,
+    messageIDToReply: String? = nil,
     clientNonce: String? = nil
   )
   /// Joins a channel's chat. Channel name must be lowercased.
@@ -27,10 +29,10 @@ public enum OutgoingMessage {
   /// Serializes this message into a string that can be sent to Twitch over IRC.
   public func serialize() -> String {
     switch self {
-    case .privateMessage(let channel, let message, let messageIdToReply, let clientNonce):
+    case .privateMessage(let channel, let message, let messageIDToReply, let clientNonce):
       var prefixes = [String]()
-      if let messageId = messageIdToReply, !messageId.isEmpty {
-        prefixes.append("reply-parent-msg-id=\(messageId)")
+      if let messageID = messageIDToReply, !messageID.isEmpty {
+        prefixes.append("reply-parent-msg-id=\(messageID)")
       }
       if let clientNonce = clientNonce, !clientNonce.isEmpty {
         prefixes.append("client-nonce=\(clientNonce)")

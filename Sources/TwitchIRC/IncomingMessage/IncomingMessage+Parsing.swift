@@ -56,7 +56,7 @@ extension IncomingMessage {
 
   private static func payloadDiagnostics(_ message: Self, raw: RawIRCMessage) -> [ParsingDiagnostic]
   {
-    guard let leftovers = message.parsingLeftOvers else {
+    guard let leftovers = message.parsingLeftovers else {
       return raw.tags.map { .unusedTag(name: $0.name, value: $0.value) }
     }
     let valuelessTags = raw.tags.filter { $0.value == nil }

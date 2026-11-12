@@ -6,15 +6,19 @@ public struct ClearMessage {
   /// The deleted message.
   public private(set) var message = String()
   /// User's name with no uppercased/Han characters.
+  /// IRC tag: `login`.
   public private(set) var userLogin = String()
   /// Cleared message's identifier.
-  public private(set) var targetMessageId = String()
+  /// IRC tag: `target-msg-id`.
+  public private(set) var targetMessageID = String()
   /// Broadcaster's Twitch identifier.
-  public private(set) var roomId = String()
-  /// Timestamp of this message.
-  public private(set) var tmiSentTs: UInt?
+  /// IRC tag: `room-id`.
+  public private(set) var roomID = String()
+  /// The server timestamp, in milliseconds since the Unix epoch; nil when absent.
+  /// IRC tag: `tmi-sent-ts`.
+  public private(set) var timestampMilliseconds: UInt?
   /// Contains info about unused info and parsing problems.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   internal init() {}
 
@@ -40,29 +44,29 @@ public struct ClearMessage {
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
 
     self.userLogin = parser.string(for: "login")
-    self.targetMessageId = parser.string(for: "target-msg-id")
-    self.roomId = parser.string(for: "room-id")
-    self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
+    self.targetMessageID = parser.string(for: "target-msg-id")
+    self.roomID = parser.string(for: "room-id")
+    self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
 
-    self.parsingLeftOvers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
+    self.parsingLeftovers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
   }
   /// Creates a message from its required fields and optional metadata.
   public init(
     channel: String,
     message: String,
     userLogin: String,
-    targetMessageId: String,
-    roomId: String,
-    tmiSentTs: UInt? = nil,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    targetMessageID: String,
+    roomID: String,
+    timestampMilliseconds: UInt? = nil,
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.channel = channel
     self.message = message
     self.userLogin = userLogin
-    self.targetMessageId = targetMessageId
-    self.roomId = roomId
-    self.tmiSentTs = tmiSentTs
-    self.parsingLeftOvers = parsingLeftOvers
+    self.targetMessageID = targetMessageID
+    self.roomID = roomID
+    self.timestampMilliseconds = timestampMilliseconds
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

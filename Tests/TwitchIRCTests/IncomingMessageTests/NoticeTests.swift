@@ -6,9 +6,9 @@ final class NoticeTests: XCTestCase {
 
   /// Test `MessageID.init(rawValue:)` is dash-independent.
   func testMessageIDInitDashIndependent() throws {
-    let first = try XCTUnwrap(Notice.MessageID(rawValue: "followers_onzero"))
-    let second = try XCTUnwrap(Notice.MessageID(rawValue: "followers_on_zero"))
-    let third = try XCTUnwrap(Notice.MessageID(rawValue: "followersonzero"))
+    let first = try XCTUnwrap(Notice.Code(rawValue: "followers_onzero"))
+    let second = try XCTUnwrap(Notice.Code(rawValue: "followers_on_zero"))
+    let third = try XCTUnwrap(Notice.Code(rawValue: "followersonzero"))
 
     XCTAssertEqual(.followersOnZero, first)
     XCTAssertEqual(first, second)
@@ -20,14 +20,14 @@ final class NoticeTests: XCTestCase {
       "@msg-id=slow_off;tmi-sent-ts=1700000000000 :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
 
     let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
-    XCTAssertEqual(notice.rawMessageId, "slow_off")
-    XCTAssertEqual(notice.tmiSentTs, 1_700_000_000_000)
+    XCTAssertEqual(notice.rawCode, "slow_off")
+    XCTAssertEqual(notice.timestampMilliseconds, 1_700_000_000_000)
 
     switch notice.kind {
-    case .local(let channel, let message, let messageId):
+    case .local(let channel, let message, let messageID):
       XCTAssertEqual(message, "This room is no longer in slow mode.")
       XCTAssertEqual(channel, "dallas")
-      XCTAssertEqual(messageId, .slowOff)
+      XCTAssertEqual(messageID, .slowOff)
     default:
       XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind)")
     }
@@ -40,10 +40,10 @@ final class NoticeTests: XCTestCase {
     let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
 
     switch notice.kind {
-    case .local(let channel, let message, let messageId):
+    case .local(let channel, let message, let messageID):
       XCTAssertEqual(message, "This room is now in followers-only mode.")
       XCTAssertEqual(channel, "simonpetrik")
-      XCTAssertEqual(messageId, .followersOnZero)
+      XCTAssertEqual(messageID, .followersOnZero)
     default:
       XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind)")
     }
@@ -61,10 +61,10 @@ final class NoticeTests: XCTestCase {
       let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
 
       switch notice.kind {
-      case .local(let channel, let message, let messageId):
+      case .local(let channel, let message, let messageID):
         XCTAssertEqual(channel, "dallas")
         XCTAssertEqual(message, "This room is no longer in slow mode.")
-        XCTAssertEqual(messageId, .slowOff)
+        XCTAssertEqual(messageID, .slowOff)
       default:
         XCTFail("Expected `Kind.local` for tags: \(tags)")
       }
@@ -86,10 +86,10 @@ final class NoticeTests: XCTestCase {
       let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
 
       switch notice.kind {
-      case .unknownLocal(let channel, let message, let messageId):
+      case .unknownLocal(let channel, let message, let messageID):
         XCTAssertEqual(channel, "dallas")
         XCTAssertEqual(message, "This room is no longer in slow mode.")
-        XCTAssertEqual(messageId, identifier)
+        XCTAssertEqual(messageID, identifier)
       default:
         XCTFail("Expected `Kind.unknownLocal` for tags: \(tags)")
       }

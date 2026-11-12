@@ -18,6 +18,8 @@ more specific adjustments.
   action text, typed media arrays, and Unicode scalar ranges.
 - [Structured badges](#structured-badges-and-badge-metadata): read set IDs,
   asset versions, and additional metadata without splitting strings.
+- [API names](#api-names-and-irc-tag-mappings): distinguish categories from IDs
+  and find exact IRC tag names in public field documentation.
 - [Missing metadata](#3-handle-optional-payloads-and-fields): replace empty-payload
   and default-value checks with optional handling. Preserve existing room settings
   when a partial `ROOMSTATE` update omits a field.
@@ -148,7 +150,7 @@ for diagnostic in result.diagnostics {
 A `.parsed` outcome can include recoverable warnings: it means a typed message was
 produced, not that every field decoded cleanly. Decide which warnings your
 application needs to surface or reject. Unused tags alone are not errors, and
-`parsingLeftOvers.isEmpty` still tests for any leftovers, not just errors.
+`parsingLeftovers.isEmpty` still tests for any leftovers, not just errors.
 
 ## 2. Update message construction and mutation
 
@@ -176,8 +178,8 @@ let chat = PrivateMessage(
   message: "Hello",
   userLogin: "viewer",
   id: "message-id",
-  roomId: "channel-id",
-  userId: "viewer-id"
+  roomID: "channel-id",
+  userID: "viewer-id"
 )
 ```
 
@@ -190,8 +192,8 @@ let chat = PrivateMessage(
   displayName: "Viewer",
   userLogin: "viewer",
   id: "message-id",
-  roomId: "channel-id",
-  userId: "viewer-id"
+  roomID: "channel-id",
+  userID: "viewer-id"
 )
 ```
 
@@ -209,7 +211,7 @@ optional arguments use their defaults.
 
 ### Required enum fields are nonoptional
 
-`Notice.kind`, `UserNotice.messageId`, and `HostTarget.action` no longer have
+`Notice.kind`, `UserNotice.kind`, and `HostTarget.action` no longer have
 implicitly unwrapped optional types. Remove force unwraps and optional handling
 for these fields.
 
@@ -235,7 +237,7 @@ message has its `\u{1}ACTION ` prefix and trailing `\u{1}` removed and sets
 in `MessageParseResult.rawMessage` and `text`.
 
 Emotes are now `[Emote]` on `PrivateMessage`, `UserNotice`, and `Whisper`.
-`PrivateMessage.gifs` is now `[Gif]`. Both are decoded once during parsing;
+`PrivateMessage.gifs` is now `[GIF]`. Both are decoded once during parsing;
 `parseEmotes()` and `parseGifs()` have been removed.
 
 **Before**
@@ -262,7 +264,7 @@ if chat.isAction {
 ```
 
 `MessageTextRange` replaces the inclusive integer `startIndex` / `endIndex`
-properties on `Emote` and `Gif`. Its offsets count Unicode scalars and use an
+properties on `Emote` and `GIF`. Its offsets count Unicode scalars and use an
 exclusive upper bound: wire range `0-4` becomes `0..<5`. Every range refers to
 its enclosing message's exposed text, including action messages. Do not strip
 `ACTION` framing again or reuse offsets after modifying the message.
@@ -282,7 +284,7 @@ let range = MessageTextRange(unicodeScalarOffsets: 3..<8)!
 let emote = Emote(id: "25", name: "Kappa", range: range)
 let chat = PrivateMessage(
   channel: "example", message: "👋🏽 Kappa", userLogin: "viewer",
-  emotes: [emote], id: "message-id", roomId: "channel-id", userId: "user-id"
+  emotes: [emote], id: "message-id", roomID: "channel-id", userID: "user-id"
 )
 ```
 
@@ -333,6 +335,66 @@ Role helpers such as `isMod` and `isSubscriber` remain available. They now match
 exact set IDs; names such as `subscriber_extra` do not imply subscriber status.
 Both `moderator` and `lead_moderator` continue to satisfy `isMod`.
 
+## API names and IRC tag mappings
+
+Public field documentation names the exact IRC tag behind each mapped value.
+Use Xcode Quick Help to find the protocol spelling, meaning, units, and relevant
+absence or unofficial-tag caveats. Renaming a Swift symbol never renames a wire tag.
+Raw envelopes continue to expose original tag names.
+
+| Previous API | 2.0 API | IRC tag |
+| --- | --- | --- |
+| `PrivateMessage.messageId` | `PrivateMessage.messageType` | `msg-id` |
+| `UserNotice.MessageID` | `UserNotice.Kind` | Typed `msg-id` category |
+| `UserNotice.messageId` | `UserNotice.kind` | `msg-id` |
+| `UserNotice.rawMessageId` | `UserNotice.rawKind` | `msg-id`, unchanged string |
+| `UserNotice.sourceMessageId` | `UserNotice.sourceKind` | `source-msg-id` |
+| `UserNotice.MessageID.unknown(rawMessageId:)` | `UserNotice.Kind.unknown(rawKind:)` | `msg-id` |
+| `Notice.MessageID` | `Notice.Code` | Recognized `msg-id` code |
+| `Notice.rawMessageId` | `Notice.rawCode` | `msg-id` |
+| `Notice.Kind.local(..., messageId:)` | `Notice.Kind.local(..., code:)` | `msg-id` |
+| `Notice.Kind.unknownLocal(..., messageId:)` | `Notice.Kind.unknownLocal(..., code:)` | `msg-id` |
+| `tmiSentTs` | `timestampMilliseconds` | `tmi-sent-ts`, milliseconds since Unix epoch |
+| `copoReward` | `channelPointsReward` | `msg-param-copoReward`, unofficial |
+| `Gif` | `GIF` | `gifs` |
+| `ParsingLeftOvers` | `ParsingLeftovers` | No direct tag |
+| `parsingLeftOvers` | `parsingLeftovers` | No direct tag |
+
+Embedded identifier acronyms now use `ID`: `userId` becomes `userID`, `roomId`
+becomes `roomID`, and so on throughout properties and initializer arguments.
+This includes payload fields such as `recipientID` and `communityGiftID`,
+`Whisper.messageID` / `threadID`, `ReplyThreadParent.messageID`, and the outgoing
+`privateMessage` label `messageIDToReply:`. Standalone `id`, `url`, and `gifs`
+remain lowercase.
+
+**Before**
+
+```swift
+print(chat.id, chat.messageId, chat.tmiSentTs as Any)
+switch notice.messageId {
+case .unknown(let rawMessageId):
+  print(rawMessageId)
+default:
+  break
+}
+```
+
+**After**
+
+```swift
+print(chat.id, chat.messageType, chat.timestampMilliseconds as Any)
+switch notice.kind {
+case .unknown(let rawKind):
+  print(rawKind)
+default:
+  break
+}
+```
+
+`id` still uniquely identifies a message; `kind`, `messageType`, and notice codes
+classify it. Timestamp types and units, field optionality, and protocol values
+are unchanged by these renames. Old symbol aliases are not provided.
+
 ## 3. Handle optional payloads and fields
 
 ### Absent feature payloads are nil
@@ -365,7 +427,7 @@ if let reply = chat.replyParent {
 }
 
 if let source = chat.source {
-  print("Originally from \(source.roomId ?? "unknown channel")")
+  print("Originally from \(source.roomID ?? "unknown channel")")
 }
 
 if let pinned = chat.pinnedChat {
@@ -418,13 +480,13 @@ The main scalar changes are:
 
 | Model | Optional fields |
 | --- | --- |
-| `PrivateMessage` | `bits`, `color`, `emoteOnly`, `firstMessage`, `returningChatter`, `messageId`, `crowdChantParentMessageId`, `customRewardId`, `sourceOnly`, `tmiSentTs`, `clientNonce` |
-| `UserNotice` | `color`, `vip`, `sourceMessageId`, `tmiSentTs` |
+| `PrivateMessage` | `bits`, `color`, `emoteOnly`, `firstMessage`, `returningChatter`, `messageType`, `crowdChantParentMessageID`, `customRewardID`, `sourceOnly`, `timestampMilliseconds`, `clientNonce` |
+| `UserNotice` | `color`, `vip`, `sourceKind`, `timestampMilliseconds` |
 | `GlobalUserState` | `color` |
 | `UserState` | `color`, `id`, `clientNonce` |
-| `Whisper` | `color`, `messageId`, `threadId` |
-| `ClearMessage` | `tmiSentTs` |
-| `UserNotice.MessageID.ViewerMilestoneInfo` | `copoReward` |
+| `Whisper` | `color`, `messageID`, `threadID` |
+| `ClearMessage` | `timestampMilliseconds` |
+| `UserNotice.Kind.ViewerMilestoneInfo` | `channelPointsReward` |
 
 `bits` remains a string when present, and timestamps remain millisecond counts;
 this migration does not introduce numeric conversions or change their units.
@@ -454,17 +516,18 @@ values remain visible in diagnostics.
 If you previously read `info.copoReward` as a `UInt`, handle a `UInt?` instead.
 The value represents Channel Points awarded for a viewer milestone. The wire tag
 is unofficial and can be absent; nil is distinct from an explicitly supplied zero.
-The property is still named `copoReward` in this API.
+The public property is named `channelPointsReward`; its IRC tag remains
+`msg-param-copoReward` (unofficial).
 
 ## 4. Update exhaustive switches and unknown notice handling
 
 When migrating an exhaustive switch, account for the cases present in the new
 version. Notable additions relative to older 1.x releases include:
 
-- `UserNotice.MessageID.modiversary(ModiversaryInfo)`
-- `UserNotice.MessageID.unknown(rawMessageId: String)`
-- `UserNotice.MessageID.sharedChatNotice(sourceNotice: MessageID?)`
-- `Notice.Kind.unknownLocal(channel:message:messageId:)`
+- `UserNotice.Kind.modiversary(ModiversaryInfo)`
+- `UserNotice.Kind.unknown(rawKind: String)`
+- `UserNotice.Kind.sharedChatNotice(sourceNotice: Kind?)`
+- `Notice.Kind.unknownLocal(channel:message:code:)`
 
 Use explicit cases when the application needs their payloads. A default branch is
 appropriate when the application intentionally ignores other event categories.
@@ -475,8 +538,8 @@ survive. An unknown IRC command, in contrast, produces an `.unsupported` parsing
 outcome. Missing or empty `msg-id` values still make a `USERNOTICE` payload
 malformed.
 
-`UserNotice.rawMessageId` contains the received `msg-id`. For Shared Chat notices,
-`sourceMessageId` contains the optional source notice category, while
+`UserNotice.rawKind` contains the received `msg-id`. For Shared Chat notices,
+`sourceKind` contains the optional source notice category, while
 `source?.id` identifies the originating message. An unrecognized Shared Chat source
 category still produces `.sharedChatNotice(sourceNotice: nil)` and retains its raw
 category and unconsumed tags.

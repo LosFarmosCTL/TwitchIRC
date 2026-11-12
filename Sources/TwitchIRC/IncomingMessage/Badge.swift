@@ -1,6 +1,8 @@
 /// A badge set and its version, used to select a Twitch badge asset.
 public struct Badge: Sendable, Hashable {
+  /// The set identifier before `/` in an IRC badge entry.
   public let setID: String
+  /// The asset version after `/` in the `badges` or `source-badges` IRC tag.
   public let version: String
 
   public init(setID: String, version: String) {
@@ -12,7 +14,9 @@ public struct Badge: Sendable, Hashable {
 /// Additional metadata for a badge set, not its asset version.
 /// For subscribers, the value describes subscription tenure.
 public struct BadgeInfo: Sendable, Hashable {
+  /// The set identifier before `/` in an IRC badge entry.
   public let setID: String
+  /// Metadata after `/` in the `badge-info` or `source-badge-info` IRC tag.
   public let value: String
 
   public init(setID: String, value: String) {

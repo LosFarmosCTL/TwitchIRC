@@ -43,7 +43,7 @@ final class MessageWithBadgesTests: XCTestCase {
 
   func testLeadModeratorInSharedChatSource() {
     let source = SharedChatSource(
-      id: "source", roomId: "channel", badges: [Badge(setID: "lead_moderator", version: "1")])
+      id: "source", roomID: "channel", badges: [Badge(setID: "lead_moderator", version: "1")])
     XCTAssertTrue(source.isMod)
   }
 

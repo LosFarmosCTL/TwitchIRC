@@ -4,21 +4,28 @@ public struct UserState: MessageWithBadges {
   /// Channel's name with no uppercased/Han characters.
   public private(set) var channel = String()
   /// User's badge info.
+  /// IRC tag: `badge-info`.
   public private(set) var badgeInfo = [BadgeInfo]()
   /// User's badges.
+  /// IRC tag: `badges`.
   public private(set) var badges = [Badge]()
   /// User's in-chat name color.
+  /// IRC tag: `color`.
   public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
+  /// IRC tag: `display-name`.
   public private(set) var displayName = String()
   /// User's emote sets.
+  /// IRC tag: `emote-sets`.
   public private(set) var emoteSets = [String]()
   /// The ID of this user state message.
+  /// IRC tag: `id`.
   public private(set) var id: String?
-  /// The nonce sent by client in the PRIVMSG.
+  /// Client-supplied nonce echoed by Twitch, when present.
+  /// IRC tag: `client-nonce`.
   public private(set) var clientNonce: String?
   /// Contains info about unused info and parsing problems.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   internal init() {}
 
@@ -40,7 +47,7 @@ public struct UserState: MessageWithBadges {
 
     let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
     let sometimesUnavailableKeys = ["id", "client-nonce", "color"]
-    self.parsingLeftOvers = parser.getLeftOvers(
+    self.parsingLeftovers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       excludedUnavailableKeys: sometimesUnavailableKeys
     )
@@ -55,7 +62,7 @@ public struct UserState: MessageWithBadges {
     emoteSets: [String] = [String](),
     id: String? = nil,
     clientNonce: String? = nil,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.channel = channel
     self.badgeInfo = badgeInfo
@@ -65,7 +72,7 @@ public struct UserState: MessageWithBadges {
     self.emoteSets = emoteSets
     self.id = id
     self.clientNonce = clientNonce
-    self.parsingLeftOvers = parsingLeftOvers
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

@@ -16,8 +16,8 @@ final class GlobalUserStateTests: XCTestCase {
     XCTAssertEqual(
       gus.emoteSets,
       ["0", "33", "50", "237", "793", "2126", "3517", "4578", "5569", "9400", "10337", "12239"])
-    XCTAssertEqual(gus.userId, "1337")
+    XCTAssertEqual(gus.userID, "1337")
     XCTAssertTrue(
-      gus.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(gus.parsingLeftOvers)")
+      gus.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(gus.parsingLeftovers)")
   }
 }

@@ -3,62 +3,77 @@ public struct PrivateMessage: MessageWithBadges {
 
   public struct ReplyParent {
     /// Replied user's display name with uppercased/Han characters.
+    /// IRC tag: `reply-parent-display-name`.
     public private(set) var displayName: String?
     /// Replied user's name with no uppercased/Han characters.
+    /// IRC tag: `reply-parent-user-login`.
     public private(set) var userLogin: String?
     /// The replied message.
+    /// IRC tag: `reply-parent-msg-body`.
     public private(set) var message: String?
     /// Replied message's id.
+    /// IRC tag: `reply-parent-msg-id`.
     public private(set) var id: String?
     /// Replied user's Twitch identifier.
-    public private(set) var userId: String?
+    /// IRC tag: `reply-parent-user-id`.
+    public private(set) var userID: String?
 
     public init(
       displayName: String? = nil,
       userLogin: String? = nil,
       message: String? = nil,
       id: String?,
-      userId: String? = nil
+      userID: String? = nil
     ) {
       self.displayName = displayName
       self.userLogin = userLogin
       self.message = message
       self.id = id
-      self.userId = userId
+      self.userID = userID
     }
 
   }
 
   public struct ReplyThreadParent {
     /// Replied user's name with no uppercased/Han characters.
+    /// IRC tag: `reply-thread-parent-user-login`.
     public private(set) var userLogin: String?
     /// Replied thread's message's id.
-    public private(set) var messageId: String?
+    /// IRC tag: `reply-thread-parent-msg-id`.
+    public private(set) var messageID: String?
     /// Replied user's display name.
+    /// IRC tag: `reply-thread-parent-display-name`.
     public private(set) var displayName: String?
     /// Replied user's user id.
-    public private(set) var userId: String?
+    /// IRC tag: `reply-thread-parent-user-id`.
+    public private(set) var userID: String?
 
     public init(
       userLogin: String? = nil,
-      messageId: String?,
+      messageID: String?,
       displayName: String? = nil,
-      userId: String? = nil
+      userID: String? = nil
     ) {
       self.userLogin = userLogin
-      self.messageId = messageId
+      self.messageID = messageID
       self.displayName = displayName
-      self.userId = userId
+      self.userID = userID
     }
 
   }
 
   public struct PinnedChat {
+    /// IRC tag: `pinned-chat-paid-amount`.
     public private(set) var amount: UInt?
+    /// IRC tag: `pinned-chat-paid-canonical-amount`.
     public private(set) var canonicalAmount: UInt?
+    /// IRC tag: `pinned-chat-paid-currency`.
     public private(set) var currency: String?
+    /// IRC tag: `pinned-chat-paid-exponent`.
     public private(set) var exponent: UInt?
+    /// IRC tag: `pinned-chat-paid-is-system-message`.
     public private(set) var isSystemMessage: Bool?
+    /// IRC tag: `pinned-chat-paid-level`.
     public private(set) var level: String?
 
     public init(
@@ -81,55 +96,75 @@ public struct PrivateMessage: MessageWithBadges {
 
   /// Channel's name with no uppercased/Han characters.
   public private(set) var channel = String()
-  /// The message sent.
+  /// Displayable message text, with properly framed CTCP ACTION markers removed.
+  /// Original protocol content remains available in `MessageParseResult.rawMessage`.
   public private(set) var message = String()
-  /// Whether this message was sent with /me.
+  /// Whether the IRC content was framed as `\u{1}ACTION ...\u{1}` (the /me command).
   public private(set) var isAction = false
   /// Badge info.
+  /// IRC tag: `badge-info`.
   public private(set) var badgeInfo = [BadgeInfo]()
   /// User's badges.
+  /// IRC tag: `badges`.
   public private(set) var badges = [Badge]()
   /// The bits that were donated, if any.
+  /// IRC tag: `bits`.
   public private(set) var bits: String?
   /// User's in-chat name color.
+  /// IRC tag: `color`.
   public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
+  /// IRC tag: `display-name`.
   public private(set) var displayName = String()
   /// User's name with no uppercased/Han characters.
   public private(set) var userLogin = String()
   /// Decoded emote occurrences in message text.
+  /// IRC tag: `emotes`; offsets refer to this message's exposed text.
   public private(set) var emotes = [Emote]()
   /// Decoded GIF occurrences in message text.
-  public private(set) var gifs = [Gif]()
+  /// IRC tag: `gifs`; offsets refer to this message's exposed text.
+  public private(set) var gifs = [GIF]()
   /// Whether or not the message only contains emotes.
+  /// IRC tag: `emote-only`.
   public private(set) var emoteOnly: Bool?
   /// Flags of this message.
+  /// IRC tag: `flags`.
   public private(set) var flags = [String]()
   /// Whether it's the first time the user is sending a message.
+  /// IRC tag: `first-msg`.
   public private(set) var firstMessage: Bool?
   /// Flag for new viewers who have chatted at least twice in the last 30 days.
+  /// IRC tag: `returning-chatter`.
   public private(set) var returningChatter: Bool?
-  /// Not sure exactly what is this? usually empty.
-  public private(set) var messageId: String?
+  /// Twitch's message category, distinct from the unique message `id`; nil when absent.
+  /// IRC tag: `msg-id`.
+  public private(set) var messageType: String?
   /// Message's id.
+  /// IRC tag: `id`.
   public private(set) var id = String()
-  /// Not sure but should be the message id of the
-  /// message that the chant was started with.
-  public private(set) var crowdChantParentMessageId: String?
+  /// Identifier of the parent message associated with the crowd chant, when supplied.
+  /// IRC tag: `crowd-chant-parent-msg-id`.
+  public private(set) var crowdChantParentMessageID: String?
   /// The id of the custom reward, if any.
-  public private(set) var customRewardId: String?
+  /// IRC tag: `custom-reward-id`.
+  public private(set) var customRewardID: String?
   /// Broadcaster's Twitch identifier.
-  public private(set) var roomId = String()
+  /// IRC tag: `room-id`.
+  public private(set) var roomID = String()
   /// Shared Chat origin metadata; nil for messages without source tags.
   public private(set) var source: SharedChatSource?
   /// Whether this Shared Chat message is restricted to the source channel, when specified.
+  /// IRC tag: `source-only`.
   public private(set) var sourceOnly: Bool?
-  /// The timestamp of the message.
-  public private(set) var tmiSentTs: UInt?
-  /// Not sure exactly but some kind of identifier?!
+  /// The server timestamp, in milliseconds since the Unix epoch; nil when absent.
+  /// IRC tag: `tmi-sent-ts`.
+  public private(set) var timestampMilliseconds: UInt?
+  /// Client-supplied nonce echoed by Twitch, when present.
+  /// IRC tag: `client-nonce`.
   public private(set) var clientNonce: String?
   /// User's Twitch identifier.
-  public private(set) var userId = String()
+  /// IRC tag: `user-id`.
+  public private(set) var userID = String()
   /// Info about the replied message, if any.
   public private(set) var replyParent: ReplyParent?
   /// Info about the thread of the replied message, if any.
@@ -137,7 +172,7 @@ public struct PrivateMessage: MessageWithBadges {
   /// Info of paid pinned messages.
   public private(set) var pinnedChat: PinnedChat?
   /// Contains info about unused info and parsing problems.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   internal init() {}
 
@@ -208,16 +243,16 @@ public struct PrivateMessage: MessageWithBadges {
     self.flags = parser.array(for: "flags")
     self.firstMessage = parser.optionalBool(for: "first-msg")
     self.returningChatter = parser.optionalBool(for: "returning-chatter")
-    self.messageId = parser.optionalNonEmptyString(for: "msg-id")
+    self.messageType = parser.optionalNonEmptyString(for: "msg-id")
     self.id = parser.string(for: "id")
-    self.crowdChantParentMessageId = parser.optionalNonEmptyString(for: "crowd-chant-parent-msg-id")
-    self.customRewardId = parser.optionalNonEmptyString(for: "custom-reward-id")
-    self.roomId = parser.string(for: "room-id")
+    self.crowdChantParentMessageID = parser.optionalNonEmptyString(for: "crowd-chant-parent-msg-id")
+    self.customRewardID = parser.optionalNonEmptyString(for: "custom-reward-id")
+    self.roomID = parser.string(for: "room-id")
     self.source = SharedChatSource(parser: &parser)
     self.sourceOnly = parser.optionalBool(for: "source-only")
-    self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
+    self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
     self.clientNonce = parser.optionalNonEmptyString(for: "client-nonce")
-    self.userId = parser.string(for: "user-id")
+    self.userID = parser.string(for: "user-id")
     self.replyParent = .init(parser: &parser)
     self.replyThreadParent = .init(parser: &parser)
     self.pinnedChat = .init(parser: &parser)
@@ -242,7 +277,7 @@ public struct PrivateMessage: MessageWithBadges {
       ["reply-thread-parent-display-name", "reply-thread-parent-user-id"],
     ]
 
-    self.parsingLeftOvers = parser.getLeftOvers(
+    self.parsingLeftovers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       groupsOfExcludedUnavailableKeys: occasionalKeys + [SharedChatSource.tagKeys, ["source-only"]]
     )
@@ -260,25 +295,25 @@ public struct PrivateMessage: MessageWithBadges {
     displayName: String = String(),
     userLogin: String,
     emotes: [Emote] = [],
-    gifs: [Gif] = [],
+    gifs: [GIF] = [],
     emoteOnly: Bool? = nil,
     flags: [String] = [String](),
     firstMessage: Bool? = nil,
     returningChatter: Bool? = nil,
-    messageId: String? = nil,
+    messageType: String? = nil,
     id: String,
-    crowdChantParentMessageId: String? = nil,
-    customRewardId: String? = nil,
-    roomId: String,
+    crowdChantParentMessageID: String? = nil,
+    customRewardID: String? = nil,
+    roomID: String,
     source: SharedChatSource? = nil,
     sourceOnly: Bool? = nil,
-    tmiSentTs: UInt? = nil,
+    timestampMilliseconds: UInt? = nil,
     clientNonce: String? = nil,
-    userId: String,
+    userID: String,
     replyParent: ReplyParent? = nil,
     replyThreadParent: ReplyThreadParent? = nil,
     pinnedChat: PinnedChat? = nil,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.channel = channel
     self.message = message
@@ -295,20 +330,20 @@ public struct PrivateMessage: MessageWithBadges {
     self.flags = flags
     self.firstMessage = firstMessage
     self.returningChatter = returningChatter
-    self.messageId = messageId
+    self.messageType = messageType
     self.id = id
-    self.crowdChantParentMessageId = crowdChantParentMessageId
-    self.customRewardId = customRewardId
-    self.roomId = roomId
+    self.crowdChantParentMessageID = crowdChantParentMessageID
+    self.customRewardID = customRewardID
+    self.roomID = roomID
     self.source = source
     self.sourceOnly = sourceOnly
-    self.tmiSentTs = tmiSentTs
+    self.timestampMilliseconds = timestampMilliseconds
     self.clientNonce = clientNonce
-    self.userId = userId
+    self.userID = userID
     self.replyParent = replyParent
     self.replyThreadParent = replyThreadParent
     self.pinnedChat = pinnedChat
-    self.parsingLeftOvers = parsingLeftOvers
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 
@@ -328,7 +363,7 @@ extension PrivateMessage.ReplyParent {
       userLogin: parser.optionalNonEmptyString(for: "reply-parent-user-login"),
       message: parser.optionalNonEmptyString(for: "reply-parent-msg-body"),
       id: parser.optionalNonEmptyString(for: "reply-parent-msg-id"),
-      userId: parser.optionalNonEmptyString(for: "reply-parent-user-id")
+      userID: parser.optionalNonEmptyString(for: "reply-parent-user-id")
     )
   }
 }
@@ -338,9 +373,9 @@ extension PrivateMessage.ReplyThreadParent {
     guard parser.contains(prefix: "reply-thread-parent-") else { return nil }
     self.init(
       userLogin: parser.optionalNonEmptyString(for: "reply-thread-parent-user-login"),
-      messageId: parser.optionalNonEmptyString(for: "reply-thread-parent-msg-id"),
+      messageID: parser.optionalNonEmptyString(for: "reply-thread-parent-msg-id"),
       displayName: parser.optionalNonEmptyString(for: "reply-thread-parent-display-name"),
-      userId: parser.optionalNonEmptyString(for: "reply-thread-parent-user-id")
+      userID: parser.optionalNonEmptyString(for: "reply-thread-parent-user-id")
     )
   }
 }

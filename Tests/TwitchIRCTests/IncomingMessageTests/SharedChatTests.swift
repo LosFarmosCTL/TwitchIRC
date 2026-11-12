@@ -14,7 +14,7 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(msg.channel, "twitch")
     XCTAssertEqual(msg.message, "Howdy!")
     XCTAssertEqual(msg.source?.id, msg.id)
-    XCTAssertEqual(msg.source?.roomId, msg.roomId)
+    XCTAssertEqual(msg.source?.roomID, msg.roomID)
     XCTAssertEqual(
       msg.source?.badges,
       [
@@ -25,7 +25,7 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(msg.firstMessage, true)
     XCTAssertEqual(msg.returningChatter, false)
     XCTAssertNil(msg.sourceOnly)
-    XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "\(msg.parsingLeftOvers)")
+    XCTAssertTrue(msg.parsingLeftovers.isEmpty, "\(msg.parsingLeftovers)")
   }
 
   func testForwardedChatMessage() throws {
@@ -35,9 +35,9 @@ final class SharedChatTests: XCTestCase {
     let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
 
     XCTAssertEqual(msg.channel, "twitchrivals")
-    XCTAssertEqual(msg.roomId, "197886470")
+    XCTAssertEqual(msg.roomID, "197886470")
     XCTAssertEqual(msg.id, "17152d83-1fc8-4869-9d44-5157ee212ff1")
-    XCTAssertEqual(msg.source?.roomId, "12826")
+    XCTAssertEqual(msg.source?.roomID, "12826")
     XCTAssertEqual(msg.source?.id, "4dcec0e7-7f79-4a82-8aed-91aac9d0640c")
     XCTAssertEqual(msg.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(msg.badgeInfo, [])
@@ -53,9 +53,9 @@ final class SharedChatTests: XCTestCase {
     // Forwarded copies may omit these tags; retain the existing false defaults.
     XCTAssertNil(msg.firstMessage)
     XCTAssertNil(msg.returningChatter)
-    XCTAssertTrue(msg.parsingLeftOvers.unavailableKeys.isEmpty)
-    XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
-    XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unavailableKeys.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unusedPairs.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unparsedKeys.isEmpty)
   }
 
   func testSourceOnlyChatMessage() throws {
@@ -66,8 +66,8 @@ final class SharedChatTests: XCTestCase {
 
     XCTAssertEqual(msg.sourceOnly, true)
     XCTAssertEqual(msg.source?.id, msg.id)
-    XCTAssertEqual(msg.source?.roomId, msg.roomId)
-    XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "\(msg.parsingLeftOvers)")
+    XCTAssertEqual(msg.source?.roomID, msg.roomID)
+    XCTAssertTrue(msg.parsingLeftovers.isEmpty, "\(msg.parsingLeftovers)")
   }
 
   func testSharedResubNotice() throws {
@@ -77,12 +77,12 @@ final class SharedChatTests: XCTestCase {
     let userNotice: UserNotice = try TestUtils.parseAndUnwrap(string: string)
 
     XCTAssertEqual(userNotice.channel, "twitchrivals")
-    XCTAssertEqual(userNotice.roomId, "197886470")
+    XCTAssertEqual(userNotice.roomID, "197886470")
     XCTAssertEqual(userNotice.id, "local-notice")
-    XCTAssertEqual(userNotice.source?.roomId, "12826")
+    XCTAssertEqual(userNotice.source?.roomID, "12826")
     XCTAssertEqual(userNotice.source?.id, "source-notice")
-    XCTAssertEqual(userNotice.rawMessageId, "sharedchatnotice")
-    XCTAssertEqual(userNotice.sourceMessageId, "resub")
+    XCTAssertEqual(userNotice.rawKind, "sharedchatnotice")
+    XCTAssertEqual(userNotice.sourceKind, "resub")
     XCTAssertEqual(userNotice.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(userNotice.badgeInfo, [])
     XCTAssertEqual(
@@ -92,10 +92,10 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(userNotice.message, "Great stream -- keep it up!")
     XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
     XCTAssertEqual(userNotice.userLogin, "ronni")
-    XCTAssertEqual(userNotice.userId, "1337")
-    XCTAssertTrue(userNotice.parsingLeftOvers.isEmpty, "\(userNotice.parsingLeftOvers)")
+    XCTAssertEqual(userNotice.userID, "1337")
+    XCTAssertTrue(userNotice.parsingLeftovers.isEmpty, "\(userNotice.parsingLeftovers)")
 
-    guard case .sharedChatNotice(let sourceNotice) = userNotice.messageId,
+    guard case .sharedChatNotice(let sourceNotice) = userNotice.kind,
       case .resub(let info)? = sourceNotice
     else {
       return XCTFail("Expected a Shared Chat resub payload")
@@ -114,16 +114,16 @@ final class SharedChatTests: XCTestCase {
     let userNotice: UserNotice = try TestUtils.parseAndUnwrap(string: string)
 
     XCTAssertEqual(userNotice.message, "")
-    XCTAssertEqual(userNotice.sourceMessageId, "subgift")
-    XCTAssertTrue(userNotice.parsingLeftOvers.isEmpty, "\(userNotice.parsingLeftOvers)")
-    guard case .sharedChatNotice(let sourceNotice) = userNotice.messageId,
+    XCTAssertEqual(userNotice.sourceKind, "subgift")
+    XCTAssertTrue(userNotice.parsingLeftovers.isEmpty, "\(userNotice.parsingLeftovers)")
+    guard case .sharedChatNotice(let sourceNotice) = userNotice.kind,
       case .subGift(let info)? = sourceNotice
     else {
       return XCTFail("Expected a Shared Chat gift payload")
     }
     XCTAssertEqual(info.months, 1)
     XCTAssertEqual(info.recipientDisplayName, "Recipient")
-    XCTAssertEqual(info.recipientId, "42")
+    XCTAssertEqual(info.recipientID, "42")
     XCTAssertEqual(info.recipientUserName, "recipient")
     XCTAssertEqual(info.subPlan, .tier1)
   }
@@ -134,25 +134,25 @@ final class SharedChatTests: XCTestCase {
 
     let userNotice: UserNotice = try TestUtils.parseAndUnwrap(string: string)
 
-    guard case .sharedChatNotice(let sourceNotice) = userNotice.messageId else {
+    guard case .sharedChatNotice(let sourceNotice) = userNotice.kind else {
       return XCTFail("Expected a Shared Chat notice")
     }
     XCTAssertNil(sourceNotice)
-    XCTAssertEqual(userNotice.rawMessageId, "sharedchatnotice")
-    XCTAssertEqual(userNotice.sourceMessageId, "future-notice")
+    XCTAssertEqual(userNotice.rawKind, "sharedchatnotice")
+    XCTAssertEqual(userNotice.sourceKind, "future-notice")
     XCTAssertEqual(userNotice.channel, "twitchrivals")
-    XCTAssertEqual(userNotice.roomId, "197886470")
+    XCTAssertEqual(userNotice.roomID, "197886470")
     XCTAssertEqual(userNotice.id, "local-unknown")
-    XCTAssertEqual(userNotice.source?.roomId, "12826")
+    XCTAssertEqual(userNotice.source?.roomID, "12826")
     XCTAssertEqual(userNotice.source?.id, "source-unknown")
     XCTAssertEqual(userNotice.source?.badges, [Badge(setID: "subscriber", version: "6")])
     XCTAssertEqual(userNotice.source?.badgeInfo, [BadgeInfo(setID: "subscriber", value: "6")])
     XCTAssertEqual(userNotice.message, "Still visible")
     XCTAssertEqual(userNotice.systemMessage, "Future!")
     XCTAssertEqual(userNotice.userLogin, "ronni")
-    XCTAssertTrue(userNotice.parsingLeftOvers.unavailableKeys.isEmpty)
-    XCTAssertTrue(userNotice.parsingLeftOvers.unparsedKeys.isEmpty)
-    XCTAssertEqual(userNotice.parsingLeftOvers.unusedPairs.map(\.key), ["msg-param-future"])
-    XCTAssertEqual(userNotice.parsingLeftOvers.unusedPairs.map(\.value), ["value"])
+    XCTAssertTrue(userNotice.parsingLeftovers.unavailableKeys.isEmpty)
+    XCTAssertTrue(userNotice.parsingLeftovers.unparsedKeys.isEmpty)
+    XCTAssertEqual(userNotice.parsingLeftovers.unusedPairs.map(\.key), ["msg-param-future"])
+    XCTAssertEqual(userNotice.parsingLeftovers.unusedPairs.map(\.value), ["value"])
   }
 }

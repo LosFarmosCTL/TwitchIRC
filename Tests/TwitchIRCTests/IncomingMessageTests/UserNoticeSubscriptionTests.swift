@@ -3,7 +3,7 @@ import XCTest
 @testable import TwitchIRC
 
 final class UserNoticeSubscriptionTests: XCTestCase {
-  typealias Action = UserNotice.MessageID
+  typealias Action = UserNotice.Kind
 
   func testParsedValues1() throws {
     let string =
@@ -26,17 +26,17 @@ final class UserNoticeSubscriptionTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "db25007f-7a18-43eb-9379-80131e44d633")
     XCTAssertEqual(userNotice.userLogin, "ronni")
-    XCTAssertEqual(userNotice.roomId, "1337")
+    XCTAssertEqual(userNotice.roomID, "1337")
     XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
-    XCTAssertEqual(userNotice.tmiSentTs, 1_507_246_572_675)
-    XCTAssertEqual(userNotice.userId, "1337")
-    XCTAssertNil(userNotice.sourceMessageId)
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_507_246_572_675)
+    XCTAssertEqual(userNotice.userID, "1337")
+    XCTAssertNil(userNotice.sourceKind)
     XCTAssertNil(userNotice.source)
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.ReSubInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.ReSubInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.cumulativeMonths, 6)
     XCTAssertEqual(info.shouldShareStreak, true)
@@ -50,7 +50,7 @@ final class UserNoticeSubscriptionTests: XCTestCase {
     XCTAssertEqual(info.wasGifted, false)
     XCTAssertEqual(info.giftMonthBeingRedeemed, 0)
     XCTAssertEqual(info.giftMonths, 0)
-    XCTAssertEqual(info.gifterId, "")
+    XCTAssertEqual(info.gifterID, "")
     XCTAssertEqual(info.gifterLogin, "")
     XCTAssertEqual(info.gifterName, "")
   }

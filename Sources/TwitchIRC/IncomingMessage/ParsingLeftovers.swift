@@ -1,7 +1,7 @@
 /// The remaining stuff after parsing of messages is done.
 /// Useful for making sure you've not missed any data.
 /// Unused tags are informational; missing tags and invalid values are reported separately.
-public struct ParsingLeftOvers {
+public struct ParsingLeftovers {
 
   /// A pair of key-value that was not used during parsing.
   public struct UnusedPair {
@@ -56,7 +56,7 @@ public struct ParsingLeftOvers {
 
 // MARK: - Sendable conformances
 #if swift(>=5.5)
-  extension ParsingLeftOvers: Sendable {}
-  extension ParsingLeftOvers.UnusedPair: Sendable {}
-  extension ParsingLeftOvers.UnparsedKey: Sendable {}
+  extension ParsingLeftovers: Sendable {}
+  extension ParsingLeftovers.UnusedPair: Sendable {}
+  extension ParsingLeftovers.UnparsedKey: Sendable {}
 #endif

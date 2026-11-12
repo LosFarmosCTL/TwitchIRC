@@ -1,5 +1,6 @@
-extension UserNotice.MessageID {
+extension UserNotice.Kind {
   public struct PrimePaidUpgradeInfo: Sendable {
+    /// IRC tag: `msg-param-sub-plan`.
     public private(set) var subPlan: SubPlan?
 
     public init(subPlan: SubPlan?) {
@@ -17,9 +18,13 @@ extension UserNotice.MessageID {
   }
 
   public struct GiftPaidUpgradeInfo: Sendable {
+    /// IRC tag: `msg-param-promo-gift-total`.
     public private(set) var promoGiftTotal: UInt
+    /// IRC tag: `msg-param-promo-name`.
     public private(set) var promoName: String
+    /// IRC tag: `msg-param-sender-login`.
     public private(set) var senderLogin: String
+    /// IRC tag: `msg-param-sender-name`.
     public private(set) var senderName: String
 
     public init(
@@ -53,7 +58,9 @@ extension UserNotice.MessageID {
   }
 
   public struct AnonGiftPaidUpgradeInfo: Sendable {
+    /// IRC tag: `msg-param-promo-gift-total`.
     public private(set) var promoGiftTotal: UInt
+    /// IRC tag: `msg-param-promo-name`.
     public private(set) var promoName: String
 
     public init(
@@ -80,17 +87,17 @@ extension UserNotice.MessageID {
 
 }
 
-extension UserNotice.MessageID.PrimePaidUpgradeInfo {
+extension UserNotice.Kind.PrimePaidUpgradeInfo {
   static let optionalKeyGroups: [[String]] = []
 }
 
-extension UserNotice.MessageID.GiftPaidUpgradeInfo {
+extension UserNotice.Kind.GiftPaidUpgradeInfo {
   static let optionalKeyGroups: [[String]] = [
     ["msg-param-promo-gift-total", "msg-param-promo-name"]
   ]
 }
 
-extension UserNotice.MessageID.AnonGiftPaidUpgradeInfo {
+extension UserNotice.Kind.AnonGiftPaidUpgradeInfo {
   static let optionalKeyGroups: [[String]] = [
     ["msg-param-promo-gift-total"], ["msg-param-promo-name"],
   ]

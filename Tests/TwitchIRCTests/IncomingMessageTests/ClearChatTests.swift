@@ -10,9 +10,9 @@ final class ClearChatTests: XCTestCase {
         "@room-id=324;target-user-id=42;tmi-sent-ts=1700000000000;ban-duration=60 :tmi.twitch.tv CLEARCHAT #dallas :ronni"
     )
     XCTAssertEqual(clearChat.banDuration, 60)
-    XCTAssertEqual(clearChat.roomId, "324")
-    XCTAssertEqual(clearChat.targetUserId, "42")
-    XCTAssertEqual(clearChat.tmiSentTs, 1_700_000_000_000)
+    XCTAssertEqual(clearChat.roomID, "324")
+    XCTAssertEqual(clearChat.targetUserID, "42")
+    XCTAssertEqual(clearChat.timestampMilliseconds, 1_700_000_000_000)
   }
 
   func testParsedValues1() throws {

@@ -22,14 +22,14 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
-    XCTAssertNil(msg.messageId)
+    XCTAssertNil(msg.messageType)
     XCTAssertEqual(msg.id, "7fd9a2fa-d537-4a31-b847-7e081c4c088d")
-    XCTAssertNil(msg.crowdChantParentMessageId)
-    XCTAssertNil(msg.customRewardId)
-    XCTAssertEqual(msg.roomId, "751562865")
-    XCTAssertEqual(msg.tmiSentTs, 1_642_084_941_607)
+    XCTAssertNil(msg.crowdChantParentMessageID)
+    XCTAssertNil(msg.customRewardID)
+    XCTAssertEqual(msg.roomID, "751562865")
+    XCTAssertEqual(msg.timestampMilliseconds, 1_642_084_941_607)
     XCTAssertEqual(msg.clientNonce, "00e8c3279eebbb43ad80273324e10d28")
-    XCTAssertEqual(msg.userId, "519827148")
+    XCTAssertEqual(msg.userID, "519827148")
     XCTAssertTrue(
       try XCTUnwrap(msg.replyParent)
         == .init(
@@ -37,12 +37,12 @@ final class PrivateMessageReplyTests: XCTestCase {
           userLogin: "jay_999666",
           message: "!gc",
           id: "92d75439-9bfa-42d2-b20c-7dc4a2c07f6b",
-          userId: "621834053"
+          userID: "621834053"
         ))
 
-    XCTAssertTrue(msg.parsingLeftOvers.unavailableKeys.isEmpty)
-    XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
-    XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unavailableKeys.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unparsedKeys.isEmpty)
+    XCTAssertTrue(msg.parsingLeftovers.unusedPairs.isEmpty)
   }
 
   func testParsedValues9() throws {
@@ -66,30 +66,30 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertNil(msg.messageId)
+    XCTAssertNil(msg.messageType)
     XCTAssertEqual(msg.id, "c96d75f7-6fe0-41d0-bd27-80643426613c")
-    XCTAssertNil(msg.crowdChantParentMessageId)
-    XCTAssertNil(msg.customRewardId)
-    XCTAssertEqual(msg.roomId, "118220323")
-    XCTAssertEqual(msg.tmiSentTs, 1_687_334_511_793)
+    XCTAssertNil(msg.crowdChantParentMessageID)
+    XCTAssertNil(msg.customRewardID)
+    XCTAssertEqual(msg.roomID, "118220323")
+    XCTAssertEqual(msg.timestampMilliseconds, 1_687_334_511_793)
     XCTAssertEqual(msg.clientNonce, "c5639d11fdac91cad488f52a0c0a927a")
-    XCTAssertEqual(msg.userId, "686358047")
+    XCTAssertEqual(msg.userID, "686358047")
     XCTAssertTrue(
       try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "RoyaleAlchemist", userLogin: "royalealchemist",
           message:
             "Clash\\sRoyale\\sAPI\\sestá\\sde\\svuelta\\sPogChamp\\sPogChamp\\s.\\sSi\\shubo\\sun\\smantenimiento\\so\\suna\\sinterrupción\\sdel\\sservicio,\\sya\\sdebería\\shaber\\sterminado.\\sRoyale\\sAlchemist\\snecesitará\\sentre\\s5\\sy\\s1     0\\sminutos\\spara\\srecuperarse\\spor\\scompleto\\s|\\s@Pompeyo4",
-          id: "0e772349-8bcd-42cb-9c91-1c9eece83af8", userId: "684111155")
+          id: "0e772349-8bcd-42cb-9c91-1c9eece83af8", userID: "684111155")
     )
     XCTAssertTrue(
       try XCTUnwrap(msg.replyThreadParent)
         == .init(
-          userLogin: "royalealchemist", messageId: "0e772349-8bcd-42cb-9c91-1c9eece83af8",
-          displayName: "", userId: ""))
+          userLogin: "royalealchemist", messageID: "0e772349-8bcd-42cb-9c91-1c9eece83af8",
+          displayName: "", userID: ""))
     XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
-      msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+      msg.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftovers)")
   }
 
   func testParsedValues10() throws {
@@ -111,30 +111,30 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertNil(msg.messageId)
+    XCTAssertNil(msg.messageType)
     XCTAssertEqual(msg.id, "6cdf9fed-253e-4b16-9878-dd69719a867f")
-    XCTAssertNil(msg.crowdChantParentMessageId)
-    XCTAssertNil(msg.customRewardId)
-    XCTAssertEqual(msg.roomId, "204708397")
-    XCTAssertEqual(msg.tmiSentTs, 1_699_075_686_188)
+    XCTAssertNil(msg.crowdChantParentMessageID)
+    XCTAssertNil(msg.customRewardID)
+    XCTAssertEqual(msg.roomID, "204708397")
+    XCTAssertEqual(msg.timestampMilliseconds, 1_699_075_686_188)
     XCTAssertEqual(msg.clientNonce, "115b634f5401db203a9b2d920d51a2a1")
-    XCTAssertEqual(msg.userId, "708631959")
+    XCTAssertEqual(msg.userID, "708631959")
     XCTAssertTrue(
       try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
           message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
-          userId: "545021421"), "\(String(describing: msg.replyParent))"
+          userID: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(
       try XCTUnwrap(msg.replyThreadParent)
         == .init(
-          userLogin: "pf_josegamer", messageId: "b6543543-798c-4260-a84e-5495af2b1c32",
-          displayName: "PF_josegamer", userId: "545021421"),
+          userLogin: "pf_josegamer", messageID: "b6543543-798c-4260-a84e-5495af2b1c32",
+          displayName: "PF_josegamer", userID: "545021421"),
       "\(String(describing: msg.replyThreadParent))")
     XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
-      msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+      msg.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftovers)")
   }
 
   func testParsedValues11() throws {
@@ -156,29 +156,29 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertNil(msg.messageId)
+    XCTAssertNil(msg.messageType)
     XCTAssertEqual(msg.id, "6cdf9fed-253e-4b16-9878-dd69719a867f")
-    XCTAssertNil(msg.crowdChantParentMessageId)
-    XCTAssertNil(msg.customRewardId)
-    XCTAssertEqual(msg.roomId, "204708397")
-    XCTAssertEqual(msg.tmiSentTs, 1_699_075_686_188)
+    XCTAssertNil(msg.crowdChantParentMessageID)
+    XCTAssertNil(msg.customRewardID)
+    XCTAssertEqual(msg.roomID, "204708397")
+    XCTAssertEqual(msg.timestampMilliseconds, 1_699_075_686_188)
     XCTAssertEqual(msg.clientNonce, "115b634f5401db203a9b2d920d51a2a1")
-    XCTAssertEqual(msg.userId, "708631959")
+    XCTAssertEqual(msg.userID, "708631959")
     XCTAssertTrue(
       try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
           message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
-          userId: "545021421"), "\(String(describing: msg.replyParent))"
+          userID: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(
       try XCTUnwrap(msg.replyThreadParent)
         == .init(
-          userLogin: "pf_josegamer", messageId: "b6543543-798c-4260-a84e-5495af2b1c32",
-          displayName: "PF_josegamer", userId: "545021421"),
+          userLogin: "pf_josegamer", messageID: "b6543543-798c-4260-a84e-5495af2b1c32",
+          displayName: "PF_josegamer", userID: "545021421"),
       "\(String(describing: msg.replyThreadParent))")
     XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
-      msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+      msg.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftovers)")
   }
 }

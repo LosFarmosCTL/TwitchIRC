@@ -19,8 +19,8 @@ final class UserStateTests: XCTestCase {
       userState.emoteSets,
       ["0", "33", "50", "237", "793", "2126", "3517", "4578", "5569", "9400", "10337", "12239"])
     XCTAssertTrue(
-      userState.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userState.parsingLeftOvers)")
+      userState.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userState.parsingLeftovers)")
   }
 
   func testParsedValues2() throws {
@@ -39,7 +39,7 @@ final class UserStateTests: XCTestCase {
       ["0", "33", "50", "237", "793", "2126", "3517", "4578", "5569", "9400", "10337", "12239"])
     XCTAssertEqual(userState.id, "cf930357-1196-4627-9a59-1657b8b62295")
     XCTAssertTrue(
-      userState.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userState.parsingLeftOvers)")
+      userState.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userState.parsingLeftovers)")
   }
 }

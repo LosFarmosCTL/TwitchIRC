@@ -2,19 +2,25 @@
 public struct GlobalUserState: MessageWithBadges {
 
   /// Badge info.
+  /// IRC tag: `badge-info`.
   public private(set) var badgeInfo = [BadgeInfo]()
   /// User's global badges.
+  /// IRC tag: `badges`.
   public private(set) var badges = [Badge]()
   /// User's in-chat name color.
+  /// IRC tag: `color`.
   public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
+  /// IRC tag: `display-name`.
   public private(set) var displayName = String()
   /// User's emote sets.
+  /// IRC tag: `emote-sets`.
   public private(set) var emoteSets = [String]()
   /// User's Twitch identifier.
-  public private(set) var userId = String()
+  /// IRC tag: `user-id`.
+  public private(set) var userID = String()
   /// Contains info about unused info and parsing problems.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   internal init() {}
 
@@ -26,10 +32,10 @@ public struct GlobalUserState: MessageWithBadges {
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emoteSets = parser.array(for: "emote-sets")
-    self.userId = parser.string(for: "user-id")
+    self.userID = parser.string(for: "user-id")
 
     let deprecatedKeys = ["turbo", "user-type"]
-    self.parsingLeftOvers = parser.getLeftOvers(
+    self.parsingLeftovers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       excludedUnavailableKeys: ["color"]
     )
@@ -41,16 +47,16 @@ public struct GlobalUserState: MessageWithBadges {
     color: String? = nil,
     displayName: String = String(),
     emoteSets: [String] = [String](),
-    userId: String,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    userID: String,
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.badgeInfo = badgeInfo
     self.badges = badges
     self.color = color
     self.displayName = displayName
     self.emoteSets = emoteSets
-    self.userId = userId
-    self.parsingLeftOvers = parsingLeftOvers
+    self.userID = userID
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

@@ -11,8 +11,8 @@ public struct Notice {
       channel: String,
       /// The notice's message.
       message: String,
-      /// The notice's identifier.
-      messageId: MessageID
+      /// The recognized notice code from the IRC `msg-id` tag.
+      code: Code
     )
     /// A channel notice with an unrecognized identifier.
     case unknownLocal(
@@ -20,20 +20,22 @@ public struct Notice {
       channel: String,
       /// The notice's message.
       message: String,
-      /// The notice's identifier exactly as received, without normalization.
-      messageId: String
+      /// The IRC `msg-id` tag exactly as received, without normalization.
+      code: String
     )
   }
 
   /// The notice's kind. Also contains the related info.
   public private(set) var kind: Kind
   /// The local notice identifier exactly as received, including underscores.
-  public private(set) var rawMessageId: String?
-  /// Timestamp in milliseconds since the Unix epoch, when supplied.
-  public private(set) var tmiSentTs: UInt?
+  /// IRC tag: `msg-id`.
+  public private(set) var rawCode: String?
+  /// The server timestamp, in milliseconds since the Unix epoch; nil when absent.
+  /// IRC tag: `tmi-sent-ts`.
+  public private(set) var timestampMilliseconds: UInt?
 
   /// Unconsumed tags and recoverable field-decoding issues.
-  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftovers = ParsingLeftovers()
 
   init?(contentLhs: String, contentRhs: String) {
     if contentLhs.hasPrefix("@"),
@@ -41,25 +43,25 @@ public struct Notice {
       let (channel, message) = contentRhs.dropFirst().componentsOneSplit(separatedBy: " :")
     {
       var parser = ParametersParser(String(contentLhs.dropFirst().dropLast(2)))
-      guard let messageIdValue = parser.optionalString(for: "msg-id"),
-        !messageIdValue.isEmpty
+      guard let messageIDValue = parser.optionalString(for: "msg-id"),
+        !messageIDValue.isEmpty
       else {
         return nil
       }
-      self.rawMessageId = messageIdValue
-      self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
-      self.parsingLeftOvers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
-      if let messageId = MessageID(rawValue: messageIdValue) {
+      self.rawCode = messageIDValue
+      self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
+      self.parsingLeftovers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
+      if let code = Code(rawValue: messageIDValue) {
         self.kind = .local(
           channel: String(channel),
           message: String(message),
-          messageId: messageId
+          code: code
         )
       } else {
         self.kind = .unknownLocal(
           channel: String(channel),
           message: String(message),
-          messageId: messageIdValue
+          code: messageIDValue
         )
       }
     } else if let (star, message) = contentRhs.componentsOneSplit(separatedBy: " :"),
@@ -73,14 +75,14 @@ public struct Notice {
   /// Creates a message from its required fields and optional metadata.
   public init(
     kind: Kind,
-    rawMessageId: String? = nil,
-    tmiSentTs: UInt? = nil,
-    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+    rawCode: String? = nil,
+    timestampMilliseconds: UInt? = nil,
+    parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.kind = kind
-    self.rawMessageId = rawMessageId
-    self.tmiSentTs = tmiSentTs
-    self.parsingLeftOvers = parsingLeftOvers
+    self.rawCode = rawCode
+    self.timestampMilliseconds = timestampMilliseconds
+    self.parsingLeftovers = parsingLeftovers
   }
 }
 

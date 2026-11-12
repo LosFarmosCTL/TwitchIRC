@@ -9,43 +9,43 @@ final class UserNoticeViewerMilestoneTests: XCTestCase {
 
   func testOfficialExampleWithoutUnofficialTags() throws {
     let notice: UserNotice = try TestUtils.parseAndUnwrap(string: officialExample)
-    guard case .viewerMilestone(let info) = notice.messageId else {
+    guard case .viewerMilestone(let info) = notice.kind else {
       return XCTFail("Expected a viewer milestone payload")
     }
     XCTAssertEqual(info.category, "watch-streak")
     XCTAssertEqual(info.id, "a872953b-606f-410a-9970-c95b744f116c")
     XCTAssertEqual(info.value, 3)
-    XCTAssertNil(info.copoReward)
+    XCTAssertNil(info.channelPointsReward)
     XCTAssertNil(notice.vip)
-    XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
+    XCTAssertTrue(notice.parsingLeftovers.isEmpty, "\(notice.parsingLeftovers)")
   }
 
   func testExplicitRewardsAndVIPValuesArePreserved() throws {
     for (reward, vip) in [(UInt(0), false), (UInt(450), true)] {
       let message = addingTags("msg-param-copoReward=\(reward);vip=\(vip ? 1 : 0)")
       let notice: UserNotice = try TestUtils.parseAndUnwrap(string: message)
-      guard case .viewerMilestone(let info) = notice.messageId else {
+      guard case .viewerMilestone(let info) = notice.kind else {
         return XCTFail("Expected a viewer milestone payload")
       }
-      XCTAssertEqual(info.copoReward, reward)
+      XCTAssertEqual(info.channelPointsReward, reward)
       XCTAssertEqual(notice.vip, vip)
-      XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
+      XCTAssertTrue(notice.parsingLeftovers.isEmpty, "\(notice.parsingLeftovers)")
     }
   }
 
   func testMalformedOptionalValuesStillProduceDiagnostics() throws {
     for tag in ["msg-param-copoReward=invalid", "vip=invalid"] {
       let notice: UserNotice = try TestUtils.parseAndUnwrap(string: addingTags(tag))
-      guard case .viewerMilestone(let info) = notice.messageId else {
+      guard case .viewerMilestone(let info) = notice.kind else {
         return XCTFail("Expected a viewer milestone payload")
       }
-      XCTAssertNil(info.copoReward)
+      XCTAssertNil(info.channelPointsReward)
       XCTAssertNil(notice.vip)
-      XCTAssertTrue(notice.parsingLeftOvers.unavailableKeys.isEmpty)
-      XCTAssertTrue(notice.parsingLeftOvers.unusedPairs.isEmpty)
+      XCTAssertTrue(notice.parsingLeftovers.unavailableKeys.isEmpty)
+      XCTAssertTrue(notice.parsingLeftovers.unusedPairs.isEmpty)
       XCTAssertEqual(
-        notice.parsingLeftOvers.unparsedKeys.map(\.key), [String(tag.prefix { $0 != "=" })])
-      XCTAssertEqual(notice.parsingLeftOvers.unparsedKeys.map(\.value), ["invalid"])
+        notice.parsingLeftovers.unparsedKeys.map(\.key), [String(tag.prefix { $0 != "=" })])
+      XCTAssertEqual(notice.parsingLeftovers.unparsedKeys.map(\.value), ["invalid"])
     }
   }
 

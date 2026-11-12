@@ -3,7 +3,7 @@ import XCTest
 @testable import TwitchIRC
 
 final class UserNoticeEventTests: XCTestCase {
-  typealias Action = UserNotice.MessageID
+  typealias Action = UserNotice.Kind
 
   func testParsedValues11() throws {
     let string =
@@ -26,15 +26,15 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "0d011cb5-84c9-4abf-b469-905fa48d1e73")
     XCTAssertEqual(userNotice.userLogin, "schlonsti")
-    XCTAssertEqual(userNotice.roomId, "90968980")
+    XCTAssertEqual(userNotice.roomID, "90968980")
     XCTAssertEqual(userNotice.systemMessage, "")
-    XCTAssertEqual(userNotice.tmiSentTs, 1_648_760_291_007)
-    XCTAssertEqual(userNotice.userId, "90968980")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_648_760_291_007)
+    XCTAssertEqual(userNotice.userID, "90968980")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let infoColor: String = try unwrapInnerValue(action: userNotice.messageId)
+    let infoColor: String = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(infoColor, "PRIMARY")
   }
@@ -55,19 +55,19 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "9734d325-603f-42a8-a728-2032943d1786")
     XCTAssertEqual(userNotice.userLogin, "lf_patocarlo_papi")
-    XCTAssertEqual(userNotice.roomId, "473386056")
+    XCTAssertEqual(userNotice.roomID, "473386056")
     XCTAssertEqual(userNotice.systemMessage, #"LF_patocarlo_papi\\sCheered\\swith\\s$1.00"#)
-    XCTAssertEqual(userNotice.tmiSentTs, 1_664_487_028_027)
-    XCTAssertEqual(userNotice.userId, "494211968")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_664_487_028_027)
+    XCTAssertEqual(userNotice.userID, "494211968")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.MidnightSquidInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.MidnightSquidInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.amount, 100)
     XCTAssertEqual(info.currency, "USD")
-    XCTAssertEqual(info.emoteId, "emotesv2_630d12043c5d40dc97a1f8deac5842f1")
+    XCTAssertEqual(info.emoteID, "emotesv2_630d12043c5d40dc97a1f8deac5842f1")
     XCTAssertEqual(info.exponent, 2)
     XCTAssertEqual(info.isHighlighted, false)
     XCTAssertEqual(info.pillType, "Success")
@@ -89,18 +89,18 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "479defa1-dac0-47e6-b308-a19c2a8b64cd")
     XCTAssertEqual(userNotice.userLogin, "lukecaboom")
-    XCTAssertEqual(userNotice.roomId, "18798485")
+    XCTAssertEqual(userNotice.roomID, "18798485")
     XCTAssertEqual(
       userNotice.systemMessage,
       #"LukeCaboom:\\sDonated\\sUSD\\s5\\sto\\ssupport\\sWounded\\sWarrior\\sProject"#
     )
-    XCTAssertEqual(userNotice.tmiSentTs, 1_664_727_225_702)
-    XCTAssertEqual(userNotice.userId, "514556756")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_664_727_225_702)
+    XCTAssertEqual(userNotice.userID, "514556756")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.CharityDonationInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.CharityDonationInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.charityName, #"Wounded\\sWarrior\\sProject"#)
     XCTAssertEqual(info.amount, 500)
@@ -129,22 +129,22 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "aa1d37a5-e0d0-40b2-b374-ae779896a6f9")
     XCTAssertEqual(userNotice.userLogin, "metalkiller354")
-    XCTAssertEqual(userNotice.roomId, "442187430")
+    XCTAssertEqual(userNotice.roomID, "442187430")
     XCTAssertEqual(
       userNotice.systemMessage,
       #"metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!"#
     )
-    XCTAssertEqual(userNotice.tmiSentTs, 1_678_130_127_599)
-    XCTAssertEqual(userNotice.userId, "224637183")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_678_130_127_599)
+    XCTAssertEqual(userNotice.userID, "224637183")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.ViewerMilestoneInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.ViewerMilestoneInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.category, "watch-streak")
     XCTAssertEqual(info.id, "f05b2393-3bee-451c-bcb2-d12ea06781d7")
     XCTAssertEqual(info.value, 3)
-    XCTAssertEqual(info.copoReward, 450)
+    XCTAssertEqual(info.channelPointsReward, 450)
   }
 }

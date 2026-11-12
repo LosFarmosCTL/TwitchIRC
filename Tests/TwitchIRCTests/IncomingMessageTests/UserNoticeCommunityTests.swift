@@ -3,7 +3,7 @@ import XCTest
 @testable import TwitchIRC
 
 final class UserNoticeCommunityTests: XCTestCase {
-  typealias Action = UserNotice.MessageID
+  typealias Action = UserNotice.Kind
 
   func testParsedValues4() throws {
     let string =
@@ -21,15 +21,15 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "3d830f12-795c-447d-af3c-ea05e40fbddb")
     XCTAssertEqual(userNotice.userLogin, "testchannel")
-    XCTAssertEqual(userNotice.roomId, "56379257")
+    XCTAssertEqual(userNotice.roomID, "56379257")
     XCTAssertEqual(userNotice.systemMessage, #"15\sraiders\sfrom\sTestChannel\shave\sjoined\n!"#)
-    XCTAssertEqual(userNotice.tmiSentTs, 1_507_246_572_675)
-    XCTAssertEqual(userNotice.userId, "123456")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_507_246_572_675)
+    XCTAssertEqual(userNotice.userID, "123456")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.RaidInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.RaidInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.displayName, "TestChannel")
     XCTAssertEqual(info.login, "testchannel")
@@ -53,15 +53,15 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "37feed0f-b9c7-4c3a-b475-21c6c6d21c3d")
     XCTAssertEqual(userNotice.userLogin, "seventest1")
-    XCTAssertEqual(userNotice.roomId, "6316121")
+    XCTAssertEqual(userNotice.roomID, "6316121")
     XCTAssertEqual(userNotice.systemMessage, #"Seventoes\sis\snew\shere!"#)
-    XCTAssertEqual(userNotice.tmiSentTs, 1_508_363_903_826)
-    XCTAssertEqual(userNotice.userId, "131260580")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_508_363_903_826)
+    XCTAssertEqual(userNotice.userID, "131260580")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let ritualName: String = try unwrapInnerValue(action: userNotice.messageId)
+    let ritualName: String = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(ritualName, "new_chatter")
   }
@@ -87,22 +87,22 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "41ab23ee-4728-4f8b-9d72-8fa92300cc94")
     XCTAssertEqual(userNotice.userLogin, "pazza_cr4")
-    XCTAssertEqual(userNotice.roomId, "629935431")
+    XCTAssertEqual(userNotice.roomID, "629935431")
     XCTAssertEqual(
       userNotice.systemMessage,
       #"pazza_cr4\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sdillydilby\sto\sthe\scommunity!"#
     )
-    XCTAssertEqual(userNotice.tmiSentTs, 1_642_853_857_868)
-    XCTAssertEqual(userNotice.userId, "757980712")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_642_853_857_868)
+    XCTAssertEqual(userNotice.userID, "757980712")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.CommunityPayForwardInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.CommunityPayForwardInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.priorGifterAnonymous, false)
     XCTAssertEqual(info.priorGifterDisplayName, "dillydilby")
-    XCTAssertEqual(info.priorGifterId, "629935431")
+    XCTAssertEqual(info.priorGifterID, "629935431")
     XCTAssertEqual(info.priorGifterUserName, "dillydilby")
   }
 
@@ -124,25 +124,25 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "4417af02-11f7-4da8-8118-8fc2913b841c")
     XCTAssertEqual(userNotice.userLogin, "gissihathunger")
-    XCTAssertEqual(userNotice.roomId, "180980116")
+    XCTAssertEqual(userNotice.roomID, "180980116")
     XCTAssertEqual(
       userNotice.systemMessage,
       #"GissihatHunger\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sBenenator_007\sto\scuteMaggi!"#
     )
-    XCTAssertEqual(userNotice.tmiSentTs, 1_642_857_017_198)
-    XCTAssertEqual(userNotice.userId, "449423975")
+    XCTAssertEqual(userNotice.timestampMilliseconds, 1_642_857_017_198)
+    XCTAssertEqual(userNotice.userID, "449423975")
     XCTAssertTrue(
-      userNotice.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")
+      userNotice.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(userNotice.parsingLeftovers)")
 
-    let info: Action.StandardPayForwardInfo = try unwrapInnerValue(action: userNotice.messageId)
+    let info: Action.StandardPayForwardInfo = try unwrapInnerValue(action: userNotice.kind)
 
     XCTAssertEqual(info.priorGifterAnonymous, false)
     XCTAssertEqual(info.priorGifterDisplayName, "Benenator_007")
-    XCTAssertEqual(info.priorGifterId, "609956744")
+    XCTAssertEqual(info.priorGifterID, "609956744")
     XCTAssertEqual(info.priorGifterUserName, "benenator_007")
     XCTAssertEqual(info.recipientDisplayName, "cuteMaggi")
-    XCTAssertEqual(info.recipientId, "693345558")
+    XCTAssertEqual(info.recipientID, "693345558")
     XCTAssertEqual(info.recipientUserName, "cutemaggi")
   }
 }

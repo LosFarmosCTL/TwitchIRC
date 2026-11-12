@@ -13,11 +13,11 @@ final class ClearMessageTests: XCTestCase {
     XCTAssertEqual(clearMessage.channel, "dallas")
     XCTAssertEqual(clearMessage.message, "HeyGuys")
     XCTAssertEqual(clearMessage.userLogin, "ronni")
-    XCTAssertEqual(clearMessage.targetMessageId, "abc-123-def")
-    XCTAssertEqual(clearMessage.roomId, "")
-    XCTAssertEqual(clearMessage.tmiSentTs, 1_642_860_513_538)
+    XCTAssertEqual(clearMessage.targetMessageID, "abc-123-def")
+    XCTAssertEqual(clearMessage.roomID, "")
+    XCTAssertEqual(clearMessage.timestampMilliseconds, 1_642_860_513_538)
     XCTAssertTrue(
-      clearMessage.parsingLeftOvers.isEmpty,
-      "Non-empty parsing left-overs: \(clearMessage.parsingLeftOvers)")
+      clearMessage.parsingLeftovers.isEmpty,
+      "Non-empty parsing left-overs: \(clearMessage.parsingLeftovers)")
   }
 }

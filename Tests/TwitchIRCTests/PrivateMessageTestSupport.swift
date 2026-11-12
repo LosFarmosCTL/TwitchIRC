@@ -8,7 +8,7 @@ func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParent) -> Bo
     && lhs.userLogin == rhs.userLogin
     && lhs.message == rhs.message
     && lhs.id == rhs.id
-    && lhs.userId == rhs.userId
+    && lhs.userID == rhs.userID
 }
 
 // MARK: - PrivateMessage.ReplyThreadParent Equatable (basically)
@@ -17,7 +17,7 @@ func == (
   rhs: PrivateMessage.ReplyThreadParent
 ) -> Bool {
   lhs.userLogin == rhs.userLogin
-    && lhs.messageId == rhs.messageId
+    && lhs.messageID == rhs.messageID
 }
 
 // MARK: - PrivateMessage.PinnedChat Equatable (basically)

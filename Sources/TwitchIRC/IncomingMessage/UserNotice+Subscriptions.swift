@@ -1,4 +1,4 @@
-extension UserNotice.MessageID {
+extension UserNotice.Kind {
   public enum SubPlan: String, Sendable {
     case followersTier = ""
     case tier1 = "1000"
@@ -8,26 +8,40 @@ extension UserNotice.MessageID {
   }
 
   public struct SubInfo: Sendable {
+    /// IRC tag: `msg-param-cumulative-months`.
     public private(set) var cumulativeMonths: UInt
+    /// IRC tag: `msg-param-should-share-streak`.
     public private(set) var shouldShareStreak: Bool
+    /// IRC tag: `msg-param-streak-months`.
     public private(set) var streakMonths: UInt
+    /// IRC tag: `msg-param-sub-plan`.
     public private(set) var subPlan: SubPlan?
+    /// IRC tag: `msg-param-sub-plan-name`.
     public private(set) var subPlanName: String
+    /// IRC tag: `msg-param-months`.
     public private(set) var months: UInt
+    /// IRC tag: `msg-param-multimonth-duration`.
     public private(set) var multimonthDuration: UInt
+    /// IRC tag: `msg-param-multimonth-tenure`.
     public private(set) var multimonthTenure: Bool
+    /// IRC tag: `msg-param-was-gifted`.
     public private(set) var wasGifted: Bool
+    /// IRC tag: `msg-param-goal-contribution-type`.
     public private(set) var goalContributionType: String
+    /// IRC tag: `msg-param-goal-current-contributions`.
     public private(set) var goalCurrentContributions: String
+    /// IRC tag: `msg-param-goal-description`.
     public private(set) var goalDescription: String
+    /// IRC tag: `msg-param-goal-target-contributions`.
     public private(set) var goalTargetContributions: String
+    /// IRC tag: `msg-param-goal-user-contributions`.
     public private(set) var goalUserContributions: String
 
     public init(
       cumulativeMonths: UInt,
       shouldShareStreak: Bool,
       streakMonths: UInt,
-      subPlan: UserNotice.MessageID.SubPlan?,
+      subPlan: UserNotice.Kind.SubPlan?,
       subPlanName: String,
       months: UInt,
       multimonthDuration: UInt,
@@ -94,27 +108,42 @@ extension UserNotice.MessageID {
   }
 
   public struct ReSubInfo: Sendable {
+    /// IRC tag: `msg-param-cumulative-months`.
     public private(set) var cumulativeMonths: UInt
+    /// IRC tag: `msg-param-should-share-streak`.
     public private(set) var shouldShareStreak: Bool
+    /// IRC tag: `msg-param-streak-months`.
     public private(set) var streakMonths: UInt
+    /// IRC tag: `msg-param-sub-plan`.
     public private(set) var subPlan: SubPlan?
+    /// IRC tag: `msg-param-sub-plan-name`.
     public private(set) var subPlanName: String
+    /// IRC tag: `msg-param-anon-gift`.
     public private(set) var anonGift: Bool
+    /// IRC tag: `msg-param-months`.
     public private(set) var months: UInt
+    /// IRC tag: `msg-param-multimonth-duration`.
     public private(set) var multimonthDuration: UInt
+    /// IRC tag: `msg-param-multimonth-tenure`.
     public private(set) var multimonthTenure: Bool
+    /// IRC tag: `msg-param-was-gifted`.
     public private(set) var wasGifted: Bool
+    /// IRC tag: `msg-param-gift-month-being-redeemed`.
     public private(set) var giftMonthBeingRedeemed: UInt
+    /// IRC tag: `msg-param-gift-months`.
     public private(set) var giftMonths: UInt
-    public private(set) var gifterId: String
+    /// IRC tag: `msg-param-gifter-id`.
+    public private(set) var gifterID: String
+    /// IRC tag: `msg-param-gifter-login`.
     public private(set) var gifterLogin: String
+    /// IRC tag: `msg-param-gifter-name`.
     public private(set) var gifterName: String
 
     public init(
       cumulativeMonths: UInt,
       shouldShareStreak: Bool,
       streakMonths: UInt,
-      subPlan: UserNotice.MessageID.SubPlan?,
+      subPlan: UserNotice.Kind.SubPlan?,
       subPlanName: String,
       anonGift: Bool,
       months: UInt,
@@ -123,7 +152,7 @@ extension UserNotice.MessageID {
       wasGifted: Bool,
       giftMonthBeingRedeemed: UInt,
       giftMonths: UInt,
-      gifterId: String,
+      gifterID: String,
       gifterLogin: String,
       gifterName: String
     ) {
@@ -139,7 +168,7 @@ extension UserNotice.MessageID {
       self.wasGifted = wasGifted
       self.giftMonthBeingRedeemed = giftMonthBeingRedeemed
       self.giftMonths = giftMonths
-      self.gifterId = gifterId
+      self.gifterID = gifterID
       self.gifterLogin = gifterLogin
       self.gifterName = gifterName
     }
@@ -158,7 +187,7 @@ extension UserNotice.MessageID {
         wasGifted: Bool(),
         giftMonthBeingRedeemed: UInt(),
         giftMonths: UInt(),
-        gifterId: String(),
+        gifterID: String(),
         gifterLogin: String(),
         gifterName: String()
       )
@@ -177,7 +206,7 @@ extension UserNotice.MessageID {
         wasGifted: parser.bool(for: "msg-param-was-gifted"),
         giftMonthBeingRedeemed: parser.uint(for: "msg-param-gift-month-being-redeemed"),
         giftMonths: parser.uint(for: "msg-param-gift-months"),
-        gifterId: parser.string(for: "msg-param-gifter-id"),
+        gifterID: parser.string(for: "msg-param-gifter-id"),
         gifterLogin: parser.string(for: "msg-param-gifter-login"),
         gifterName: parser.string(for: "msg-param-gifter-name")
       )
@@ -186,7 +215,7 @@ extension UserNotice.MessageID {
 
 }
 
-extension UserNotice.MessageID.SubInfo {
+extension UserNotice.Kind.SubInfo {
   static let optionalKeyGroups: [[String]] = [
     ["msg-param-streak-months"], ["msg-param-goal-description"],
     [
@@ -197,7 +226,7 @@ extension UserNotice.MessageID.SubInfo {
   ]
 }
 
-extension UserNotice.MessageID.ReSubInfo {
+extension UserNotice.Kind.ReSubInfo {
   static let optionalKeyGroups: [[String]] = [
     ["msg-param-streak-months"],
     ["msg-param-multimonth-duration", "msg-param-multimonth-tenure"],

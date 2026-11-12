@@ -28,14 +28,14 @@ final class PrivateMessageRichContentTests: XCTestCase {
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertNil(msg.messageId)
+    XCTAssertNil(msg.messageType)
     XCTAssertEqual(msg.id, "011c7c65-6bab-4a9c-973e-2e04154e3877")
-    XCTAssertNil(msg.crowdChantParentMessageId)
-    XCTAssertNil(msg.customRewardId)
-    XCTAssertEqual(msg.roomId, "123721524")
-    XCTAssertEqual(msg.tmiSentTs, 1_687_641_306_105)
+    XCTAssertNil(msg.crowdChantParentMessageID)
+    XCTAssertNil(msg.customRewardID)
+    XCTAssertEqual(msg.roomID, "123721524")
+    XCTAssertEqual(msg.timestampMilliseconds, 1_687_641_306_105)
     XCTAssertNil(msg.clientNonce)
-    XCTAssertEqual(msg.userId, "767491027")
+    XCTAssertEqual(msg.userID, "767491027")
     XCTAssertNil(msg.replyParent)
     XCTAssertTrue(
       try XCTUnwrap(msg.pinnedChat)
@@ -48,7 +48,7 @@ final class PrivateMessageRichContentTests: XCTestCase {
           level: "ONE"
         ), "\(String(describing: msg.pinnedChat))")
     XCTAssertTrue(
-      msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+      msg.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftovers)")
   }
 
   func testParsedValues12() throws {
@@ -69,6 +69,6 @@ final class PrivateMessageRichContentTests: XCTestCase {
     XCTAssertEqual(gif.range.unicodeScalarOffsets.lowerBound, 0)
     XCTAssertEqual(gif.range.unicodeScalarOffsets.upperBound, 34)
     XCTAssertTrue(
-      msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+      msg.parsingLeftovers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftovers)")
   }
 }

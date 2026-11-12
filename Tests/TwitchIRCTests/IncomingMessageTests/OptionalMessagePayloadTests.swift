@@ -12,11 +12,11 @@ final class OptionalMessagePayloadTests: XCTestCase {
     XCTAssertNil(message.firstMessage)
     XCTAssertNil(message.returningChatter)
     XCTAssertNil(message.sourceOnly)
-    XCTAssertNil(message.tmiSentTs)
+    XCTAssertNil(message.timestampMilliseconds)
     XCTAssertNil(message.color)
     XCTAssertNil(message.bits)
     XCTAssertNil(message.clientNonce)
-    XCTAssertTrue(message.parsingLeftOvers.isEmpty, "\(message.parsingLeftOvers)")
+    XCTAssertTrue(message.parsingLeftovers.isEmpty, "\(message.parsingLeftovers)")
   }
 
   func testExplicitFalseAndZeroAreNotAbsent() throws {
@@ -26,10 +26,10 @@ final class OptionalMessagePayloadTests: XCTestCase {
     XCTAssertEqual(message.returningChatter, false)
     XCTAssertEqual(message.emoteOnly, false)
     XCTAssertEqual(message.sourceOnly, false)
-    XCTAssertEqual(message.tmiSentTs, 0)
+    XCTAssertEqual(message.timestampMilliseconds, 0)
     XCTAssertEqual(message.bits, "0")
     XCTAssertNil(message.source)
-    XCTAssertTrue(message.parsingLeftOvers.isEmpty, "\(message.parsingLeftOvers)")
+    XCTAssertTrue(message.parsingLeftovers.isEmpty, "\(message.parsingLeftovers)")
   }
 
   func testPartialPayloadsPreserveAvailableFields() throws {
@@ -39,10 +39,10 @@ final class OptionalMessagePayloadTests: XCTestCase {
     )
     let reply = try XCTUnwrap(message.replyParent)
     XCTAssertEqual(reply.id, "parent")
-    XCTAssertNil(reply.userId)
+    XCTAssertNil(reply.userID)
     XCTAssertNil(reply.displayName)
     let thread = try XCTUnwrap(message.replyThreadParent)
-    XCTAssertEqual(thread.messageId, "thread")
+    XCTAssertEqual(thread.messageID, "thread")
     XCTAssertNil(thread.userLogin)
     let pinned = try XCTUnwrap(message.pinnedChat)
     XCTAssertEqual(pinned.amount, 0)
@@ -50,16 +50,16 @@ final class OptionalMessagePayloadTests: XCTestCase {
     XCTAssertNil(pinned.isSystemMessage)
     let source = try XCTUnwrap(message.source)
     XCTAssertNil(source.id)
-    XCTAssertNil(source.roomId)
+    XCTAssertNil(source.roomID)
     XCTAssertTrue(source.isMod)
-    XCTAssertTrue(message.parsingLeftOvers.unavailableKeys.contains("source-id"))
+    XCTAssertTrue(message.parsingLeftovers.unavailableKeys.contains("source-id"))
   }
 
   func testMalformedPayloadValueIsNotConvertedToZero() throws {
     let message = try parseMessage(tags: "pinned-chat-paid-amount=invalid")
     let pinned = try XCTUnwrap(message.pinnedChat)
     XCTAssertNil(pinned.amount)
-    XCTAssertEqual(message.parsingLeftOvers.unparsedKeys.map(\.key), ["pinned-chat-paid-amount"])
+    XCTAssertEqual(message.parsingLeftovers.unparsedKeys.map(\.key), ["pinned-chat-paid-amount"])
   }
 
   private func parseMessage(tags: String = "") throws -> PrivateMessage {

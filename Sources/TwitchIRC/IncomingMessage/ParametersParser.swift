@@ -28,11 +28,11 @@ struct ParametersParser {
   func getLeftOvers(
     excludedUnusedKeys: [String] = [],
     excludedUnavailableKeys: [String] = []
-  ) -> ParsingLeftOvers {
+  ) -> ParsingLeftovers {
     let unusedPairs = self.storage.filter({
       !(self.usedIndices.contains($0.offset) || excludedUnusedKeys.contains($0.element.key))
     }).map({
-      ParsingLeftOvers.UnusedPair.init(
+      ParsingLeftovers.UnusedPair.init(
         key: $0.element.key,
         value: $0.element.value
       )
@@ -40,9 +40,9 @@ struct ParametersParser {
     let unavailableKeys = self.unavailableKeys
       .filter({ !excludedUnavailableKeys.contains($0) })
     let unparsedKeys = self.unparsedKeys.map {
-      ParsingLeftOvers.UnparsedKey(key: $0.pair.key, value: $0.pair.value, type: $0.type)
+      ParsingLeftovers.UnparsedKey(key: $0.pair.key, value: $0.pair.value, type: $0.type)
     }
-    return ParsingLeftOvers(
+    return ParsingLeftovers(
       unusedPairs: unusedPairs,
       unavailableKeys: unavailableKeys,
       unparsedKeys: unparsedKeys
@@ -54,13 +54,13 @@ struct ParametersParser {
   ///   - excludedUnusedKeys: The unused keys that should be excluded
   ///   since Twitch occasionally doesn't sends them to us.
   ///   - groupsOfExcludedUnavailableKeys: The groups of keys that should be excluded
-  ///   from `ParsingLeftOvers.unavailableKeys`. Each group's members all should be available
+  ///   from `ParsingLeftovers.unavailableKeys`. Each group's members all should be available
   ///   or all be unavailable, otherwise the group won't take effect.
-  ///   still be included in the `ParsingLeftOvers.unavailableKeys`.
+  ///   still be included in the `ParsingLeftovers.unavailableKeys`.
   func getLeftOvers(
     excludedUnusedKeys: [String] = [],
     groupsOfExcludedUnavailableKeys: [[String]]
-  ) -> ParsingLeftOvers {
+  ) -> ParsingLeftovers {
     let excludedUnavailableKeys = groupsOfExcludedUnavailableKeys.reduce(
       into: [String]()
     ) { current, nextGroup in

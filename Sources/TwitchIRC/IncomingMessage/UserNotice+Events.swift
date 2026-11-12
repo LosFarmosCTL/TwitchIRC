@@ -1,23 +1,29 @@
-extension UserNotice.MessageID {
+extension UserNotice.Kind {
   public struct MidnightSquidInfo: Sendable {
+    /// IRC tag: `msg-param-amount`.
     public private(set) var amount: UInt
+    /// IRC tag: `msg-param-currency`.
     public private(set) var currency: String
-    public private(set) var emoteId: String
+    /// IRC tag: `msg-param-emote-id`.
+    public private(set) var emoteID: String
+    /// IRC tag: `msg-param-exponent`.
     public private(set) var exponent: UInt
+    /// IRC tag: `msg-param-is-highlighted`.
     public private(set) var isHighlighted: Bool
+    /// IRC tag: `msg-param-pill-type`.
     public private(set) var pillType: String
 
     public init(
       amount: UInt,
       currency: String,
-      emoteId: String,
+      emoteID: String,
       exponent: UInt,
       isHighlighted: Bool,
       pillType: String
     ) {
       self.amount = amount
       self.currency = currency
-      self.emoteId = emoteId
+      self.emoteID = emoteID
       self.exponent = exponent
       self.isHighlighted = isHighlighted
       self.pillType = pillType
@@ -27,7 +33,7 @@ extension UserNotice.MessageID {
       self.init(
         amount: UInt(),
         currency: String(),
-        emoteId: String(),
+        emoteID: String(),
         exponent: UInt(),
         isHighlighted: Bool(),
         pillType: String()
@@ -37,7 +43,7 @@ extension UserNotice.MessageID {
       self.init(
         amount: parser.uint(for: "msg-param-amount"),
         currency: parser.string(for: "msg-param-currency"),
-        emoteId: parser.string(for: "msg-param-emote-id"),
+        emoteID: parser.string(for: "msg-param-emote-id"),
         exponent: parser.uint(for: "msg-param-exponent"),
         isHighlighted: parser.bool(for: "msg-param-is-highlighted"),
         pillType: parser.string(for: "msg-param-pill-type")
@@ -46,9 +52,13 @@ extension UserNotice.MessageID {
   }
 
   public struct CharityDonationInfo: Sendable {
+    /// IRC tag: `msg-param-charity-name`.
     public private(set) var charityName: String
+    /// IRC tag: `msg-param-donation-amount`.
     public private(set) var amount: UInt
+    /// IRC tag: `msg-param-donation-currency`.
     public private(set) var currency: String
+    /// IRC tag: `msg-param-exponent`.
     public private(set) var exponent: UInt
 
     public init(
@@ -83,6 +93,7 @@ extension UserNotice.MessageID {
 
   public struct ModiversaryInfo: Sendable {
     /// Total number of months the user has been a moderator in this channel.
+    /// IRC tag: `msg-param-months`.
     public private(set) var months = UInt()
 
     public init(months: UInt) {
@@ -95,23 +106,26 @@ extension UserNotice.MessageID {
   }
 
   public struct ViewerMilestoneInfo: Sendable {
+    /// IRC tag: `msg-param-category`.
     public private(set) var category: String
+    /// IRC tag: `msg-param-id`.
     public private(set) var id: String
+    /// IRC tag: `msg-param-value`.
     public private(set) var value: UInt
     /// Channel Points awarded for this milestone, when supplied.
-    /// The `msg-param-copoReward` tag is unofficial and may be absent.
-    public private(set) var copoReward: UInt?
+    /// IRC tag: `msg-param-copoReward`. Unofficial; may be absent.
+    public private(set) var channelPointsReward: UInt?
 
     public init(
       category: String,
       id: String,
       value: UInt,
-      copoReward: UInt?
+      channelPointsReward: UInt?
     ) {
       self.category = category
       self.id = id
       self.value = value
-      self.copoReward = copoReward
+      self.channelPointsReward = channelPointsReward
     }
 
     internal init() {
@@ -119,7 +133,7 @@ extension UserNotice.MessageID {
         category: String(),
         id: String(),
         value: UInt(),
-        copoReward: nil
+        channelPointsReward: nil
       )
     }
     init(parser: inout ParametersParser) {
@@ -127,21 +141,21 @@ extension UserNotice.MessageID {
         category: parser.string(for: "msg-param-category"),
         id: parser.string(for: "msg-param-id"),
         value: parser.uint(for: "msg-param-value"),
-        copoReward: parser.optionalUInt(for: "msg-param-copoReward")
+        channelPointsReward: parser.optionalUInt(for: "msg-param-copoReward")
       )
     }
   }
 
 }
 
-extension UserNotice.MessageID.MidnightSquidInfo {
+extension UserNotice.Kind.MidnightSquidInfo {
   static let optionalKeyGroups: [[String]] = []
 }
 
-extension UserNotice.MessageID.CharityDonationInfo {
+extension UserNotice.Kind.CharityDonationInfo {
   static let optionalKeyGroups: [[String]] = []
 }
 
-extension UserNotice.MessageID.ViewerMilestoneInfo {
+extension UserNotice.Kind.ViewerMilestoneInfo {
   static let optionalKeyGroups: [[String]] = [["msg-param-copoReward"]]
 }

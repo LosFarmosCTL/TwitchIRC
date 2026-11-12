@@ -1,5 +1,6 @@
 extension UserNotice {
-  public enum MessageID: Sendable {
+  /// A typed notice category decoded from the IRC `msg-id` tag.
+  public enum Kind: Sendable {
     case sub(SubInfo)
     case resub(ReSubInfo)
     case subGift(SubGiftInfo)
@@ -22,9 +23,9 @@ extension UserNotice {
     case modiversary(ModiversaryInfo)
     case viewerMilestone(ViewerMilestoneInfo)
     /// A notice category not yet recognized by this library.
-    /// Event-specific tags remain available in `UserNotice.parsingLeftOvers.unusedPairs`.
-    case unknown(rawMessageId: String)
+    /// Event-specific tags remain available in `UserNotice.parsingLeftovers.unusedPairs`.
+    case unknown(rawKind: String)
     /// A forwarded notice. The source payload is nil when the source notice type is unrecognized.
-    indirect case sharedChatNotice(sourceNotice: MessageID?)
+    indirect case sharedChatNotice(sourceNotice: Kind?)
   }
 }

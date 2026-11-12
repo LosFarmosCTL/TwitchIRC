@@ -3,7 +3,7 @@ import XCTest
 @testable import TwitchIRC
 
 func unwrapInnerValue<T>(
-  action: UserNotice.MessageID,
+  action: UserNotice.Kind,
   as type: T.Type = T.self,
   file: StaticString = #file,
   line: UInt = #line
@@ -16,8 +16,8 @@ func unwrapInnerValue<T>(
   )
 }
 
-// MARK: - UserNotice.MessageID anyValue
-extension UserNotice.MessageID {
+// MARK: - UserNotice.Kind anyValue
+extension UserNotice.Kind {
   var anyValue: Any {
     switch self {
     case .sub(let value):
@@ -60,8 +60,8 @@ extension UserNotice.MessageID {
       return value
     case .viewerMilestone(let value):
       return value
-    case .unknown(let rawMessageId):
-      return rawMessageId
+    case .unknown(let rawMessageID):
+      return rawMessageID
     case .sharedChatNotice(let sourceNotice):
       return sourceNotice as Any
     }
