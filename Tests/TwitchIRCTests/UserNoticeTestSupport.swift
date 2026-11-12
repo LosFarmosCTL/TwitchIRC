@@ -56,6 +56,8 @@ extension UserNotice.MessageID {
       return value
     case .charityDonation(let value):
       return value
+    case .modiversary(let value):
+      return value
     case .viewerMilestone(let value):
       return value
     case .unknown(let rawMessageId):

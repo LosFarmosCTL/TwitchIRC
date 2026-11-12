@@ -99,6 +99,9 @@ extension UserNotice.MessageID {
           messageId: .charityDonation(.init(parser: &parser)),
           optionalKeyGroups: CharityDonationInfo.optionalKeyGroups)
       },
+      "modiversary": { parser in
+        ParsedUserNotice(messageId: .modiversary(.init(parser: &parser)), optionalKeyGroups: [])
+      },
       "viewermilestone": { parser in
         ParsedUserNotice(
           messageId: .viewerMilestone(.init(parser: &parser)),

@@ -18,6 +18,8 @@ extension UserNotice {
     case announcement(color: String?)
     case midnightSquid(MidnightSquidInfo)
     case charityDonation(CharityDonationInfo)
+    /// A moderator sharing their anniversary in the channel.
+    case modiversary(ModiversaryInfo)
     case viewerMilestone(ViewerMilestoneInfo)
     /// A notice category not yet recognized by this library.
     /// Event-specific tags remain available in `UserNotice.parsingLeftOvers.unusedPairs`.

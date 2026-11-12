@@ -81,6 +81,17 @@ extension UserNotice.MessageID {
     }
   }
 
+  public struct ModiversaryInfo: Sendable {
+    /// Total number of months the user has been a moderator in this channel.
+    public var months = UInt()
+
+    public init() {}
+
+    init(parser: inout ParametersParser) {
+      self.months = parser.uint(for: "msg-param-months")
+    }
+  }
+
   public struct ViewerMilestoneInfo: Sendable {
     public var category: String
     public var id: String
