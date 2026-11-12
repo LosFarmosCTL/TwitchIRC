@@ -58,6 +58,8 @@ extension UserNotice.MessageID {
       return value
     case .viewerMilestone(let value):
       return value
+    case .unknown(let rawMessageId):
+      return rawMessageId
     case .sharedChatNotice(let sourceNotice):
       return sourceNotice as Any
     }

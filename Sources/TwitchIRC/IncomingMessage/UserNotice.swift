@@ -25,6 +25,8 @@ public struct UserNotice: MessageWithBadges {
   public var userLogin = String()
   /// More-precise info about this user notice.
   public var messageId: MessageID!
+  /// The notice's `msg-id` exactly as received, including recognized and unknown categories.
+  public var rawMessageId = String()
   /// Broadcaster's Twitch identifier.
   public var roomId = String()
   /// Shared Chat origin metadata; empty for notices without source tags.
@@ -65,19 +67,22 @@ public struct UserNotice: MessageWithBadges {
     }
 
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
-    let messageId = parser.optionalString(for: "msg-id")
+    guard let messageId = parser.optionalString(for: "msg-id"), !messageId.isEmpty else {
+      return nil
+    }
+    self.rawMessageId = messageId
     self.sourceMessageId = parser.string(for: "source-msg-id")
 
     let parsed = MessageID.parse(
       id: messageId == "sharedchatnotice" ? self.sourceMessageId : messageId,
       parser: &parser
     )
-    guard parsed != nil || messageId == "sharedchatnotice" else { return nil }
-    self.messageId = parsed?.messageId
     let occasionalSubDependentKeyGroups = parsed?.optionalKeyGroups ?? []
 
     if messageId == "sharedchatnotice" {
-      self.messageId = .sharedChatNotice(sourceNotice: self.messageId)
+      self.messageId = .sharedChatNotice(sourceNotice: parsed?.messageId)
+    } else {
+      self.messageId = parsed?.messageId ?? .unknown(rawMessageId: messageId)
     }
 
     self.badgeInfo = parser.array(for: "badge-info")

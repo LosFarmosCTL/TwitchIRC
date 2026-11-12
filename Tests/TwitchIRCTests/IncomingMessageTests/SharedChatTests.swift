@@ -74,6 +74,7 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "local-notice")
     XCTAssertEqual(userNotice.source.roomId, "12826")
     XCTAssertEqual(userNotice.source.id, "source-notice")
+    XCTAssertEqual(userNotice.rawMessageId, "sharedchatnotice")
     XCTAssertEqual(userNotice.sourceMessageId, "resub")
     XCTAssertEqual(userNotice.badges, ["staff/1"])
     XCTAssertEqual(userNotice.badgeInfo, [])
@@ -128,6 +129,7 @@ final class SharedChatTests: XCTestCase {
       return XCTFail("Expected a Shared Chat notice")
     }
     XCTAssertNil(sourceNotice)
+    XCTAssertEqual(userNotice.rawMessageId, "sharedchatnotice")
     XCTAssertEqual(userNotice.sourceMessageId, "future-notice")
     XCTAssertEqual(userNotice.channel, "twitchrivals")
     XCTAssertEqual(userNotice.roomId, "197886470")

@@ -19,6 +19,9 @@ extension UserNotice {
     case midnightSquid(MidnightSquidInfo)
     case charityDonation(CharityDonationInfo)
     case viewerMilestone(ViewerMilestoneInfo)
+    /// A notice category not yet recognized by this library.
+    /// Event-specific tags remain available in `UserNotice.parsingLeftOvers.unusedPairs`.
+    case unknown(rawMessageId: String)
     /// A forwarded notice. The source payload is nil when the source notice type is unrecognized.
     indirect case sharedChatNotice(sourceNotice: MessageID?)
   }
