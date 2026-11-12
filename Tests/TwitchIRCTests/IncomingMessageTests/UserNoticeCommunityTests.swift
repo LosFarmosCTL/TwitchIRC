@@ -47,7 +47,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.message, "HeyGuys")
     XCTAssertEqual(userNotice.badgeInfo, [])
     XCTAssertEqual(userNotice.badges, [])
-    XCTAssertEqual(userNotice.color, "")
+    XCTAssertNil(userNotice.color)
     XCTAssertEqual(userNotice.displayName, "SevenTest1")
     XCTAssertEqual(userNotice.emotes, "30259:0-6")
     XCTAssertEqual(userNotice.flags, [])

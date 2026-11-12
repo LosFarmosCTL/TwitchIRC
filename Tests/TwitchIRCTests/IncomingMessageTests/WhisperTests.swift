@@ -13,7 +13,7 @@ final class WhisperTests: XCTestCase {
     XCTAssertEqual(whisper.receiver, "royalealchemist")
     XCTAssertEqual(whisper.message, "hello sir")
     XCTAssertEqual(whisper.badges, [])
-    XCTAssertEqual(whisper.color, "")
+    XCTAssertNil(whisper.color)
     XCTAssertEqual(whisper.displayName, "drizzlepickles")
     XCTAssertEqual(whisper.emotes, "")
     XCTAssertEqual(whisper.messageId, "1")

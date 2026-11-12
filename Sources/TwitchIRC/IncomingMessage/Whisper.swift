@@ -7,15 +7,15 @@ public struct Whisper: MessageWithBadges {
   /// Sender's badges.
   public private(set) var badges = [String]()
   /// Sender's in-chat name color.
-  public private(set) var color = String()
+  public private(set) var color: String?
   /// Sender's display name with uppercased/Han characters.
   public private(set) var displayName = String()
   /// Sender's emotes.
   public private(set) var emotes = String()
   /// Message's identifier.
-  public private(set) var messageId = String()
+  public private(set) var messageId: String?
   /// This whisper-thread's identifier.
-  public private(set) var threadId = String()
+  public private(set) var threadId: String?
   /// Sender's Twitch identifier.
   public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
@@ -42,16 +42,17 @@ public struct Whisper: MessageWithBadges {
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
 
     self.badges = parser.array(for: "badges")
-    self.color = parser.string(for: "color")
+    self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emotes = parser.string(for: "emotes")
-    self.messageId = parser.string(for: "message-id")
-    self.threadId = parser.string(for: "thread-id")
+    self.messageId = parser.optionalNonEmptyString(for: "message-id")
+    self.threadId = parser.optionalNonEmptyString(for: "thread-id")
     self.userId = parser.string(for: "user-id")
 
     let deprecatedKeys = ["turbo", "user-type"]
     self.parsingLeftOvers = parser.getLeftOvers(
-      excludedUnusedKeys: deprecatedKeys
+      excludedUnusedKeys: deprecatedKeys,
+      excludedUnavailableKeys: ["color", "message-id", "thread-id"]
     )
   }
   /// Creates a message from its required fields and optional metadata.
@@ -59,11 +60,11 @@ public struct Whisper: MessageWithBadges {
     receiver: String,
     message: String,
     badges: [String] = [String](),
-    color: String = String(),
+    color: String? = nil,
     displayName: String = String(),
     emotes: String = String(),
-    messageId: String,
-    threadId: String,
+    messageId: String? = nil,
+    threadId: String? = nil,
     userId: String,
     parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {

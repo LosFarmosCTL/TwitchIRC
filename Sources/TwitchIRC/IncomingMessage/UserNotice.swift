@@ -10,11 +10,11 @@ public struct UserNotice: MessageWithBadges {
   /// User's badges.
   public private(set) var badges = [String]()
   /// User's in-chat name color.
-  public private(set) var color = String()
+  public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
   public private(set) var displayName = String()
-  /// User is VIP or not. Defaults to false when the unofficial `vip` tag is absent.
-  public private(set) var vip = Bool()
+  /// The unofficial VIP flag, or nil when absent. Prefer the badge-based `isVIP` property.
+  public private(set) var vip: Bool?
   /// User's sent emotes.
   public private(set) var emotes = String()
   /// Flags of this notice.
@@ -29,15 +29,15 @@ public struct UserNotice: MessageWithBadges {
   public private(set) var rawMessageId = String()
   /// Broadcaster's Twitch identifier.
   public private(set) var roomId = String()
-  /// Shared Chat origin metadata; empty for notices without source tags.
-  public private(set) var source = SharedChatSource()
+  /// Shared Chat origin metadata; nil for notices without source tags.
+  public private(set) var source: SharedChatSource?
   /// The raw `source-msg-id` notice category, including unknown categories.
   /// This is distinct from the source message's UUID in `source.id`.
-  public private(set) var sourceMessageId = String()
+  public private(set) var sourceMessageId: String?
   /// System's description of this message.
   public private(set) var systemMessage = String()
   /// The timestamp of the message.
-  public private(set) var tmiSentTs = UInt()
+  public private(set) var tmiSentTs: UInt?
   /// User's Twitch identifier.
   public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
@@ -69,7 +69,7 @@ public struct UserNotice: MessageWithBadges {
       return nil
     }
     self.rawMessageId = messageId
-    let sourceMessageId = parser.string(for: "source-msg-id")
+    let sourceMessageId = parser.optionalNonEmptyString(for: "source-msg-id")
     self.sourceMessageId = sourceMessageId
 
     let parsed = MessageID.parse(
@@ -84,23 +84,11 @@ public struct UserNotice: MessageWithBadges {
       self.messageId = parsed?.messageId ?? .unknown(rawMessageId: messageId)
     }
 
-    self.badgeInfo = parser.array(for: "badge-info")
-    self.badges = parser.array(for: "badges")
-    self.color = parser.string(for: "color")
-    self.displayName = parser.string(for: "display-name")
-    self.vip = parser.bool(for: "vip")
-    self.emotes = parser.string(for: "emotes")
-    self.flags = parser.array(for: "flags")
-    self.id = parser.string(for: "id")
-    self.userLogin = parser.string(for: "login")
-    self.roomId = parser.string(for: "room-id")
-    self.source = SharedChatSource(parser: &parser)
-    self.systemMessage = parser.string(for: "system-msg")
-    self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
-    self.userId = parser.string(for: "user-id")
+    parseCommonTags(&parser)
 
     let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-    let occasionalKeys: [[String]] = occasionalSubDependentKeyGroups + [["flags"], ["vip"]]
+    let occasionalKeys: [[String]] =
+      occasionalSubDependentKeyGroups + [["flags"], ["vip"], ["color"], ["tmi-sent-ts"]]
     self.parsingLeftOvers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       groupsOfExcludedUnavailableKeys: occasionalKeys + [
@@ -108,15 +96,33 @@ public struct UserNotice: MessageWithBadges {
       ]
     )
   }
+  private mutating func parseCommonTags(_ parser: inout ParametersParser) {
+    self.badgeInfo = parser.array(for: "badge-info")
+    self.badges = parser.array(for: "badges")
+    self.color = parser.optionalNonEmptyString(for: "color")
+    self.displayName = parser.string(for: "display-name")
+    self.vip = parser.optionalBool(for: "vip")
+    self.emotes = parser.string(for: "emotes")
+    self.flags = parser.array(for: "flags")
+    self.id = parser.string(for: "id")
+    self.userLogin = parser.string(for: "login")
+    self.roomId = parser.string(for: "room-id")
+    self.source = SharedChatSource(parser: &parser)
+    self.systemMessage = parser.string(for: "system-msg")
+    self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
+    self.userId = parser.string(for: "user-id")
+
+  }
+
   /// Creates a message from its required fields and optional metadata.
   public init(
     channel: String,
     message: String = String(),
     badgeInfo: [String] = [String](),
     badges: [String] = [String](),
-    color: String = String(),
+    color: String? = nil,
     displayName: String = String(),
-    vip: Bool = Bool(),
+    vip: Bool? = nil,
     emotes: String = String(),
     flags: [String] = [String](),
     id: String,
@@ -124,10 +130,10 @@ public struct UserNotice: MessageWithBadges {
     messageId: MessageID,
     rawMessageId: String,
     roomId: String,
-    source: SharedChatSource,
-    sourceMessageId: String = String(),
+    source: SharedChatSource? = nil,
+    sourceMessageId: String? = nil,
     systemMessage: String = String(),
-    tmiSentTs: UInt = UInt(),
+    tmiSentTs: UInt? = nil,
     userId: String,
     parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {

@@ -14,26 +14,26 @@ final class PrivateMessageRichContentTests: XCTestCase {
     XCTAssertEqual(msg.message, "will gift 5 subs as well if u clutch up")
     XCTAssertEqual(msg.badgeInfo, ["subscriber/8"])
     XCTAssertEqual(msg.badges, ["vip/1", "subscriber/6", "sub-gift-leader/1"])
-    XCTAssertEqual(msg.bits, "")
+    XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#00FF7F")
     XCTAssertEqual(msg.displayName, "r3born_9999")
     XCTAssertEqual(msg.userLogin, "r3born_9999")
     XCTAssertEqual(msg.emotes, "")
-    XCTAssertEqual(msg.emoteOnly, false)
+    XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertEqual(msg.messageId, "")
+    XCTAssertNil(msg.messageId)
     XCTAssertEqual(msg.id, "011c7c65-6bab-4a9c-973e-2e04154e3877")
-    XCTAssertEqual(msg.crowdChantParentMessageId, "")
-    XCTAssertEqual(msg.customRewardId, "")
+    XCTAssertNil(msg.crowdChantParentMessageId)
+    XCTAssertNil(msg.customRewardId)
     XCTAssertEqual(msg.roomId, "123721524")
     XCTAssertEqual(msg.tmiSentTs, 1_687_641_306_105)
-    XCTAssertEqual(msg.clientNonce, "")
+    XCTAssertNil(msg.clientNonce)
     XCTAssertEqual(msg.userId, "767491027")
-    XCTAssertTrue(msg.replyParent == .init())
+    XCTAssertNil(msg.replyParent)
     XCTAssertTrue(
-      msg.pinnedChat
+      try XCTUnwrap(msg.pinnedChat)
         == .init(
           amount: 100,
           canonicalAmount: 100,
@@ -41,7 +41,7 @@ final class PrivateMessageRichContentTests: XCTestCase {
           exponent: 2,
           isSystemMessage: false,
           level: "ONE"
-        ), "\(msg.pinnedChat)")
+        ), "\(String(describing: msg.pinnedChat))")
     XCTAssertTrue(
       msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
   }

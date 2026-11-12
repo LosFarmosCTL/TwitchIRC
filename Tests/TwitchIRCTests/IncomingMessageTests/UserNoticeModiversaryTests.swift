@@ -43,8 +43,8 @@ final class UserNoticeModiversaryTests: XCTestCase {
     XCTAssertEqual(notice.channel, "twitchrivals")
     XCTAssertEqual(notice.rawMessageId, "sharedchatnotice")
     XCTAssertEqual(notice.sourceMessageId, "modiversary")
-    XCTAssertEqual(notice.source.id, "origin-id")
-    XCTAssertEqual(notice.source.roomId, "141981764")
+    XCTAssertEqual(notice.source?.id, "origin-id")
+    XCTAssertEqual(notice.source?.roomId, "141981764")
     XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
   }
 

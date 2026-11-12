@@ -98,6 +98,19 @@ struct ParametersParser {
     self.unparsedKeys.append((pair: pair, type: String(describing: type)))
   }
 
+  func contains(prefix: String) -> Bool {
+    storage.contains { $0.element.key.hasPrefix(prefix) }
+  }
+
+  func contains(any keys: [String]) -> Bool {
+    storage.contains { keys.contains($0.element.key) }
+  }
+
+  mutating func optionalNonEmptyString(for key: String) -> String? {
+    guard let value = optionalString(for: key), !value.isEmpty else { return nil }
+    return value
+  }
+
   mutating func optionalString(for key: String) -> String? {
     if let stored = self.get(for: key) {
       return stored.element.value

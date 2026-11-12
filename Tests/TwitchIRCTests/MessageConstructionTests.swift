@@ -15,6 +15,17 @@ final class MessageConstructionTests: XCTestCase {
     XCTAssertEqual(channel, "target")
   }
 
+  func testMinimalPrivateMessageConstruction() {
+    let message = PrivateMessage(
+      channel: "channel", message: "Hello", userLogin: "viewer",
+      id: "message", roomId: "room", userId: "user")
+    XCTAssertNil(message.replyParent)
+    XCTAssertNil(message.replyThreadParent)
+    XCTAssertNil(message.pinnedChat)
+    XCTAssertNil(message.source)
+    XCTAssertNil(message.tmiSentTs)
+  }
+
   func testPublicUserNoticeConstruction() {
     let notice = UserNotice(
       channel: "channel", id: "message", userLogin: "moderator",

@@ -14,24 +14,24 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.message, "@jay_999666 !gcs")
     XCTAssertEqual(msg.badgeInfo, [])
     XCTAssertEqual(msg.badges, ["moderator/1"])
-    XCTAssertEqual(msg.bits, "")
+    XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#1E90FF")
     XCTAssertEqual(msg.displayName, "MahdiMMBM")
     XCTAssertEqual(msg.userLogin, "mahdimmbm")
     XCTAssertEqual(msg.emotes, "")
-    XCTAssertEqual(msg.emoteOnly, false)
+    XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
-    XCTAssertEqual(msg.messageId, "")
+    XCTAssertNil(msg.messageId)
     XCTAssertEqual(msg.id, "7fd9a2fa-d537-4a31-b847-7e081c4c088d")
-    XCTAssertEqual(msg.crowdChantParentMessageId, "")
-    XCTAssertEqual(msg.customRewardId, "")
+    XCTAssertNil(msg.crowdChantParentMessageId)
+    XCTAssertNil(msg.customRewardId)
     XCTAssertEqual(msg.roomId, "751562865")
     XCTAssertEqual(msg.tmiSentTs, 1_642_084_941_607)
     XCTAssertEqual(msg.clientNonce, "00e8c3279eebbb43ad80273324e10d28")
     XCTAssertEqual(msg.userId, "519827148")
     XCTAssertTrue(
-      msg.replyParent
+      try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "jay_999666",
           userLogin: "jay_999666",
@@ -40,7 +40,7 @@ final class PrivateMessageReplyTests: XCTestCase {
           userId: "621834053"
         ))
 
-    XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+    XCTAssertTrue(msg.parsingLeftOvers.unavailableKeys.isEmpty)
     XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
     XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
   }
@@ -55,25 +55,25 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.message, "@RoyaleAlchemist whoAsked")
     XCTAssertEqual(msg.badgeInfo, ["predictions/Pompeyo"])
     XCTAssertEqual(msg.badges, ["predictions/blue-1", "premium/1"])
-    XCTAssertEqual(msg.bits, "")
+    XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#FFF200")
     XCTAssertEqual(msg.displayName, "fladhi")
     XCTAssertEqual(msg.userLogin, "fladhi")
     XCTAssertEqual(msg.emotes, "")
-    XCTAssertEqual(msg.emoteOnly, false)
+    XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertEqual(msg.messageId, "")
+    XCTAssertNil(msg.messageId)
     XCTAssertEqual(msg.id, "c96d75f7-6fe0-41d0-bd27-80643426613c")
-    XCTAssertEqual(msg.crowdChantParentMessageId, "")
-    XCTAssertEqual(msg.customRewardId, "")
+    XCTAssertNil(msg.crowdChantParentMessageId)
+    XCTAssertNil(msg.customRewardId)
     XCTAssertEqual(msg.roomId, "118220323")
     XCTAssertEqual(msg.tmiSentTs, 1_687_334_511_793)
     XCTAssertEqual(msg.clientNonce, "c5639d11fdac91cad488f52a0c0a927a")
     XCTAssertEqual(msg.userId, "686358047")
     XCTAssertTrue(
-      msg.replyParent
+      try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "RoyaleAlchemist", userLogin: "royalealchemist",
           message:
@@ -81,11 +81,11 @@ final class PrivateMessageReplyTests: XCTestCase {
           id: "0e772349-8bcd-42cb-9c91-1c9eece83af8", userId: "684111155")
     )
     XCTAssertTrue(
-      msg.replyThreadParent
+      try XCTUnwrap(msg.replyThreadParent)
         == .init(
           userLogin: "royalealchemist", messageId: "0e772349-8bcd-42cb-9c91-1c9eece83af8",
           displayName: "", userId: ""))
-    XCTAssertTrue(msg.pinnedChat == .init())
+    XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
       msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
   }
@@ -100,36 +100,37 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.message, "@PF_josegamer es la mezcla de veracruz y nueva york xd")
     XCTAssertEqual(msg.badgeInfo, [])
     XCTAssertEqual(msg.badges, ["rplace-2023/1"])
-    XCTAssertEqual(msg.bits, "")
+    XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#FF0000")
     XCTAssertEqual(msg.displayName, "SoyWasha")
     XCTAssertEqual(msg.userLogin, "soywasha")
     XCTAssertEqual(msg.emotes, "")
-    XCTAssertEqual(msg.emoteOnly, false)
+    XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertEqual(msg.messageId, "")
+    XCTAssertNil(msg.messageId)
     XCTAssertEqual(msg.id, "6cdf9fed-253e-4b16-9878-dd69719a867f")
-    XCTAssertEqual(msg.crowdChantParentMessageId, "")
-    XCTAssertEqual(msg.customRewardId, "")
+    XCTAssertNil(msg.crowdChantParentMessageId)
+    XCTAssertNil(msg.customRewardId)
     XCTAssertEqual(msg.roomId, "204708397")
     XCTAssertEqual(msg.tmiSentTs, 1_699_075_686_188)
     XCTAssertEqual(msg.clientNonce, "115b634f5401db203a9b2d920d51a2a1")
     XCTAssertEqual(msg.userId, "708631959")
     XCTAssertTrue(
-      msg.replyParent
+      try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
           message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
-          userId: "545021421"), "\(msg.replyParent)"
+          userId: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(
-      msg.replyThreadParent
+      try XCTUnwrap(msg.replyThreadParent)
         == .init(
           userLogin: "pf_josegamer", messageId: "b6543543-798c-4260-a84e-5495af2b1c32",
-          displayName: "PF_josegamer", userId: "545021421"), "\(msg.replyThreadParent)")
-    XCTAssertTrue(msg.pinnedChat == .init())
+          displayName: "PF_josegamer", userId: "545021421"),
+      "\(String(describing: msg.replyThreadParent))")
+    XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
       msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
   }
@@ -144,36 +145,37 @@ final class PrivateMessageReplyTests: XCTestCase {
     XCTAssertEqual(msg.message, "@PF_josegamer es la mezcla de veracruz y nueva york xd")
     XCTAssertEqual(msg.badgeInfo, [])
     XCTAssertEqual(msg.badges, ["rplace-2023/1"])
-    XCTAssertEqual(msg.bits, "")
+    XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#FF0000")
     XCTAssertEqual(msg.displayName, "SoyWasha")
     XCTAssertEqual(msg.userLogin, "soywasha")
     XCTAssertEqual(msg.emotes, "")
-    XCTAssertEqual(msg.emoteOnly, false)
+    XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
     XCTAssertEqual(msg.returningChatter, false)
-    XCTAssertEqual(msg.messageId, "")
+    XCTAssertNil(msg.messageId)
     XCTAssertEqual(msg.id, "6cdf9fed-253e-4b16-9878-dd69719a867f")
-    XCTAssertEqual(msg.crowdChantParentMessageId, "")
-    XCTAssertEqual(msg.customRewardId, "")
+    XCTAssertNil(msg.crowdChantParentMessageId)
+    XCTAssertNil(msg.customRewardId)
     XCTAssertEqual(msg.roomId, "204708397")
     XCTAssertEqual(msg.tmiSentTs, 1_699_075_686_188)
     XCTAssertEqual(msg.clientNonce, "115b634f5401db203a9b2d920d51a2a1")
     XCTAssertEqual(msg.userId, "708631959")
     XCTAssertTrue(
-      msg.replyParent
+      try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
           message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
-          userId: "545021421"), "\(msg.replyParent)"
+          userId: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(
-      msg.replyThreadParent
+      try XCTUnwrap(msg.replyThreadParent)
         == .init(
           userLogin: "pf_josegamer", messageId: "b6543543-798c-4260-a84e-5495af2b1c32",
-          displayName: "PF_josegamer", userId: "545021421"), "\(msg.replyThreadParent)")
-    XCTAssertTrue(msg.pinnedChat == .init())
+          displayName: "PF_josegamer", userId: "545021421"),
+      "\(String(describing: msg.replyThreadParent))")
+    XCTAssertNil(msg.pinnedChat)
     XCTAssertTrue(
       msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
   }

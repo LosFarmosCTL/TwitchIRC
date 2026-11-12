@@ -29,7 +29,7 @@ final class RoomStateTests: XCTestCase {
     XCTAssertEqual(roomState.roomId, "324")
     XCTAssertEqual(roomState.slow, 10)
     XCTAssertEqual(roomState.subsOnly, true)
-    XCTAssertEqual(roomState.rituals, false)
+    XCTAssertNil(roomState.rituals)
     XCTAssertTrue(
       roomState.parsingLeftOvers.isEmpty,
       "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
@@ -50,7 +50,7 @@ final class RoomStateTests: XCTestCase {
     XCTAssertEqual(roomState.roomId, "324")
     XCTAssertEqual(roomState.slow, 10)
     XCTAssertEqual(roomState.subsOnly, true)
-    XCTAssertEqual(roomState.rituals, false)
+    XCTAssertNil(roomState.rituals)
     XCTAssertTrue(
       roomState.parsingLeftOvers.isEmpty,
       "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")

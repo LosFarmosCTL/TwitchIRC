@@ -25,11 +25,8 @@ final class UserNoticeSubscriptionTests: XCTestCase {
     XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
     XCTAssertEqual(userNotice.tmiSentTs, 1_507_246_572_675)
     XCTAssertEqual(userNotice.userId, "1337")
-    XCTAssertEqual(userNotice.sourceMessageId, "")
-    XCTAssertEqual(userNotice.source.id, "")
-    XCTAssertEqual(userNotice.source.roomId, "")
-    XCTAssertEqual(userNotice.source.badges, [])
-    XCTAssertEqual(userNotice.source.badgeInfo, [])
+    XCTAssertNil(userNotice.sourceMessageId)
+    XCTAssertNil(userNotice.source)
     XCTAssertTrue(
       userNotice.parsingLeftOvers.isEmpty,
       "Non-empty parsing left-overs: \(userNotice.parsingLeftOvers)")

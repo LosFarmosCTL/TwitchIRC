@@ -16,7 +16,7 @@ final class UserNoticeViewerMilestoneTests: XCTestCase {
     XCTAssertEqual(info.id, "a872953b-606f-410a-9970-c95b744f116c")
     XCTAssertEqual(info.value, 3)
     XCTAssertNil(info.copoReward)
-    XCTAssertFalse(notice.vip)
+    XCTAssertNil(notice.vip)
     XCTAssertTrue(notice.parsingLeftOvers.isEmpty, "\(notice.parsingLeftOvers)")
   }
 
@@ -40,7 +40,7 @@ final class UserNoticeViewerMilestoneTests: XCTestCase {
         return XCTFail("Expected a viewer milestone payload")
       }
       XCTAssertNil(info.copoReward)
-      XCTAssertFalse(notice.vip)
+      XCTAssertNil(notice.vip)
       XCTAssertTrue(notice.parsingLeftOvers.unavailableKeys.isEmpty)
       XCTAssertTrue(notice.parsingLeftOvers.unusedPairs.isEmpty)
       XCTAssertEqual(

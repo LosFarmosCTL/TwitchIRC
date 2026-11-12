@@ -8,13 +8,13 @@ public struct UserState: MessageWithBadges {
   /// User's badges.
   public private(set) var badges = [String]()
   /// User's in-chat name color.
-  public private(set) var color = String()
+  public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
   public private(set) var displayName = String()
   /// User's emote sets.
   public private(set) var emoteSets = [String]()
   /// The ID of this user state message.
-  public private(set) var id = String()
+  public private(set) var id: String?
   /// The nonce sent by client in the PRIVMSG.
   public private(set) var clientNonce: String?
   /// Contains info about unused info and parsing problems.
@@ -32,14 +32,14 @@ public struct UserState: MessageWithBadges {
 
     self.badgeInfo = parser.array(for: "badge-info")
     self.badges = parser.array(for: "badges")
-    self.color = parser.string(for: "color")
+    self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emoteSets = parser.array(for: "emote-sets")
     self.clientNonce = parser.optionalString(for: "client-nonce")
-    self.id = parser.string(for: "id")
+    self.id = parser.optionalNonEmptyString(for: "id")
 
     let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-    let sometimesUnavailableKeys = ["id", "client-nonce"]
+    let sometimesUnavailableKeys = ["id", "client-nonce", "color"]
     self.parsingLeftOvers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       excludedUnavailableKeys: sometimesUnavailableKeys
@@ -50,10 +50,10 @@ public struct UserState: MessageWithBadges {
     channel: String,
     badgeInfo: [String] = [String](),
     badges: [String] = [String](),
-    color: String = String(),
+    color: String? = nil,
     displayName: String = String(),
     emoteSets: [String] = [String](),
-    id: String = String(),
+    id: String? = nil,
     clientNonce: String? = nil,
     parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {

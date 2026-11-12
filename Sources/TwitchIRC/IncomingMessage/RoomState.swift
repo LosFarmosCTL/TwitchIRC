@@ -16,7 +16,7 @@ public struct RoomState {
   /// Whether or not normal viewers need to be a sub to chat.
   public private(set) var subsOnly: Bool?
   /// A flag for when you enter a channel and Twitch encourages you to send an emote.
-  public private(set) var rituals = Bool()
+  public private(set) var rituals: Bool?
   /// Contains info about unused info and parsing problems.
   public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
@@ -36,7 +36,7 @@ public struct RoomState {
     self.roomId = parser.string(for: "room-id")
     self.slow = parser.optionalUInt(for: "slow")
     self.subsOnly = parser.optionalBool(for: "subs-only")
-    self.rituals = parser.bool(for: "rituals")
+    self.rituals = parser.optionalBool(for: "rituals")
 
     let occasionalKeys = ["emote-only", "r9k", "slow", "subs-only", "rituals", "followers-only"]
     self.parsingLeftOvers = parser.getLeftOvers(
@@ -52,7 +52,7 @@ public struct RoomState {
     roomId: String,
     slow: UInt? = nil,
     subsOnly: Bool? = nil,
-    rituals: Bool = Bool(),
+    rituals: Bool? = nil,
     parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {
     self.channel = channel

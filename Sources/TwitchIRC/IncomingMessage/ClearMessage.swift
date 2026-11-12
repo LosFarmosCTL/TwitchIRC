@@ -12,7 +12,7 @@ public struct ClearMessage {
   /// Broadcaster's Twitch identifier.
   public private(set) var roomId = String()
   /// Timestamp of this message.
-  public private(set) var tmiSentTs = UInt()
+  public private(set) var tmiSentTs: UInt?
   /// Contains info about unused info and parsing problems.
   public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
@@ -42,9 +42,9 @@ public struct ClearMessage {
     self.userLogin = parser.string(for: "login")
     self.targetMessageId = parser.string(for: "target-msg-id")
     self.roomId = parser.string(for: "room-id")
-    self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
+    self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
 
-    self.parsingLeftOvers = parser.getLeftOvers()
+    self.parsingLeftOvers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
   }
   /// Creates a message from its required fields and optional metadata.
   public init(
@@ -53,7 +53,7 @@ public struct ClearMessage {
     userLogin: String,
     targetMessageId: String,
     roomId: String,
-    tmiSentTs: UInt = UInt(),
+    tmiSentTs: UInt? = nil,
     parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {
     self.channel = channel
