@@ -1,13 +1,14 @@
-@testable import TwitchIRC
 import XCTest
 
+@testable import TwitchIRC
+
 final class PartTests: XCTestCase {
-    
-    func testParsedValues1() throws {
-        let string = ":ronni!ronni@ronni.tmi.twitch.tv PART #dallas"
-        let part: Part = try TestUtils.parseAndUnwrap(string: string)
-        
-        XCTAssertEqual(part.channel, "dallas")
-        XCTAssertEqual(part.userLogin, "ronni")
-    }
+
+  func testParsedValues1() throws {
+    let string = ":ronni!ronni@ronni.tmi.twitch.tv PART #dallas"
+    let part: Part = try TestUtils.parseAndUnwrap(string: string)
+
+    XCTAssertEqual(part.channel, "dallas")
+    XCTAssertEqual(part.userLogin, "ronni")
+  }
 }

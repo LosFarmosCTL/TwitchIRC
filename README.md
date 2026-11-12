@@ -1,6 +1,6 @@
 # TwitchIRC
 
-[![Build Status](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/tests.yml/badge.svg)](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/tests.yml)
+[![Build Status](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml/badge.svg)](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml)
  
 A dependancy-free Swift package that takes care of parsing and serializing Twitch IRC messages.
 

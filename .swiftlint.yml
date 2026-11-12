@@ -1,0 +1,26 @@
+disabled_rules:
+  - trailing_comma
+  - opening_brace
+  - closure_parameter_position
+  - todo
+  - large_tuple
+
+excluded:
+  - .build
+
+line_length:
+  excluded_lines_patterns:
+    # Keep complete IRC fixtures and other string literals intact.
+    - '^\s*#*".*"#*,?\s*$'
+    # DocC link destinations cannot be split; keep all surrounding prose wrapped.
+    - '^\s*/// https://\S+$'
+
+nesting:
+  type_level:
+    warning: 2
+
+identifier_name:
+  # Preserve SwiftLint's default `id` allowance and natural enum labels like `.join(to:)`.
+  excluded:
+    - '^id$'
+    - '^to$'

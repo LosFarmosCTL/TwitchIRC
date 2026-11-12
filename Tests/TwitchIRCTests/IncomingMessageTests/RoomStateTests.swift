@@ -1,51 +1,58 @@
-@testable import TwitchIRC
 import XCTest
+
+@testable import TwitchIRC
 
 final class RoomStateTests: XCTestCase {
 
-    func testPartialUpdatePreservesOmittedSettings() throws {
-        let state: RoomState = try TestUtils.parseAndUnwrap(
-            string: "@room-id=324;slow=0 :tmi.twitch.tv ROOMSTATE #dallas"
-        )
-        XCTAssertEqual(state.slow, 0)
-        XCTAssertNil(state.emoteOnly)
-        XCTAssertNil(state.followersOnly)
-        XCTAssertNil(state.r9k)
-        XCTAssertNil(state.subsOnly)
-        XCTAssertTrue(state.parsingLeftOvers.isEmpty)
-    }
-    
-    func testParsedValues1() throws {
-        let string = "@emote-only=1;followers-only=-1;r9k=1;slow=10;subs-only=1;room-id=324 :tmi.twitch.tv ROOMSTATE #dallas"
-        
-        let roomState: RoomState = try TestUtils.parseAndUnwrap(string: string)
-        
-        XCTAssertEqual(roomState.channel, "dallas")
-        XCTAssertEqual(roomState.emoteOnly, true)
-        XCTAssertEqual(roomState.followersOnly, -1)
-        XCTAssertEqual(roomState.r9k, true)
-        XCTAssertEqual(roomState.roomId, "324")
-        XCTAssertEqual(roomState.slow, 10)
-        XCTAssertEqual(roomState.subsOnly, true)
-        XCTAssertEqual(roomState.rituals, false)
-        XCTAssertTrue(roomState.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
-    }
-    
-    /// Test independency from the sequence `@emote-only`.
-    /// Parsing shouldn't count on `@` always being behind `emote-only`.
-    func testParsedValues2() throws {
-        let string = "@followers-only=10;emote-only=1;r9k=1;slow=10;subs-only=1;room-id=324 :tmi.twitch.tv ROOMSTATE #dallas"
-        
-        let roomState: RoomState = try TestUtils.parseAndUnwrap(string: string)
-        
-        XCTAssertEqual(roomState.channel, "dallas")
-        XCTAssertEqual(roomState.emoteOnly, true)
-        XCTAssertEqual(roomState.followersOnly, 10)
-        XCTAssertEqual(roomState.r9k, true)
-        XCTAssertEqual(roomState.roomId, "324")
-        XCTAssertEqual(roomState.slow, 10)
-        XCTAssertEqual(roomState.subsOnly, true)
-        XCTAssertEqual(roomState.rituals, false)
-        XCTAssertTrue(roomState.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
-    }
+  func testPartialUpdatePreservesOmittedSettings() throws {
+    let state: RoomState = try TestUtils.parseAndUnwrap(
+      string: "@room-id=324;slow=0 :tmi.twitch.tv ROOMSTATE #dallas"
+    )
+    XCTAssertEqual(state.slow, 0)
+    XCTAssertNil(state.emoteOnly)
+    XCTAssertNil(state.followersOnly)
+    XCTAssertNil(state.r9k)
+    XCTAssertNil(state.subsOnly)
+    XCTAssertTrue(state.parsingLeftOvers.isEmpty)
+  }
+
+  func testParsedValues1() throws {
+    let string =
+      "@emote-only=1;followers-only=-1;r9k=1;slow=10;subs-only=1;room-id=324 :tmi.twitch.tv ROOMSTATE #dallas"
+
+    let roomState: RoomState = try TestUtils.parseAndUnwrap(string: string)
+
+    XCTAssertEqual(roomState.channel, "dallas")
+    XCTAssertEqual(roomState.emoteOnly, true)
+    XCTAssertEqual(roomState.followersOnly, -1)
+    XCTAssertEqual(roomState.r9k, true)
+    XCTAssertEqual(roomState.roomId, "324")
+    XCTAssertEqual(roomState.slow, 10)
+    XCTAssertEqual(roomState.subsOnly, true)
+    XCTAssertEqual(roomState.rituals, false)
+    XCTAssertTrue(
+      roomState.parsingLeftOvers.isEmpty,
+      "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
+  }
+
+  /// Test independency from the sequence `@emote-only`.
+  /// Parsing shouldn't count on `@` always being behind `emote-only`.
+  func testParsedValues2() throws {
+    let string =
+      "@followers-only=10;emote-only=1;r9k=1;slow=10;subs-only=1;room-id=324 :tmi.twitch.tv ROOMSTATE #dallas"
+
+    let roomState: RoomState = try TestUtils.parseAndUnwrap(string: string)
+
+    XCTAssertEqual(roomState.channel, "dallas")
+    XCTAssertEqual(roomState.emoteOnly, true)
+    XCTAssertEqual(roomState.followersOnly, 10)
+    XCTAssertEqual(roomState.r9k, true)
+    XCTAssertEqual(roomState.roomId, "324")
+    XCTAssertEqual(roomState.slow, 10)
+    XCTAssertEqual(roomState.subsOnly, true)
+    XCTAssertEqual(roomState.rituals, false)
+    XCTAssertTrue(
+      roomState.parsingLeftOvers.isEmpty,
+      "Non-empty parsing left-overs: \(roomState.parsingLeftOvers)")
+  }
 }
