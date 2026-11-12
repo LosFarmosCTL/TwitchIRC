@@ -13,7 +13,7 @@ public struct UserNotice: MessageWithBadges {
   public var color = String()
   /// User's display name with uppercased/Han characters.
   public var displayName = String()
-  /// User is VIP or not.
+  /// User is VIP or not. Defaults to false when the unofficial `vip` tag is absent.
   public var vip = Bool()
   /// User's sent emotes.
   public var emotes = String()
@@ -101,7 +101,7 @@ public struct UserNotice: MessageWithBadges {
     self.userId = parser.string(for: "user-id")
 
     let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-    let occasionalKeys: [[String]] = occasionalSubDependentKeyGroups + [["flags"]]
+    let occasionalKeys: [[String]] = occasionalSubDependentKeyGroups + [["flags"], ["vip"]]
     self.parsingLeftOvers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys,
       groupsOfExcludedUnavailableKeys: occasionalKeys + [

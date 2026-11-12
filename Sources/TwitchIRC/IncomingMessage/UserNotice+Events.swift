@@ -96,13 +96,15 @@ extension UserNotice.MessageID {
     public var category: String
     public var id: String
     public var value: UInt
-    public var copoReward: UInt
+    /// Channel Points awarded for this milestone, when supplied.
+    /// The `msg-param-copoReward` tag is unofficial and may be absent.
+    public var copoReward: UInt?
 
     internal init(
       category: String,
       id: String,
       value: UInt,
-      copoReward: UInt
+      copoReward: UInt?
     ) {
       self.category = category
       self.id = id
@@ -115,7 +117,7 @@ extension UserNotice.MessageID {
         category: String(),
         id: String(),
         value: UInt(),
-        copoReward: UInt()
+        copoReward: nil
       )
     }
     init(parser: inout ParametersParser) {
@@ -123,7 +125,7 @@ extension UserNotice.MessageID {
         category: parser.string(for: "msg-param-category"),
         id: parser.string(for: "msg-param-id"),
         value: parser.uint(for: "msg-param-value"),
-        copoReward: parser.uint(for: "msg-param-copoReward")
+        copoReward: parser.optionalUInt(for: "msg-param-copoReward")
       )
     }
   }
@@ -139,5 +141,5 @@ extension UserNotice.MessageID.CharityDonationInfo {
 }
 
 extension UserNotice.MessageID.ViewerMilestoneInfo {
-  static let optionalKeyGroups: [[String]] = []
+  static let optionalKeyGroups: [[String]] = [["msg-param-copoReward"]]
 }
