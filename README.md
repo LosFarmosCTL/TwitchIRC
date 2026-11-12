@@ -1,6 +1,6 @@
 # TwitchIRC
 
-[![Build Status](https://github.com/MahdiBM/TwitchIRC/actions/workflows/tests.yml/badge.svg)](https://github.com/MahdiBM/TwitchIRC/actions/workflows/tests.yml)
+[![Build Status](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/tests.yml/badge.svg)](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/tests.yml)
  
 A dependancy-free Swift package that takes care of parsing and serializing Twitch IRC messages.
 
@@ -60,6 +60,8 @@ Some of the deprecated keys are `subscriber`, `mod` or `user-type`. You need to 
 I'm personally actively looking for any non-parsed info using the `parsingLeftOvers` property that some message types have, and will update the package with the new info as soon as I catch them.
 
 ## How To Add TwitchIRC To Your Project
+
+Requires Swift 6.4 or later. The package uses Swift 6 language mode with strict concurrency checking.
 
 To use the `TwitchIRC` library in a SwiftPM project, 
 add the following line to the dependencies in your `Package.swift` file:
