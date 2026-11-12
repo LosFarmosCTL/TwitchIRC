@@ -26,13 +26,11 @@ public struct Notice {
   }
 
   /// The notice's kind. Also contains the related info.
-  public var kind: Kind!
+  public private(set) var kind: Kind
   /// The local notice identifier exactly as received, including underscores.
-  public var rawMessageId: String?
+  public private(set) var rawMessageId: String?
   /// Timestamp in milliseconds since the Unix epoch, when supplied.
-  public var tmiSentTs: UInt?
-
-  public init() {}
+  public private(set) var tmiSentTs: UInt?
 
   init?(contentLhs: String, contentRhs: String) {
     if contentLhs.hasPrefix("@"),
@@ -67,6 +65,16 @@ public struct Notice {
     } else {
       return nil
     }
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    kind: Kind,
+    rawMessageId: String? = nil,
+    tmiSentTs: UInt? = nil
+  ) {
+    self.kind = kind
+    self.rawMessageId = rawMessageId
+    self.tmiSentTs = tmiSentTs
   }
 }
 

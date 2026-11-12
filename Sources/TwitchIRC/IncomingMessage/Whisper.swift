@@ -1,31 +1,31 @@
 public struct Whisper: MessageWithBadges {
 
   /// The receiver of this whisper. All lowercased.
-  public var receiver = String()
+  public private(set) var receiver = String()
   /// The message sent.
-  public var message = String()
+  public private(set) var message = String()
   /// Sender's badges.
-  public var badges = [String]()
+  public private(set) var badges = [String]()
   /// Sender's in-chat name color.
-  public var color = String()
+  public private(set) var color = String()
   /// Sender's display name with uppercased/Han characters.
-  public var displayName = String()
+  public private(set) var displayName = String()
   /// Sender's emotes.
-  public var emotes = String()
+  public private(set) var emotes = String()
   /// Message's identifier.
-  public var messageId = String()
+  public private(set) var messageId = String()
   /// This whisper-thread's identifier.
-  public var threadId = String()
+  public private(set) var threadId = String()
   /// Sender's Twitch identifier.
-  public var userId = String()
+  public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
-  public var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
   public func parseEmotes() -> [Emote] {
     Emote.parse(from: emotes, and: message)
   }
 
-  public init() {}
+  internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard let (receiver, message) = contentRhs.componentsOneSplit(separatedBy: " ") else {
@@ -53,6 +53,30 @@ public struct Whisper: MessageWithBadges {
     self.parsingLeftOvers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys
     )
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    receiver: String,
+    message: String,
+    badges: [String] = [String](),
+    color: String = String(),
+    displayName: String = String(),
+    emotes: String = String(),
+    messageId: String,
+    threadId: String,
+    userId: String,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+  ) {
+    self.receiver = receiver
+    self.message = message
+    self.badges = badges
+    self.color = color
+    self.displayName = displayName
+    self.emotes = emotes
+    self.messageId = messageId
+    self.threadId = threadId
+    self.userId = userId
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 

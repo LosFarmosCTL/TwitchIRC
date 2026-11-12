@@ -1,18 +1,18 @@
 public struct Emote {
   /// The emote ID used in Twitch's API
-  public var id = String()
+  public private(set) var id = String()
   /// The emote name, which is the text used to represent the emote in a message
-  public var name = String()
+  public private(set) var name = String()
   /// The index in the message at which the emote starts
-  public var startIndex = Int()
+  public private(set) var startIndex = Int()
   /// The index in the message at which the emote ends
-  public var endIndex = Int()
+  public private(set) var endIndex = Int()
   /// Whether this is an animated emote
   public var isAnimated: Bool {
     id.hasPrefix("emotesv2_")
   }
 
-  public init() {}
+  internal init() {}
 
   init(
     id: String,

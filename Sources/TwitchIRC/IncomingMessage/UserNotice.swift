@@ -2,52 +2,50 @@
 public struct UserNotice: MessageWithBadges {
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// Possible message sent by user.
-  public var message = String()
+  public private(set) var message = String()
   /// User's badge info.
-  public var badgeInfo = [String]()
+  public private(set) var badgeInfo = [String]()
   /// User's badges.
-  public var badges = [String]()
+  public private(set) var badges = [String]()
   /// User's in-chat name color.
-  public var color = String()
+  public private(set) var color = String()
   /// User's display name with uppercased/Han characters.
-  public var displayName = String()
+  public private(set) var displayName = String()
   /// User is VIP or not. Defaults to false when the unofficial `vip` tag is absent.
-  public var vip = Bool()
+  public private(set) var vip = Bool()
   /// User's sent emotes.
-  public var emotes = String()
+  public private(set) var emotes = String()
   /// Flags of this notice.
-  public var flags = [String]()
+  public private(set) var flags = [String]()
   /// Message's id.
-  public var id = String()
+  public private(set) var id = String()
   /// User's name with no uppercased/Han characters.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
   /// More-precise info about this user notice.
-  public var messageId: MessageID!
+  public private(set) var messageId: MessageID
   /// The notice's `msg-id` exactly as received, including recognized and unknown categories.
-  public var rawMessageId = String()
+  public private(set) var rawMessageId = String()
   /// Broadcaster's Twitch identifier.
-  public var roomId = String()
+  public private(set) var roomId = String()
   /// Shared Chat origin metadata; empty for notices without source tags.
-  public var source = SharedChatSource()
+  public private(set) var source = SharedChatSource()
   /// The raw `source-msg-id` notice category, including unknown categories.
   /// This is distinct from the source message's UUID in `source.id`.
-  public var sourceMessageId = String()
+  public private(set) var sourceMessageId = String()
   /// System's description of this message.
-  public var systemMessage = String()
+  public private(set) var systemMessage = String()
   /// The timestamp of the message.
-  public var tmiSentTs = UInt()
+  public private(set) var tmiSentTs = UInt()
   /// User's Twitch identifier.
-  public var userId = String()
+  public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
-  public var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
   public func parseEmotes() -> [Emote] {
     Emote.parse(from: emotes, and: message)
   }
-
-  public init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard contentRhs.first == "#", contentLhs.count > 2 else {
@@ -71,10 +69,11 @@ public struct UserNotice: MessageWithBadges {
       return nil
     }
     self.rawMessageId = messageId
-    self.sourceMessageId = parser.string(for: "source-msg-id")
+    let sourceMessageId = parser.string(for: "source-msg-id")
+    self.sourceMessageId = sourceMessageId
 
     let parsed = MessageID.parse(
-      id: messageId == "sharedchatnotice" ? self.sourceMessageId : messageId,
+      id: messageId == "sharedchatnotice" ? sourceMessageId : messageId,
       parser: &parser
     )
     let occasionalSubDependentKeyGroups = parsed?.optionalKeyGroups ?? []
@@ -108,6 +107,50 @@ public struct UserNotice: MessageWithBadges {
         SharedChatSource.tagKeys, ["source-msg-id"],
       ]
     )
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    message: String = String(),
+    badgeInfo: [String] = [String](),
+    badges: [String] = [String](),
+    color: String = String(),
+    displayName: String = String(),
+    vip: Bool = Bool(),
+    emotes: String = String(),
+    flags: [String] = [String](),
+    id: String,
+    userLogin: String,
+    messageId: MessageID,
+    rawMessageId: String,
+    roomId: String,
+    source: SharedChatSource,
+    sourceMessageId: String = String(),
+    systemMessage: String = String(),
+    tmiSentTs: UInt = UInt(),
+    userId: String,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+  ) {
+    self.channel = channel
+    self.message = message
+    self.badgeInfo = badgeInfo
+    self.badges = badges
+    self.color = color
+    self.displayName = displayName
+    self.vip = vip
+    self.emotes = emotes
+    self.flags = flags
+    self.id = id
+    self.userLogin = userLogin
+    self.messageId = messageId
+    self.rawMessageId = rawMessageId
+    self.roomId = roomId
+    self.source = source
+    self.sourceMessageId = sourceMessageId
+    self.systemMessage = systemMessage
+    self.tmiSentTs = tmiSentTs
+    self.userId = userId
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 

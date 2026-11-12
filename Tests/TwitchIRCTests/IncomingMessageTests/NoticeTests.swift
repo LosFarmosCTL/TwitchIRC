@@ -29,7 +29,7 @@ final class NoticeTests: XCTestCase {
       XCTAssertEqual(channel, "dallas")
       XCTAssertEqual(messageId, .slowOff)
     default:
-      XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind!)")
+      XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind)")
     }
   }
 
@@ -45,7 +45,7 @@ final class NoticeTests: XCTestCase {
       XCTAssertEqual(channel, "simonpetrik")
       XCTAssertEqual(messageId, .followersOnZero)
     default:
-      XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind!)")
+      XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind)")
     }
   }
 
@@ -104,7 +104,7 @@ final class NoticeTests: XCTestCase {
     case .global(let message):
       XCTAssertEqual(message, "Login authentication failed")
     default:
-      XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind!)")
+      XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind)")
     }
   }
 
@@ -116,7 +116,7 @@ final class NoticeTests: XCTestCase {
     case .global(let message):
       XCTAssertEqual(message, "Login unsuccessful")
     default:
-      XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind!)")
+      XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind)")
     }
   }
 }

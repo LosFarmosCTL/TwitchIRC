@@ -1,12 +1,12 @@
 extension UserNotice.MessageID {
   public struct PrimePaidUpgradeInfo: Sendable {
-    public var subPlan: SubPlan?
+    public private(set) var subPlan: SubPlan?
 
-    internal init(subPlan: SubPlan?) {
+    public init(subPlan: SubPlan?) {
       self.subPlan = subPlan
     }
 
-    public init() {
+    internal init() {
       self.subPlan = nil
     }
     init(parser: inout ParametersParser) {
@@ -17,12 +17,12 @@ extension UserNotice.MessageID {
   }
 
   public struct GiftPaidUpgradeInfo: Sendable {
-    public var promoGiftTotal: UInt
-    public var promoName: String
-    public var senderLogin: String
-    public var senderName: String
+    public private(set) var promoGiftTotal: UInt
+    public private(set) var promoName: String
+    public private(set) var senderLogin: String
+    public private(set) var senderName: String
 
-    internal init(
+    public init(
       promoGiftTotal: UInt,
       promoName: String,
       senderLogin: String,
@@ -34,7 +34,7 @@ extension UserNotice.MessageID {
       self.senderName = senderName
     }
 
-    public init() {
+    internal init() {
       self.init(
         promoGiftTotal: UInt(),
         promoName: String(),
@@ -53,10 +53,10 @@ extension UserNotice.MessageID {
   }
 
   public struct AnonGiftPaidUpgradeInfo: Sendable {
-    public var promoGiftTotal: UInt
-    public var promoName: String
+    public private(set) var promoGiftTotal: UInt
+    public private(set) var promoName: String
 
-    internal init(
+    public init(
       promoGiftTotal: UInt,
       promoName: String
     ) {
@@ -64,7 +64,7 @@ extension UserNotice.MessageID {
       self.promoName = promoName
     }
 
-    public init() {
+    internal init() {
       self.init(
         promoGiftTotal: UInt(),
         promoName: String()

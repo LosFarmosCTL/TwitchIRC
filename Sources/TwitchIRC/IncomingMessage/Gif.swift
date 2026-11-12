@@ -1,16 +1,16 @@
 public struct Gif {
   /// The GIF ID.
-  public var id = String()
+  public private(set) var id = String()
   /// The URL used to render the GIF.
-  public var url = String()
+  public private(set) var url = String()
   /// The text used to represent the GIF in the message.
-  public var text = String()
+  public private(set) var text = String()
   /// The index in the message at which the GIF starts.
-  public var startIndex = Int()
+  public private(set) var startIndex = Int()
   /// The index in the message at which the GIF ends.
-  public var endIndex = Int()
+  public private(set) var endIndex = Int()
 
-  public init() {}
+  internal init() {}
 
   init(
     id: String,

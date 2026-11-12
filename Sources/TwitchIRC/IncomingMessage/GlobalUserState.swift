@@ -2,21 +2,21 @@
 public struct GlobalUserState: MessageWithBadges {
 
   /// Badge info.
-  public var badgeInfo = [String]()
+  public private(set) var badgeInfo = [String]()
   /// User's global badges.
-  public var badges = [String]()
+  public private(set) var badges = [String]()
   /// User's in-chat name color.
-  public var color = String()
+  public private(set) var color = String()
   /// User's display name with uppercased/Han characters.
-  public var displayName = String()
+  public private(set) var displayName = String()
   /// User's emote sets.
-  public var emoteSets = [String]()
+  public private(set) var emoteSets = [String]()
   /// User's Twitch identifier.
-  public var userId = String()
+  public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
-  public var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
-  public init() {}
+  internal init() {}
 
   init(contentLhs: String) {
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
@@ -32,6 +32,24 @@ public struct GlobalUserState: MessageWithBadges {
     self.parsingLeftOvers = parser.getLeftOvers(
       excludedUnusedKeys: deprecatedKeys
     )
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    badgeInfo: [String] = [String](),
+    badges: [String] = [String](),
+    color: String = String(),
+    displayName: String = String(),
+    emoteSets: [String] = [String](),
+    userId: String,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+  ) {
+    self.badgeInfo = badgeInfo
+    self.badges = badges
+    self.color = color
+    self.displayName = displayName
+    self.emoteSets = emoteSets
+    self.userId = userId
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 

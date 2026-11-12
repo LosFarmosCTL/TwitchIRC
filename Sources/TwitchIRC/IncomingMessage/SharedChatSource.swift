@@ -2,15 +2,15 @@
 /// The enclosing message's `id`, `roomId`, and `channel` still identify the receiving copy.
 public struct SharedChatSource: MessageWithBadges {
   /// The source message's `source-id`, not its notice category.
-  public var id = String()
+  public private(set) var id = String()
   /// The source channel's Twitch identifier.
-  public var roomId = String()
+  public private(set) var roomId = String()
   /// Badge metadata in the source channel.
-  public var badgeInfo = [String]()
+  public private(set) var badgeInfo = [String]()
   /// The chatter's badges in the source channel.
-  public var badges = [String]()
+  public private(set) var badges = [String]()
 
-  public init() {}
+  internal init() {}
 
   init(parser: inout ParametersParser) {
     self.id = parser.string(for: "source-id")
@@ -20,6 +20,18 @@ public struct SharedChatSource: MessageWithBadges {
   }
 
   static let tagKeys = ["source-id", "source-room-id", "source-badge-info", "source-badges"]
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    id: String,
+    roomId: String,
+    badgeInfo: [String] = [String](),
+    badges: [String] = [String]()
+  ) {
+    self.id = id
+    self.roomId = roomId
+    self.badgeInfo = badgeInfo
+    self.badges = badges
+  }
 }
 
 // MARK: - Sendable conformance

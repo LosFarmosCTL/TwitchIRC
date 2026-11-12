@@ -1,13 +1,13 @@
 extension UserNotice.MessageID {
   public struct MidnightSquidInfo: Sendable {
-    public var amount: UInt
-    public var currency: String
-    public var emoteId: String
-    public var exponent: UInt
-    public var isHighlighted: Bool
-    public var pillType: String
+    public private(set) var amount: UInt
+    public private(set) var currency: String
+    public private(set) var emoteId: String
+    public private(set) var exponent: UInt
+    public private(set) var isHighlighted: Bool
+    public private(set) var pillType: String
 
-    internal init(
+    public init(
       amount: UInt,
       currency: String,
       emoteId: String,
@@ -23,7 +23,7 @@ extension UserNotice.MessageID {
       self.pillType = pillType
     }
 
-    public init() {
+    internal init() {
       self.init(
         amount: UInt(),
         currency: String(),
@@ -46,12 +46,12 @@ extension UserNotice.MessageID {
   }
 
   public struct CharityDonationInfo: Sendable {
-    public var charityName: String
-    public var amount: UInt
-    public var currency: String
-    public var exponent: UInt
+    public private(set) var charityName: String
+    public private(set) var amount: UInt
+    public private(set) var currency: String
+    public private(set) var exponent: UInt
 
-    internal init(
+    public init(
       charityName: String,
       amount: UInt,
       currency: String,
@@ -63,7 +63,7 @@ extension UserNotice.MessageID {
       self.exponent = exponent
     }
 
-    public init() {
+    internal init() {
       self.init(
         charityName: String(),
         amount: UInt(),
@@ -83,9 +83,11 @@ extension UserNotice.MessageID {
 
   public struct ModiversaryInfo: Sendable {
     /// Total number of months the user has been a moderator in this channel.
-    public var months = UInt()
+    public private(set) var months = UInt()
 
-    public init() {}
+    public init(months: UInt) {
+      self.months = months
+    }
 
     init(parser: inout ParametersParser) {
       self.months = parser.uint(for: "msg-param-months")
@@ -93,14 +95,14 @@ extension UserNotice.MessageID {
   }
 
   public struct ViewerMilestoneInfo: Sendable {
-    public var category: String
-    public var id: String
-    public var value: UInt
+    public private(set) var category: String
+    public private(set) var id: String
+    public private(set) var value: UInt
     /// Channel Points awarded for this milestone, when supplied.
     /// The `msg-param-copoReward` tag is unofficial and may be absent.
-    public var copoReward: UInt?
+    public private(set) var copoReward: UInt?
 
-    internal init(
+    public init(
       category: String,
       id: String,
       value: UInt,
@@ -112,7 +114,7 @@ extension UserNotice.MessageID {
       self.copoReward = copoReward
     }
 
-    public init() {
+    internal init() {
       self.init(
         category: String(),
         id: String(),

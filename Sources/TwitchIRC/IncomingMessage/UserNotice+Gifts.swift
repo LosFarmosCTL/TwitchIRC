@@ -1,24 +1,24 @@
 extension UserNotice.MessageID {
   public struct SubGiftInfo: Sendable {
-    public var months: UInt
-    public var recipientDisplayName: String
-    public var recipientId: String
-    public var recipientUserName: String
-    public var subPlan: SubPlan?
-    public var subPlanName: String
-    public var giftMonths: UInt
-    public var originId: String
-    public var senderCount: UInt
-    public var funString: String
-    public var giftTheme: String
-    public var goalContributionType: String
-    public var goalCurrentContributions: String
-    public var goalDescription: String
-    public var goalTargetContributions: String
-    public var goalUserContributions: String
-    public var communityGiftId: String
+    public private(set) var months: UInt
+    public private(set) var recipientDisplayName: String
+    public private(set) var recipientId: String
+    public private(set) var recipientUserName: String
+    public private(set) var subPlan: SubPlan?
+    public private(set) var subPlanName: String
+    public private(set) var giftMonths: UInt
+    public private(set) var originId: String
+    public private(set) var senderCount: UInt
+    public private(set) var funString: String
+    public private(set) var giftTheme: String
+    public private(set) var goalContributionType: String
+    public private(set) var goalCurrentContributions: String
+    public private(set) var goalDescription: String
+    public private(set) var goalTargetContributions: String
+    public private(set) var goalUserContributions: String
+    public private(set) var communityGiftId: String
 
-    internal init(
+    public init(
       months: UInt,
       recipientDisplayName: String,
       recipientId: String,
@@ -56,7 +56,7 @@ extension UserNotice.MessageID {
       self.communityGiftId = communityGiftId
     }
 
-    public init() {
+    internal init() {
       self.init(
         months: UInt(),
         recipientDisplayName: String(),
@@ -101,19 +101,19 @@ extension UserNotice.MessageID {
   }
 
   public struct SubMysteryGiftInfo: Sendable {
-    public var massGiftCount: UInt
-    public var originId: String
-    public var senderCount: UInt
-    public var subPlan: SubPlan?
-    public var goalContributionType: String
-    public var goalCurrentContributions: String
-    public var goalDescription: String
-    public var goalTargetContributions: String
-    public var goalUserContributions: String
-    public var giftTheme: String
-    public var communityGiftId: String
+    public private(set) var massGiftCount: UInt
+    public private(set) var originId: String
+    public private(set) var senderCount: UInt
+    public private(set) var subPlan: SubPlan?
+    public private(set) var goalContributionType: String
+    public private(set) var goalCurrentContributions: String
+    public private(set) var goalDescription: String
+    public private(set) var goalTargetContributions: String
+    public private(set) var goalUserContributions: String
+    public private(set) var giftTheme: String
+    public private(set) var communityGiftId: String
 
-    internal init(
+    public init(
       massGiftCount: UInt,
       originId: String,
       senderCount: UInt,
@@ -139,7 +139,7 @@ extension UserNotice.MessageID {
       self.communityGiftId = communityGiftId
     }
 
-    public init() {
+    internal init() {
       self.init(
         massGiftCount: UInt(),
         originId: String(),

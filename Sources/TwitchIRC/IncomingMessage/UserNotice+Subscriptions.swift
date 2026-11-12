@@ -8,22 +8,22 @@ extension UserNotice.MessageID {
   }
 
   public struct SubInfo: Sendable {
-    public var cumulativeMonths: UInt
-    public var shouldShareStreak: Bool
-    public var streakMonths: UInt
-    public var subPlan: SubPlan?
-    public var subPlanName: String
-    public var months: UInt
-    public var multimonthDuration: UInt
-    public var multimonthTenure: Bool
-    public var wasGifted: Bool
-    public var goalContributionType: String
-    public var goalCurrentContributions: String
-    public var goalDescription: String
-    public var goalTargetContributions: String
-    public var goalUserContributions: String
+    public private(set) var cumulativeMonths: UInt
+    public private(set) var shouldShareStreak: Bool
+    public private(set) var streakMonths: UInt
+    public private(set) var subPlan: SubPlan?
+    public private(set) var subPlanName: String
+    public private(set) var months: UInt
+    public private(set) var multimonthDuration: UInt
+    public private(set) var multimonthTenure: Bool
+    public private(set) var wasGifted: Bool
+    public private(set) var goalContributionType: String
+    public private(set) var goalCurrentContributions: String
+    public private(set) var goalDescription: String
+    public private(set) var goalTargetContributions: String
+    public private(set) var goalUserContributions: String
 
-    internal init(
+    public init(
       cumulativeMonths: UInt,
       shouldShareStreak: Bool,
       streakMonths: UInt,
@@ -55,7 +55,7 @@ extension UserNotice.MessageID {
       self.goalUserContributions = goalUserContributions
     }
 
-    public init() {
+    internal init() {
       self.init(
         cumulativeMonths: UInt(),
         shouldShareStreak: Bool(),
@@ -94,23 +94,23 @@ extension UserNotice.MessageID {
   }
 
   public struct ReSubInfo: Sendable {
-    public var cumulativeMonths: UInt
-    public var shouldShareStreak: Bool
-    public var streakMonths: UInt
-    public var subPlan: SubPlan?
-    public var subPlanName: String
-    public var anonGift: Bool
-    public var months: UInt
-    public var multimonthDuration: UInt
-    public var multimonthTenure: Bool
-    public var wasGifted: Bool
-    public var giftMonthBeingRedeemed: UInt
-    public var giftMonths: UInt
-    public var gifterId: String
-    public var gifterLogin: String
-    public var gifterName: String
+    public private(set) var cumulativeMonths: UInt
+    public private(set) var shouldShareStreak: Bool
+    public private(set) var streakMonths: UInt
+    public private(set) var subPlan: SubPlan?
+    public private(set) var subPlanName: String
+    public private(set) var anonGift: Bool
+    public private(set) var months: UInt
+    public private(set) var multimonthDuration: UInt
+    public private(set) var multimonthTenure: Bool
+    public private(set) var wasGifted: Bool
+    public private(set) var giftMonthBeingRedeemed: UInt
+    public private(set) var giftMonths: UInt
+    public private(set) var gifterId: String
+    public private(set) var gifterLogin: String
+    public private(set) var gifterName: String
 
-    internal init(
+    public init(
       cumulativeMonths: UInt,
       shouldShareStreak: Bool,
       streakMonths: UInt,
@@ -144,7 +144,7 @@ extension UserNotice.MessageID {
       self.gifterName = gifterName
     }
 
-    public init() {
+    internal init() {
       self.init(
         cumulativeMonths: UInt(),
         shouldShareStreak: Bool(),

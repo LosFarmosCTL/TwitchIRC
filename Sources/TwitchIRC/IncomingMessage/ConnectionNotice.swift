@@ -2,19 +2,29 @@
 public struct ConnectionNotice {
 
   /// The Twitch message accompanying the notice.
-  public var message = String()
+  public private(set) var message = String()
   /// The user that has been successfully connected. All lowercased.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
   /// The number that Twitch sends alongside this notice.
-  public var number = UInt()
+  public private(set) var number = UInt()
 
-  public init() {}
+  internal init() {}
 
   init?(id: String, contentRhs: String) {
     guard let number = UInt(id),
       let (userLogin, message) = contentRhs.componentsOneSplit(separatedBy: " :")
     else { return nil }
 
+    self.message = message
+    self.userLogin = userLogin
+    self.number = number
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    message: String,
+    userLogin: String,
+    number: UInt
+  ) {
     self.message = message
     self.userLogin = userLogin
     self.number = number

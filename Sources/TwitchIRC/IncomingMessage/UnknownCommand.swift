@@ -2,19 +2,29 @@
 public struct UnknownCommand {
 
   /// The lowercased Twitch account username that sent the message.
-  public var username = String()
+  public private(set) var username = String()
   /// The command that was unknown.
-  public var command = String()
+  public private(set) var command = String()
   /// The Twitch message sent as an explanation.
-  public var message = String()
+  public private(set) var message = String()
 
-  public init() {}
+  internal init() {}
 
   init?(contentRhs: String) {
     guard let (username, theRest) = contentRhs.componentsOneSplit(separatedBy: " "),
       let (command, message) = theRest.componentsOneSplit(separatedBy: " :")
     else { return nil }
 
+    self.username = username
+    self.command = command
+    self.message = message
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    username: String,
+    command: String,
+    message: String
+  ) {
     self.username = username
     self.command = command
     self.message = message

@@ -10,13 +10,11 @@ public struct HostTarget {
   }
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// Number of viewers of the host.
-  public var numberOfViewers = Optional<UInt>.none
+  public private(set) var numberOfViewers = Optional<UInt>.none
   /// The action being taken. Currently either starting a host or stopping it.
-  public var action: Action!
-
-  public init() {}
+  public private(set) var action: Action
 
   init?(contentRhs: String) {
     guard contentRhs.first == "#" else {
@@ -46,6 +44,16 @@ public struct HostTarget {
         return nil
       }
     }
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    numberOfViewers: UInt? = Optional<UInt>.none,
+    action: Action
+  ) {
+    self.channel = channel
+    self.numberOfViewers = numberOfViewers
+    self.action = action
   }
 }
 

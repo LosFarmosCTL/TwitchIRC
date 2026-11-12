@@ -1,11 +1,11 @@
 extension UserNotice.MessageID {
   public struct RaidInfo: Sendable {
-    public var displayName: String
-    public var login: String
-    public var viewerCount: UInt
-    public var profileImageURL: String
+    public private(set) var displayName: String
+    public private(set) var login: String
+    public private(set) var viewerCount: UInt
+    public private(set) var profileImageURL: String
 
-    internal init(
+    public init(
       displayName: String,
       login: String,
       viewerCount: UInt,
@@ -17,7 +17,7 @@ extension UserNotice.MessageID {
       self.profileImageURL = profileImageURL
     }
 
-    public init() {
+    internal init() {
       self.init(
         displayName: String(),
         login: String(),
@@ -36,12 +36,12 @@ extension UserNotice.MessageID {
   }
 
   public struct CommunityPayForwardInfo: Sendable {
-    public var priorGifterAnonymous: Bool
-    public var priorGifterDisplayName: String
-    public var priorGifterId: String
-    public var priorGifterUserName: String
+    public private(set) var priorGifterAnonymous: Bool
+    public private(set) var priorGifterDisplayName: String
+    public private(set) var priorGifterId: String
+    public private(set) var priorGifterUserName: String
 
-    internal init(
+    public init(
       priorGifterAnonymous: Bool,
       priorGifterDisplayName: String,
       priorGifterId: String,
@@ -53,7 +53,7 @@ extension UserNotice.MessageID {
       self.priorGifterUserName = priorGifterUserName
     }
 
-    public init() {
+    internal init() {
       self.init(
         priorGifterAnonymous: Bool(),
         priorGifterDisplayName: String(),
@@ -72,15 +72,15 @@ extension UserNotice.MessageID {
   }
 
   public struct StandardPayForwardInfo: Sendable {
-    public var priorGifterAnonymous: Bool
-    public var priorGifterDisplayName: String
-    public var priorGifterId: String
-    public var priorGifterUserName: String
-    public var recipientDisplayName: String
-    public var recipientId: String
-    public var recipientUserName: String
+    public private(set) var priorGifterAnonymous: Bool
+    public private(set) var priorGifterDisplayName: String
+    public private(set) var priorGifterId: String
+    public private(set) var priorGifterUserName: String
+    public private(set) var recipientDisplayName: String
+    public private(set) var recipientId: String
+    public private(set) var recipientUserName: String
 
-    internal init(
+    public init(
       priorGifterAnonymous: Bool,
       priorGifterDisplayName: String,
       priorGifterId: String,
@@ -98,7 +98,7 @@ extension UserNotice.MessageID {
       self.recipientUserName = recipientUserName
     }
 
-    public init() {
+    internal init() {
       self.init(
         priorGifterAnonymous: Bool(),
         priorGifterDisplayName: String(),

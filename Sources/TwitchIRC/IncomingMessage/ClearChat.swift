@@ -2,26 +2,26 @@
 public struct ClearChat {
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// The cleared user's name, with no uppercased/Han characters.
   /// If `nil` then the whole chat has been cleared.
-  public var userLogin = Optional<String>.none
+  public private(set) var userLogin = Optional<String>.none
   /// The duration of the ban/timeout.
   /// If `nil` and `user` available, then the user is permanently banned.
-  public var banDuration = Optional<UInt>.none
+  public private(set) var banDuration = Optional<UInt>.none
   /// Broadcaster's Twitch identifier, when supplied.
-  public var roomId: String?
+  public private(set) var roomId: String?
   /// The cleared user's Twitch identifier, when supplied.
-  public var targetUserId: String?
+  public private(set) var targetUserId: String?
   /// Timestamp in milliseconds since the Unix epoch, when supplied.
-  public var tmiSentTs: UInt?
+  public private(set) var tmiSentTs: UInt?
 
   // MARK: Convenience stuff
   public var userIsPermanentlyBanned: Bool {
     banDuration == nil && userLogin != nil
   }
 
-  public init() {}
+  internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard contentRhs.first == "#" else {
@@ -44,6 +44,22 @@ public struct ClearChat {
       self.targetUserId = parser.optionalString(for: "target-user-id")
       self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
     }
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    userLogin: String? = Optional<String>.none,
+    banDuration: UInt? = Optional<UInt>.none,
+    roomId: String? = nil,
+    targetUserId: String? = nil,
+    tmiSentTs: UInt? = nil
+  ) {
+    self.channel = channel
+    self.userLogin = userLogin
+    self.banDuration = banDuration
+    self.roomId = roomId
+    self.targetUserId = targetUserId
+    self.tmiSentTs = tmiSentTs
   }
 }
 

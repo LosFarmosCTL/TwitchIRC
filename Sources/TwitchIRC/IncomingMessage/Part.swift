@@ -2,11 +2,11 @@
 public struct Part {
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// User's name with no uppercased/Han characters.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
 
-  public init() {}
+  internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard contentRhs.first == "#" else {
@@ -30,6 +30,14 @@ public struct Part {
       return nil
     }
     self.userLogin = String(name1)
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    userLogin: String
+  ) {
+    self.channel = channel
+    self.userLogin = userLogin
   }
 }
 

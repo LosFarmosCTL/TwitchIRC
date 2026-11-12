@@ -1,9 +1,9 @@
 /// A Twitch `ACK` message.
 public struct Capabilities {
 
-  public var capabilities: [Capability] = []
+  public private(set) var capabilities: [Capability] = []
 
-  public init() {}
+  internal init() {}
 
   init?(contentRhs: String) {
     guard contentRhs.hasPrefix("* ACK :")
@@ -19,6 +19,12 @@ public struct Capabilities {
         return nil
       }
     }
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    capabilities: [Capability]
+  ) {
+    self.capabilities = capabilities
   }
 }
 

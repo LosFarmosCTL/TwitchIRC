@@ -2,15 +2,15 @@
 public struct ChannelEntrance {
 
   /// The Twitch message accompanying the notice.
-  public var message = String()
+  public private(set) var message = String()
   /// User's name with no uppercased/Han characters.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
   /// The channel name that has been joined, with no uppercased/Han characters.
-  public var joinedChannel = String()
+  public private(set) var joinedChannel = String()
   /// The number that Twitch sends alongside this notice.
-  public var number = UInt()
+  public private(set) var number = UInt()
 
-  public init() {}
+  internal init() {}
 
   init?(id: String, contentRhs: String) {
     guard let number = UInt(id) else {
@@ -32,6 +32,18 @@ public struct ChannelEntrance {
     self.message = message
     self.userLogin = userLogin
     self.joinedChannel = joinedChannel
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    message: String,
+    userLogin: String,
+    joinedChannel: String,
+    number: UInt
+  ) {
+    self.message = message
+    self.userLogin = userLogin
+    self.joinedChannel = joinedChannel
+    self.number = number
   }
 }
 

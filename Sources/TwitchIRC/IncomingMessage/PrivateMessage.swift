@@ -3,17 +3,17 @@ public struct PrivateMessage: MessageWithBadges {
 
   public struct ReplyParent {
     /// Replied user's display name with uppercased/Han characters.
-    public var displayName = String()
+    public private(set) var displayName = String()
     /// Replied user's name with no uppercased/Han characters.
-    public var userLogin = String()
+    public private(set) var userLogin = String()
     /// The replied message.
-    public var message = String()
+    public private(set) var message = String()
     /// Replied message's id.
-    public var id = String()
+    public private(set) var id = String()
     /// Replied user's Twitch identifier.
-    public var userId = String()
+    public private(set) var userId = String()
 
-    internal init(
+    public init(
       displayName: String,
       userLogin: String,
       message: String,
@@ -27,20 +27,20 @@ public struct PrivateMessage: MessageWithBadges {
       self.userId = userId
     }
 
-    public init() {}
+    internal init() {}
   }
 
   public struct ReplyThreadParent {
     /// Replied user's name with no uppercased/Han characters.
-    public var userLogin = String()
+    public private(set) var userLogin = String()
     /// Replied thread's message's id.
-    public var messageId = String()
+    public private(set) var messageId = String()
     /// Replied user's display name.
-    public var displayName = String()
+    public private(set) var displayName = String()
     /// Replied user's user id.
-    public var userId = String()
+    public private(set) var userId = String()
 
-    internal init(
+    public init(
       userLogin: String,
       messageId: String,
       displayName: String,
@@ -52,18 +52,18 @@ public struct PrivateMessage: MessageWithBadges {
       self.userId = userId
     }
 
-    public init() {}
+    internal init() {}
   }
 
   public struct PinnedChat {
-    public var amount = UInt()
-    public var canonicalAmount = UInt()
-    public var currency = String()
-    public var exponent = UInt()
-    public var isSystemMessage = Bool()
-    public var level = String()
+    public private(set) var amount = UInt()
+    public private(set) var canonicalAmount = UInt()
+    public private(set) var currency = String()
+    public private(set) var exponent = UInt()
+    public private(set) var isSystemMessage = Bool()
+    public private(set) var level = String()
 
-    internal init(
+    public init(
       amount: UInt,
       canonicalAmount: UInt,
       currency: String,
@@ -79,66 +79,66 @@ public struct PrivateMessage: MessageWithBadges {
       self.level = level
     }
 
-    public init() {}
+    internal init() {}
   }
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// The message sent.
-  public var message = String()
+  public private(set) var message = String()
   /// Badge info.
-  public var badgeInfo = [String]()
+  public private(set) var badgeInfo = [String]()
   /// User's badges.
-  public var badges = [String]()
+  public private(set) var badges = [String]()
   /// The bits that were donated, if any.
-  public var bits = String()
+  public private(set) var bits = String()
   /// User's in-chat name color.
-  public var color = String()
+  public private(set) var color = String()
   /// User's display name with uppercased/Han characters.
-  public var displayName = String()
+  public private(set) var displayName = String()
   /// User's name with no uppercased/Han characters.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
   /// The string describing emotes of the message.
-  public var emotes = String()
+  public private(set) var emotes = String()
   /// The string describing GIFs of the message.
-  public var gifs = String()
+  public private(set) var gifs = String()
   /// Whether or not the message only contains emotes.
-  public var emoteOnly = Bool()
+  public private(set) var emoteOnly = Bool()
   /// Flags of this message.
-  public var flags = [String]()
+  public private(set) var flags = [String]()
   /// Whether it's the first time the user is sending a message.
-  public var firstMessage = Bool()
+  public private(set) var firstMessage = Bool()
   /// Flag for new viewers who have chatted at least twice in the last 30 days.
-  public var returningChatter = Bool()
+  public private(set) var returningChatter = Bool()
   /// Not sure exactly what is this? usually empty.
-  public var messageId = String()
+  public private(set) var messageId = String()
   /// Message's id.
-  public var id = String()
+  public private(set) var id = String()
   /// Not sure but should be the message id of the
   /// message that the chant was started with.
-  public var crowdChantParentMessageId = String()
+  public private(set) var crowdChantParentMessageId = String()
   /// The id of the custom reward, if any.
-  public var customRewardId = String()
+  public private(set) var customRewardId = String()
   /// Broadcaster's Twitch identifier.
-  public var roomId = String()
+  public private(set) var roomId = String()
   /// Shared Chat origin metadata; empty for messages without source tags.
-  public var source = SharedChatSource()
+  public private(set) var source = SharedChatSource()
   /// Whether this Shared Chat message is restricted to the source channel.
-  public var sourceOnly = Bool()
+  public private(set) var sourceOnly = Bool()
   /// The timestamp of the message.
-  public var tmiSentTs = UInt()
+  public private(set) var tmiSentTs = UInt()
   /// Not sure exactly but some kind of identifier?!
-  public var clientNonce = String()
+  public private(set) var clientNonce = String()
   /// User's Twitch identifier.
-  public var userId = String()
+  public private(set) var userId = String()
   /// Info about the replied message, if any.
-  public var replyParent = ReplyParent()
+  public private(set) var replyParent = ReplyParent()
   /// Info about the thread of the replied message, if any.
-  public var replyThreadParent = ReplyThreadParent()
+  public private(set) var replyThreadParent = ReplyThreadParent()
   /// Info of paid pinned messages.
-  public var pinnedChat = PinnedChat()
+  public private(set) var pinnedChat = PinnedChat()
   /// Contains info about unused info and parsing problems.
-  public var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
   public func parseEmotes() -> [Emote] {
     Emote.parse(from: emotes, and: message)
@@ -148,7 +148,7 @@ public struct PrivateMessage: MessageWithBadges {
     Gif.parse(from: gifs, and: message)
   }
 
-  public init() {}
+  internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard parseContent(contentRhs),
@@ -253,6 +253,66 @@ public struct PrivateMessage: MessageWithBadges {
     )
   }
 
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    message: String,
+    badgeInfo: [String] = [String](),
+    badges: [String] = [String](),
+    bits: String = String(),
+    color: String = String(),
+    displayName: String = String(),
+    userLogin: String,
+    emotes: String = String(),
+    gifs: String = String(),
+    emoteOnly: Bool = Bool(),
+    flags: [String] = [String](),
+    firstMessage: Bool = Bool(),
+    returningChatter: Bool = Bool(),
+    messageId: String = String(),
+    id: String,
+    crowdChantParentMessageId: String = String(),
+    customRewardId: String = String(),
+    roomId: String,
+    source: SharedChatSource,
+    sourceOnly: Bool = Bool(),
+    tmiSentTs: UInt = UInt(),
+    clientNonce: String = String(),
+    userId: String,
+    replyParent: ReplyParent,
+    replyThreadParent: ReplyThreadParent,
+    pinnedChat: PinnedChat,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+  ) {
+    self.channel = channel
+    self.message = message
+    self.badgeInfo = badgeInfo
+    self.badges = badges
+    self.bits = bits
+    self.color = color
+    self.displayName = displayName
+    self.userLogin = userLogin
+    self.emotes = emotes
+    self.gifs = gifs
+    self.emoteOnly = emoteOnly
+    self.flags = flags
+    self.firstMessage = firstMessage
+    self.returningChatter = returningChatter
+    self.messageId = messageId
+    self.id = id
+    self.crowdChantParentMessageId = crowdChantParentMessageId
+    self.customRewardId = customRewardId
+    self.roomId = roomId
+    self.source = source
+    self.sourceOnly = sourceOnly
+    self.tmiSentTs = tmiSentTs
+    self.clientNonce = clientNonce
+    self.userId = userId
+    self.replyParent = replyParent
+    self.replyThreadParent = replyThreadParent
+    self.pinnedChat = pinnedChat
+    self.parsingLeftOvers = parsingLeftOvers
+  }
 }
 
 // MARK: - Sendable conformances

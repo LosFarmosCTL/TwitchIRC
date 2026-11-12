@@ -8,6 +8,10 @@ public struct ParsingLeftOvers {
   public struct UnusedPair {
     public let key: String
     public let value: String
+    public init(key: String, value: String) {
+      self.key = key
+      self.value = value
+    }
   }
 
   /// An unsuccessful parsing attempt for a key
@@ -15,14 +19,27 @@ public struct ParsingLeftOvers {
     public let key: String
     public let value: String
     public let type: String
+    public init(key: String, value: String, type: String) {
+      self.key = key
+      self.value = value
+      self.type = type
+    }
   }
 
   /// Key-Value pairs that were unused.
-  public var unusedPairs = [UnusedPair]()
+  public private(set) var unusedPairs = [UnusedPair]()
   /// Keys that were unavailable.
-  public var unavailableKeys = [String]()
+  public private(set) var unavailableKeys = [String]()
   /// Keys that were failed to be parsed into a certain type.
-  public var unparsedKeys = [UnparsedKey]()
+  public private(set) var unparsedKeys = [UnparsedKey]()
+  public init(
+    unusedPairs: [UnusedPair] = [], unavailableKeys: [String] = [], unparsedKeys: [UnparsedKey] = []
+  ) {
+    self.unusedPairs = unusedPairs
+    self.unavailableKeys = unavailableKeys
+    self.unparsedKeys = unparsedKeys
+  }
+
   /// Whether or not there are any left overs.
   public var isEmpty: Bool {
     self.unusedPairs.isEmpty

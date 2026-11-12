@@ -2,21 +2,21 @@
 public struct ClearMessage {
 
   /// Channel's name with no uppercased/Han characters.
-  public var channel = String()
+  public private(set) var channel = String()
   /// The deleted message.
-  public var message = String()
+  public private(set) var message = String()
   /// User's name with no uppercased/Han characters.
-  public var userLogin = String()
+  public private(set) var userLogin = String()
   /// Cleared message's identifier.
-  public var targetMessageId = String()
+  public private(set) var targetMessageId = String()
   /// Broadcaster's Twitch identifier.
-  public var roomId = String()
+  public private(set) var roomId = String()
   /// Timestamp of this message.
-  public var tmiSentTs = UInt()
+  public private(set) var tmiSentTs = UInt()
   /// Contains info about unused info and parsing problems.
-  public var parsingLeftOvers = ParsingLeftOvers()
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
-  public init() {}
+  internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
     guard contentRhs.first == "#" else {
@@ -45,6 +45,24 @@ public struct ClearMessage {
     self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
 
     self.parsingLeftOvers = parser.getLeftOvers()
+  }
+  /// Creates a message from its required fields and optional metadata.
+  public init(
+    channel: String,
+    message: String,
+    userLogin: String,
+    targetMessageId: String,
+    roomId: String,
+    tmiSentTs: UInt = UInt(),
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
+  ) {
+    self.channel = channel
+    self.message = message
+    self.userLogin = userLogin
+    self.targetMessageId = targetMessageId
+    self.roomId = roomId
+    self.tmiSentTs = tmiSentTs
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 
