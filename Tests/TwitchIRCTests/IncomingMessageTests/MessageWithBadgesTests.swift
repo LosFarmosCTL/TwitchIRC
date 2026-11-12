@@ -26,6 +26,21 @@ final class MessageWithBadgesTests: XCTestCase {
     XCTAssertEqual(message.isGlobalMod, true)
   }
 
+  func testModeratorBadgeNames() {
+    for badge in ["moderator/1", "lead_moderator/1", "lead_moderator/2"] {
+      XCTAssertTrue(MockMessageWithBadges(badges: [badge]).isMod, badge)
+    }
+    for badge in ["moderator_extra/1", "lead_moderator_extra/1", "global_mod/1", "vip/1"] {
+      XCTAssertFalse(MockMessageWithBadges(badges: [badge]).isMod, badge)
+    }
+  }
+
+  func testLeadModeratorInSharedChatSource() {
+    var source = SharedChatSource()
+    source.badges = ["lead_moderator/1"]
+    XCTAssertTrue(source.isMod)
+  }
+
   func testAllFalse() throws {
     let message = MockMessageWithBadges(badges: [])
 

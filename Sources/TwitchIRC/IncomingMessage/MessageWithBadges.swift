@@ -5,7 +5,10 @@ public protocol MessageWithBadges {
 
 extension MessageWithBadges {
   public var isMod: Bool {
-    self.badges.contains(where: { $0.hasPrefix("moderator") })
+    self.badges.contains { badge in
+      let name = badge.prefix { $0 != "/" }
+      return name == "moderator" || name == "lead_moderator"
+    }
   }
   public var isSubscriber: Bool {
     self.badges.contains(where: { $0.hasPrefix("subscriber") })
