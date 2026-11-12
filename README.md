@@ -4,6 +4,8 @@
  
 A dependancy-free Swift package that takes care of parsing and serializing Twitch IRC messages.
 
+Upgrading from an earlier version? See the [2.0 migration guide](MIGRATION-2.0.md).
+
 ## How To Parse
 
 To parse Twitch messages, use `IncomingMessage.parse(ircOutput:)`:
