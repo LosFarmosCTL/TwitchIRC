@@ -18,7 +18,7 @@ final class PrivateMessageRichContentTests: XCTestCase {
     XCTAssertEqual(msg.color, "#00FF7F")
     XCTAssertEqual(msg.displayName, "r3born_9999")
     XCTAssertEqual(msg.userLogin, "r3born_9999")
-    XCTAssertEqual(msg.emotes, "")
+    XCTAssertEqual(msg.emotes, [])
     XCTAssertNil(msg.emoteOnly)
     XCTAssertEqual(msg.flags, [])
     XCTAssertEqual(msg.firstMessage, false)
@@ -52,11 +52,7 @@ final class PrivateMessageRichContentTests: XCTestCase {
 
     let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
 
-    XCTAssertEqual(
-      msg.gifs,
-      "0-33|joSNxeswxuc74Juo8X|https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif?cid=095d7a5dzizsiwgabonagkmigggv8v1spfai91ac3x0dsiy0&ep=v1_gifs_trending&rid=giphy.gif&ct=g"
-    )
-    let gifs = msg.parseGifs()
+    let gifs = msg.gifs
     XCTAssertEqual(gifs.count, 1)
     let gif = try XCTUnwrap(gifs.first)
     XCTAssertEqual(gif.id, "joSNxeswxuc74Juo8X")
@@ -65,8 +61,8 @@ final class PrivateMessageRichContentTests: XCTestCase {
       "https://media4.giphy.com/media/joSNxeswxuc74Juo8X/giphy.gif?cid=095d7a5dzizsiwgabonagkmigggv8v1spfai91ac3x0dsiy0&ep=v1_gifs_trending&rid=giphy.gif&ct=g"
     )
     XCTAssertEqual(gif.text, "[Y A Y Yes GIF by Djemilah Birnie]")
-    XCTAssertEqual(gif.startIndex, 0)
-    XCTAssertEqual(gif.endIndex, 33)
+    XCTAssertEqual(gif.range.unicodeScalarOffsets.lowerBound, 0)
+    XCTAssertEqual(gif.range.unicodeScalarOffsets.upperBound, 34)
     XCTAssertTrue(
       msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
   }

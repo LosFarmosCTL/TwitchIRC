@@ -11,7 +11,7 @@ public struct Whisper: MessageWithBadges {
   /// Sender's display name with uppercased/Han characters.
   public private(set) var displayName = String()
   /// Sender's emotes.
-  public private(set) var emotes = String()
+  public private(set) var emotes = [Emote]()
   /// Message's identifier.
   public private(set) var messageId: String?
   /// This whisper-thread's identifier.
@@ -20,10 +20,6 @@ public struct Whisper: MessageWithBadges {
   public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
   public private(set) var parsingLeftOvers = ParsingLeftOvers()
-
-  public func parseEmotes() -> [Emote] {
-    Emote.parse(from: emotes, and: message)
-  }
 
   internal init() {}
 
@@ -44,7 +40,7 @@ public struct Whisper: MessageWithBadges {
     self.badges = parser.array(for: "badges")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
-    self.emotes = parser.string(for: "emotes")
+    self.emotes = parser.emotes(in: self.message)
     self.messageId = parser.optionalNonEmptyString(for: "message-id")
     self.threadId = parser.optionalNonEmptyString(for: "thread-id")
     self.userId = parser.string(for: "user-id")
@@ -62,7 +58,7 @@ public struct Whisper: MessageWithBadges {
     badges: [String] = [String](),
     color: String? = nil,
     displayName: String = String(),
-    emotes: String = String(),
+    emotes: [Emote] = [],
     messageId: String? = nil,
     threadId: String? = nil,
     userId: String,

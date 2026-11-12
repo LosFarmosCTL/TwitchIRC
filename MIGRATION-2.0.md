@@ -14,6 +14,8 @@ more specific adjustments.
 - [Construction and mutation](#2-update-message-construction-and-mutation): use
   explicit public initializers. Parsed properties are read-only, and required enum
   fields no longer use implicitly unwrapped optionals.
+- [Message text and inline media](#message-text-and-inline-media): use normalized
+  action text, typed media arrays, and Unicode scalar ranges.
 - [Missing metadata](#3-handle-optional-payloads-and-fields): replace empty-payload
   and default-value checks with optional handling. Preserve existing room settings
   when a partial `ROOMSTATE` update omits a field.
@@ -222,6 +224,71 @@ case .local, .unknownLocal:
 
 Do not replace these fields with application defaults: every successfully created
 instance has its required kind or action.
+
+## Message text and inline media
+
+`PrivateMessage.message` now contains displayable text. A properly framed `/me`
+message has its `\u{1}ACTION ` prefix and trailing `\u{1}` removed and sets
+`isAction` to `true`. Other text is preserved. Original framing remains available
+in `MessageParseResult.rawMessage` and `text`.
+
+Emotes are now `[Emote]` on `PrivateMessage`, `UserNotice`, and `Whisper`.
+`PrivateMessage.gifs` is now `[Gif]`. Both are decoded once during parsing;
+`parseEmotes()` and `parseGifs()` have been removed.
+
+**Before**
+
+```swift
+for emote in chat.parseEmotes() {
+  print(emote.name, emote.startIndex, emote.endIndex)
+}
+```
+
+**After**
+
+```swift
+for emote in chat.emotes {
+  print(emote.name, emote.range.unicodeScalarOffsets)
+  if let range = emote.range.stringRange(in: chat.message) {
+    print(chat.message[range])
+  }
+}
+
+if chat.isAction {
+  // Render the message using your application's action style.
+}
+```
+
+`MessageTextRange` replaces the inclusive integer `startIndex` / `endIndex`
+properties on `Emote` and `Gif`. Its offsets count Unicode scalars and use an
+exclusive upper bound: wire range `0-4` becomes `0..<5`. Every range refers to
+its enclosing message's exposed text, including action messages. Do not strip
+`ACTION` framing again or reuse offsets after modifying the message.
+
+`range.text(in:)` returns the scalar substring or nil for out-of-bounds offsets.
+`range.stringRange(in:)` additionally returns nil when a boundary falls inside a
+composed Swift character. Neither helper rounds or clamps offsets. For example,
+`Kappa` in `👋🏽 Kappa` occupies scalar offsets `3..<8`, despite starting at Swift
+character offset 2.
+
+For explicit construction, pass typed arrays and normalized text. Set `isAction`
+when constructing an action. Both media types have public initializers taking a
+validated `MessageTextRange`:
+
+```swift
+let range = MessageTextRange(unicodeScalarOffsets: 3..<8)!
+let emote = Emote(id: "25", name: "Kappa", range: range)
+let chat = PrivateMessage(
+  channel: "example", message: "👋🏽 Kappa", userLogin: "viewer",
+  emotes: [emote], id: "message-id", roomId: "channel-id", userId: "user-id"
+)
+```
+
+Malformed media entries are omitted and reported as `invalidTagValue` diagnostics;
+valid entries and the message survive. Raw tag values remain in the raw envelope.
+`Emote.isAnimated` was removed: an IRC emote ID does not provide reliable animation
+metadata. Resolve image formats in the application using Twitch's assets/API.
+GIF URLs retain their original value.
 
 ## 3. Handle optional payloads and fields
 

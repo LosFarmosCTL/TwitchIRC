@@ -17,7 +17,7 @@ final class UserNoticeSubscriptionTests: XCTestCase {
     XCTAssertEqual(userNotice.badges, ["staff/1", "broadcaster/1", "turbo/1"])
     XCTAssertEqual(userNotice.color, "#008000")
     XCTAssertEqual(userNotice.displayName, "ronni")
-    XCTAssertEqual(userNotice.emotes, "")
+    XCTAssertEqual(userNotice.emotes, [])
     XCTAssertEqual(userNotice.flags, [])
     XCTAssertEqual(userNotice.id, "db25007f-7a18-43eb-9379-80131e44d633")
     XCTAssertEqual(userNotice.userLogin, "ronni")

@@ -2,16 +2,6 @@ import XCTest
 
 @testable import TwitchIRC
 
-// MARK: - Emote Equatable
-extension Emote: Equatable {
-  public static func == (lhs: Emote, rhs: Emote) -> Bool {
-    lhs.id == rhs.id
-      && lhs.startIndex == rhs.startIndex
-      && lhs.endIndex == rhs.endIndex
-      && lhs.name == rhs.name
-  }
-}
-
 // MARK: - PrivateMessage.ReplyParent Equatable (basically)
 func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParent) -> Bool {
   lhs.displayName == rhs.displayName
@@ -38,4 +28,9 @@ func == (lhs: PrivateMessage.PinnedChat, rhs: PrivateMessage.PinnedChat) -> Bool
     && lhs.canonicalAmount == rhs.canonicalAmount
     && lhs.isSystemMessage == rhs.isSystemMessage
     && lhs.level == rhs.level
+}
+
+func expectedEmotes(_ tag: String, in text: String) -> [Emote] {
+  var parser = ParametersParser("emotes=" + tag)
+  return parser.emotes(in: text)
 }

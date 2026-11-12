@@ -83,6 +83,8 @@ public struct PrivateMessage: MessageWithBadges {
   public private(set) var channel = String()
   /// The message sent.
   public private(set) var message = String()
+  /// Whether this message was sent with /me.
+  public private(set) var isAction = false
   /// Badge info.
   public private(set) var badgeInfo = [String]()
   /// User's badges.
@@ -95,10 +97,10 @@ public struct PrivateMessage: MessageWithBadges {
   public private(set) var displayName = String()
   /// User's name with no uppercased/Han characters.
   public private(set) var userLogin = String()
-  /// The string describing emotes of the message.
-  public private(set) var emotes = String()
-  /// The string describing GIFs of the message.
-  public private(set) var gifs = String()
+  /// Decoded emote occurrences in message text.
+  public private(set) var emotes = [Emote]()
+  /// Decoded GIF occurrences in message text.
+  public private(set) var gifs = [Gif]()
   /// Whether or not the message only contains emotes.
   public private(set) var emoteOnly: Bool?
   /// Flags of this message.
@@ -137,14 +139,6 @@ public struct PrivateMessage: MessageWithBadges {
   /// Contains info about unused info and parsing problems.
   public private(set) var parsingLeftOvers = ParsingLeftOvers()
 
-  public func parseEmotes() -> [Emote] {
-    Emote.parse(from: emotes, and: message)
-  }
-
-  public func parseGifs() -> [Gif] {
-    Gif.parse(from: gifs, and: message)
-  }
-
   internal init() {}
 
   init?(contentLhs: String, contentRhs: String) {
@@ -153,6 +147,9 @@ public struct PrivateMessage: MessageWithBadges {
       let userLogin = Self.parseSender(userLoginPart)
     else { return nil }
     self.userLogin = userLogin
+    let content = MessageText(message)
+    self.message = content.text
+    self.isAction = content.isAction
     var parser = ParametersParser(String(infoPart.dropFirst()))
     parseTags(&parser)
     parseLeftOvers(&parser)
@@ -205,8 +202,8 @@ public struct PrivateMessage: MessageWithBadges {
     self.bits = parser.optionalNonEmptyString(for: "bits")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
-    self.emotes = parser.string(for: "emotes")
-    self.gifs = parser.string(for: "gifs")
+    self.emotes = parser.emotes(in: self.message)
+    self.gifs = parser.gifs(in: self.message)
     self.emoteOnly = parser.optionalBool(for: "emote-only")
     self.flags = parser.array(for: "flags")
     self.firstMessage = parser.optionalBool(for: "first-msg")
@@ -255,14 +252,15 @@ public struct PrivateMessage: MessageWithBadges {
   public init(
     channel: String,
     message: String,
+    isAction: Bool = false,
     badgeInfo: [String] = [String](),
     badges: [String] = [String](),
     bits: String? = nil,
     color: String? = nil,
     displayName: String = String(),
     userLogin: String,
-    emotes: String = String(),
-    gifs: String = String(),
+    emotes: [Emote] = [],
+    gifs: [Gif] = [],
     emoteOnly: Bool? = nil,
     flags: [String] = [String](),
     firstMessage: Bool? = nil,
@@ -284,6 +282,7 @@ public struct PrivateMessage: MessageWithBadges {
   ) {
     self.channel = channel
     self.message = message
+    self.isAction = isAction
     self.badgeInfo = badgeInfo
     self.badges = badges
     self.bits = bits

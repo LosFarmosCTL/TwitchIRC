@@ -16,7 +16,7 @@ public struct UserNotice: MessageWithBadges {
   /// The unofficial VIP flag, or nil when absent. Prefer the badge-based `isVIP` property.
   public private(set) var vip: Bool?
   /// User's sent emotes.
-  public private(set) var emotes = String()
+  public private(set) var emotes = [Emote]()
   /// Flags of this notice.
   public private(set) var flags = [String]()
   /// Message's id.
@@ -42,10 +42,6 @@ public struct UserNotice: MessageWithBadges {
   public private(set) var userId = String()
   /// Contains info about unused info and parsing problems.
   public private(set) var parsingLeftOvers = ParsingLeftOvers()
-
-  public func parseEmotes() -> [Emote] {
-    Emote.parse(from: emotes, and: message)
-  }
 
   init?(contentLhs: String, contentRhs: String) {
     guard contentRhs.first == "#", contentLhs.count > 2 else {
@@ -102,7 +98,7 @@ public struct UserNotice: MessageWithBadges {
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.vip = parser.optionalBool(for: "vip")
-    self.emotes = parser.string(for: "emotes")
+    self.emotes = parser.emotes(in: self.message)
     self.flags = parser.array(for: "flags")
     self.id = parser.string(for: "id")
     self.userLogin = parser.string(for: "login")
@@ -123,7 +119,7 @@ public struct UserNotice: MessageWithBadges {
     color: String? = nil,
     displayName: String = String(),
     vip: Bool? = nil,
-    emotes: String = String(),
+    emotes: [Emote] = [],
     flags: [String] = [String](),
     id: String,
     userLogin: String,

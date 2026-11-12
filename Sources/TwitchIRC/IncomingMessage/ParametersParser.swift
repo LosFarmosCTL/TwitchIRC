@@ -131,6 +131,10 @@ struct ParametersParser {
     }
   }
 
+  mutating func recordInvalid(key: String, value: String, expectedType: String) {
+    unparsedKeys.append((pair: (key: key, value: value), type: expectedType))
+  }
+
   mutating func optionalUInt(for key: String) -> UInt? {
     if let stored = self.get(for: key) {
       if let uint = UInt(stored.element.value) {
