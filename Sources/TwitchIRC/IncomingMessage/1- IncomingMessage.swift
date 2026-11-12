@@ -39,68 +39,6 @@ public enum IncomingMessage {
   /// A pong.
   case pong
 
-  /// Parses all messages included.
-  public static func parse(ircOutput: String) -> [(message: Self?, text: String)] {
-    ircOutput.componentsSeparatedBy(separator: "\r\n")
-      .filter({ !$0.isEmpty })
-      .map({ (parseMessage(message: $0), $0) })
-  }
-
-  private static func parseMessage(message: String) -> Self? {
-    guard let (contentLhs, messageRhs) = message.componentsOneSplit(separatedBy: "tmi.twitch.tv")
-    else {
-      return nil
-    }
-    let rhs = String(messageRhs.dropFirst())
-    let (identifier, contentRhs) = rhs.componentsOneSplit(separatedBy: " ") ?? (rhs, "")
-    if identifier.isEmpty {
-      return parseHeartbeat(contentLhs)
-    }
-    if let numeric = parseNumericReply(identifier, contentRhs: contentRhs) {
-      return numeric
-    }
-    return commandParsers[identifier]?(contentLhs, contentRhs)
-  }
-
-  private static func parseHeartbeat(_ content: String) -> Self? {
-    switch content {
-    case "PING :": return .ping
-    case "PONG :": return .pong
-    default: return nil
-    }
-  }
-
-  private static func parseNumericReply(_ identifier: String, contentRhs: String) -> Self? {
-    switch identifier {
-    case "001", "002", "003", "004", "372", "375", "376":
-      return ConnectionNotice(id: identifier, contentRhs: contentRhs).map(Self.connectionNotice)
-    case "353", "366":
-      return ChannelEntrance(id: identifier, contentRhs: contentRhs).map(Self.channelEntrance)
-    case "421":
-      return UnknownCommand(contentRhs: contentRhs).map(Self.unknownCommand)
-    default: return nil
-    }
-  }
-
-  private static let commandParsers: [String: @Sendable (String, String) -> Self?] = [
-    "GLOBALUSERSTATE": { lhs, _ in .globalUserState(GlobalUserState(contentLhs: lhs)) },
-    "PRIVMSG": { lhs, rhs in
-      PrivateMessage(contentLhs: lhs, contentRhs: rhs).map(Self.privateMessage)
-    },
-    "JOIN": { lhs, rhs in Join(contentLhs: lhs, contentRhs: rhs).map(Self.join) },
-    "PART": { lhs, rhs in Part(contentLhs: lhs, contentRhs: rhs).map(Self.part) },
-    "CLEARCHAT": { lhs, rhs in ClearChat(contentLhs: lhs, contentRhs: rhs).map(Self.clearChat) },
-    "CLEARMSG": { lhs, rhs in ClearMessage(contentLhs: lhs, contentRhs: rhs).map(Self.clearMessage)
-    },
-    "HOSTTARGET": { _, rhs in HostTarget(contentRhs: rhs).map(Self.hostTarget) },
-    "NOTICE": { lhs, rhs in Notice(contentLhs: lhs, contentRhs: rhs).map(Self.notice) },
-    "ROOMSTATE": { lhs, rhs in RoomState(contentLhs: lhs, contentRhs: rhs).map(Self.roomState) },
-    "USERNOTICE": { lhs, rhs in UserNotice(contentLhs: lhs, contentRhs: rhs).map(Self.userNotice) },
-    "USERSTATE": { lhs, rhs in UserState(contentLhs: lhs, contentRhs: rhs).map(Self.userState) },
-    "CAP": { _, rhs in Capabilities(contentRhs: rhs).map(Self.capabilities) },
-    "WHISPER": { lhs, rhs in Whisper(contentLhs: lhs, contentRhs: rhs).map(Self.whisper) },
-    "RECONNECT": { _, _ in .reconnect },
-  ]
 }
 
 extension IncomingMessage: Sendable {}

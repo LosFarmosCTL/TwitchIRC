@@ -32,6 +32,9 @@ public struct Notice {
   /// Timestamp in milliseconds since the Unix epoch, when supplied.
   public private(set) var tmiSentTs: UInt?
 
+  /// Unconsumed tags and recoverable field-decoding issues.
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+
   init?(contentLhs: String, contentRhs: String) {
     if contentLhs.hasPrefix("@"),
       contentRhs.first == "#",
@@ -45,6 +48,7 @@ public struct Notice {
       }
       self.rawMessageId = messageIdValue
       self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
+      self.parsingLeftOvers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
       if let messageId = MessageID(rawValue: messageIdValue) {
         self.kind = .local(
           channel: String(channel),
@@ -70,11 +74,13 @@ public struct Notice {
   public init(
     kind: Kind,
     rawMessageId: String? = nil,
-    tmiSentTs: UInt? = nil
+    tmiSentTs: UInt? = nil,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {
     self.kind = kind
     self.rawMessageId = rawMessageId
     self.tmiSentTs = tmiSentTs
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 

@@ -9,12 +9,12 @@ A dependancy-free Swift package that takes care of parsing and serializing Twitc
 To parse Twitch messages, use `IncomingMessage.parse(ircOutput:)`:
 ```swift
 /// `websocketOutput` here represents the `String` Twitch sent you over IRC.
-let twitchMessages: [(message: IncomingMessage?, text: String)] = IncomingMessage.parse(ircOutput: websocketOutput)
+let twitchMessages: [MessageParseResult] = IncomingMessage.parse(ircOutput: websocketOutput)
 ```
 Then to use:
 ```swift
-for (message, text) in twitchMessages {
-    if let message = message {
+for result in twitchMessages {
+    if let message = result.message {
         switch message {
         /// Switch over each case of the `IncomingMessage` and do whatever you want.
         }
@@ -23,8 +23,8 @@ for (message, text) in twitchMessages {
 ```
 As an example, this will print any normal chat messages viewers send, in the channels you've joined:
 ```swift
-for (message, _) in twitchMessages {
-    if let message = message {
+for result in twitchMessages {
+    if let message = result.message {
         switch message {
         case let .privateMessage(privateMessage):
             print("In channel \(privateMessage.channel), user \(privateMessage.displayName) sent a message: \(privateMessage.message)")

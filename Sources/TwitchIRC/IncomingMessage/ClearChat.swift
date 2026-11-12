@@ -16,6 +16,9 @@ public struct ClearChat {
   /// Timestamp in milliseconds since the Unix epoch, when supplied.
   public private(set) var tmiSentTs: UInt?
 
+  /// Unconsumed tags and recoverable field-decoding issues.
+  public private(set) var parsingLeftOvers = ParsingLeftOvers()
+
   // MARK: Convenience stuff
   public var userIsPermanentlyBanned: Bool {
     banDuration == nil && userLogin != nil
@@ -43,6 +46,8 @@ public struct ClearChat {
       self.roomId = parser.optionalString(for: "room-id")
       self.targetUserId = parser.optionalString(for: "target-user-id")
       self.tmiSentTs = parser.optionalUInt(for: "tmi-sent-ts")
+      self.parsingLeftOvers = parser.getLeftOvers(
+        excludedUnavailableKeys: ["ban-duration", "room-id", "target-user-id", "tmi-sent-ts"])
     }
   }
   /// Creates a message from its required fields and optional metadata.
@@ -52,7 +57,8 @@ public struct ClearChat {
     banDuration: UInt? = Optional<UInt>.none,
     roomId: String? = nil,
     targetUserId: String? = nil,
-    tmiSentTs: UInt? = nil
+    tmiSentTs: UInt? = nil,
+    parsingLeftOvers: ParsingLeftOvers = ParsingLeftOvers()
   ) {
     self.channel = channel
     self.userLogin = userLogin
@@ -60,6 +66,7 @@ public struct ClearChat {
     self.roomId = roomId
     self.targetUserId = targetUserId
     self.tmiSentTs = tmiSentTs
+    self.parsingLeftOvers = parsingLeftOvers
   }
 }
 

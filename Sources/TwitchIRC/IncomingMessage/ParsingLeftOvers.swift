@@ -1,7 +1,6 @@
 /// The remaining stuff after parsing of messages is done.
 /// Useful for making sure you've not missed any data.
-/// This type should always be empty, otherwise there is a parsing problem.
-/// Please report all problems on https://github.com/MahdiBM/TwitchIRC/issues.
+/// Unused tags are informational; missing tags and invalid values are reported separately.
 public struct ParsingLeftOvers {
 
   /// A pair of key-value that was not used during parsing.
@@ -32,6 +31,13 @@ public struct ParsingLeftOvers {
   public private(set) var unavailableKeys = [String]()
   /// Keys that were failed to be parsed into a certain type.
   public private(set) var unparsedKeys = [UnparsedKey]()
+  /// Structured diagnostics. Unconsumed tags do not indicate malformed input.
+  public var diagnostics: [ParsingDiagnostic] {
+    unusedPairs.map { .unusedTag(name: $0.key, value: $0.value) }
+      + unavailableKeys.map { .missingTag(name: $0) }
+      + unparsedKeys.map { .invalidTagValue(name: $0.key, value: $0.value, expectedType: $0.type) }
+  }
+
   public init(
     unusedPairs: [UnusedPair] = [], unavailableKeys: [String] = [], unparsedKeys: [UnparsedKey] = []
   ) {
