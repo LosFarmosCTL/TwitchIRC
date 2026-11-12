@@ -19,7 +19,8 @@ final class PrivateMessageTests: XCTestCase {
     XCTAssertEqual(msg.channel, "ronni")
     XCTAssertEqual(msg.message, "Kappa Keepo Kappa")
     XCTAssertEqual(msg.badgeInfo, [])
-    XCTAssertEqual(msg.badges, ["global_mod/1", "turbo/1"])
+    XCTAssertEqual(
+      msg.badges, [Badge(setID: "global_mod", version: "1"), Badge(setID: "turbo", version: "1")])
     XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#0D4200")
     XCTAssertEqual(msg.displayName, "ronni")
@@ -55,7 +56,8 @@ final class PrivateMessageTests: XCTestCase {
     XCTAssertEqual(msg.channel, "ronni")
     XCTAssertEqual(msg.message, "cheer100")
     XCTAssertEqual(msg.badgeInfo, [])
-    XCTAssertEqual(msg.badges, ["staff/1", "bits/1000"])
+    XCTAssertEqual(
+      msg.badges, [Badge(setID: "staff", version: "1"), Badge(setID: "bits", version: "1000")])
     XCTAssertEqual(msg.bits, "100")
     XCTAssertNil(msg.color)
     XCTAssertEqual(msg.displayName, "ronni")
@@ -187,7 +189,7 @@ final class PrivateMessageTests: XCTestCase {
     XCTAssertEqual(msg.channel, "novastark_7")
     XCTAssertEqual(msg.message, "jajaja xD")
     XCTAssertEqual(msg.badgeInfo, [])
-    XCTAssertEqual(msg.badges, ["vip/1"])
+    XCTAssertEqual(msg.badges, [Badge(setID: "vip", version: "1")])
     XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#0000FF")
     XCTAssertEqual(msg.displayName, "flexvegapro3")

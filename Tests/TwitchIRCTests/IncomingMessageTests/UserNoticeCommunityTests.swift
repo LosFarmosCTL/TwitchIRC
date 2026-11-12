@@ -14,7 +14,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.channel, "othertestchannel")
     XCTAssertEqual(userNotice.message, "")
     XCTAssertEqual(userNotice.badgeInfo, [])
-    XCTAssertEqual(userNotice.badges, ["turbo/1"])
+    XCTAssertEqual(userNotice.badges, [Badge(setID: "turbo", version: "1")])
     XCTAssertEqual(userNotice.color, "#9ACD32")
     XCTAssertEqual(userNotice.displayName, "TestChannel")
     XCTAssertEqual(userNotice.emotes, [])
@@ -74,8 +74,13 @@ final class UserNoticeCommunityTests: XCTestCase {
 
     XCTAssertEqual(userNotice.channel, "dillydilby")
     XCTAssertEqual(userNotice.message, "")
-    XCTAssertEqual(userNotice.badgeInfo, ["subscriber/1"])
-    XCTAssertEqual(userNotice.badges, ["vip/1", "subscriber/0", "bits/100"])
+    XCTAssertEqual(userNotice.badgeInfo, [BadgeInfo(setID: "subscriber", value: "1")])
+    XCTAssertEqual(
+      userNotice.badges,
+      [
+        Badge(setID: "vip", version: "1"), Badge(setID: "subscriber", version: "0"),
+        Badge(setID: "bits", version: "100"),
+      ])
     XCTAssertEqual(userNotice.color, "#8A2BE2")
     XCTAssertEqual(userNotice.displayName, "pazza_cr4")
     XCTAssertEqual(userNotice.emotes, [])
@@ -109,8 +114,10 @@ final class UserNoticeCommunityTests: XCTestCase {
 
     XCTAssertEqual(userNotice.channel, "carl_the_legend")
     XCTAssertEqual(userNotice.message, "")
-    XCTAssertEqual(userNotice.badgeInfo, ["subscriber/13"])
-    XCTAssertEqual(userNotice.badges, ["subscriber/12", "glitchcon2020/1"])
+    XCTAssertEqual(userNotice.badgeInfo, [BadgeInfo(setID: "subscriber", value: "13")])
+    XCTAssertEqual(
+      userNotice.badges,
+      [Badge(setID: "subscriber", version: "12"), Badge(setID: "glitchcon2020", version: "1")])
     XCTAssertEqual(userNotice.color, "#1E90FF")
     XCTAssertEqual(userNotice.displayName, "GissihatHunger")
     XCTAssertEqual(userNotice.emotes, [])

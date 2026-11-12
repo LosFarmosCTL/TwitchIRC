@@ -6,16 +6,16 @@ public struct SharedChatSource: MessageWithBadges {
   /// The source channel's Twitch identifier.
   public private(set) var roomId: String?
   /// Badge metadata in the source channel.
-  public private(set) var badgeInfo = [String]()
+  public private(set) var badgeInfo = [BadgeInfo]()
   /// The chatter's badges in the source channel.
-  public private(set) var badges = [String]()
+  public private(set) var badges = [Badge]()
 
   init?(parser: inout ParametersParser) {
     guard parser.contains(any: Self.tagKeys) else { return nil }
     self.id = parser.optionalNonEmptyString(for: "source-id")
     self.roomId = parser.optionalNonEmptyString(for: "source-room-id")
-    self.badgeInfo = parser.array(for: "source-badge-info")
-    self.badges = parser.array(for: "source-badges")
+    self.badgeInfo = parser.badgeInfo(for: "source-badge-info")
+    self.badges = parser.badges(for: "source-badges")
   }
 
   static let tagKeys = ["source-id", "source-room-id", "source-badge-info", "source-badges"]
@@ -23,8 +23,8 @@ public struct SharedChatSource: MessageWithBadges {
   public init(
     id: String?,
     roomId: String?,
-    badgeInfo: [String] = [String](),
-    badges: [String] = [String]()
+    badgeInfo: [BadgeInfo] = [],
+    badges: [Badge] = []
   ) {
     self.id = id
     self.roomId = roomId

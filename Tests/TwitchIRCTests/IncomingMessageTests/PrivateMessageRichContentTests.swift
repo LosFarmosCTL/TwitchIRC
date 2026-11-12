@@ -12,8 +12,13 @@ final class PrivateMessageRichContentTests: XCTestCase {
 
     XCTAssertEqual(msg.channel, "juicyjcr")
     XCTAssertEqual(msg.message, "will gift 5 subs as well if u clutch up")
-    XCTAssertEqual(msg.badgeInfo, ["subscriber/8"])
-    XCTAssertEqual(msg.badges, ["vip/1", "subscriber/6", "sub-gift-leader/1"])
+    XCTAssertEqual(msg.badgeInfo, [BadgeInfo(setID: "subscriber", value: "8")])
+    XCTAssertEqual(
+      msg.badges,
+      [
+        Badge(setID: "vip", version: "1"), Badge(setID: "subscriber", version: "6"),
+        Badge(setID: "sub-gift-leader", version: "1"),
+      ])
     XCTAssertNil(msg.bits)
     XCTAssertEqual(msg.color, "#00FF7F")
     XCTAssertEqual(msg.displayName, "r3born_9999")

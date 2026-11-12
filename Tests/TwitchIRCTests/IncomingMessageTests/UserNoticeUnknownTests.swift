@@ -19,7 +19,7 @@ final class UserNoticeUnknownTests: XCTestCase {
       XCTAssertEqual(notice.userId, "123")
       XCTAssertEqual(notice.userLogin, "viewer")
       XCTAssertEqual(notice.displayName, "Viewer")
-      XCTAssertEqual(notice.badges, ["lead_moderator/1"])
+      XCTAssertEqual(notice.badges, [Badge(setID: "lead_moderator", version: "1")])
       XCTAssertTrue(notice.isMod)
       XCTAssertEqual(notice.systemMessage, #"A\sfuture\snotice"#)
       XCTAssertEqual(notice.tmiSentTs, 1_780_142_048_673)

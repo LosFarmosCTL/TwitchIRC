@@ -86,9 +86,9 @@ public struct PrivateMessage: MessageWithBadges {
   /// Whether this message was sent with /me.
   public private(set) var isAction = false
   /// Badge info.
-  public private(set) var badgeInfo = [String]()
+  public private(set) var badgeInfo = [BadgeInfo]()
   /// User's badges.
-  public private(set) var badges = [String]()
+  public private(set) var badges = [Badge]()
   /// The bits that were donated, if any.
   public private(set) var bits: String?
   /// User's in-chat name color.
@@ -197,8 +197,8 @@ public struct PrivateMessage: MessageWithBadges {
   }
 
   private mutating func parseTags(_ parser: inout ParametersParser) {
-    self.badgeInfo = parser.array(for: "badge-info")
-    self.badges = parser.array(for: "badges")
+    self.badgeInfo = parser.badgeInfo(for: "badge-info")
+    self.badges = parser.badges(for: "badges")
     self.bits = parser.optionalNonEmptyString(for: "bits")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
@@ -253,8 +253,8 @@ public struct PrivateMessage: MessageWithBadges {
     channel: String,
     message: String,
     isAction: Bool = false,
-    badgeInfo: [String] = [String](),
-    badges: [String] = [String](),
+    badgeInfo: [BadgeInfo] = [],
+    badges: [Badge] = [],
     bits: String? = nil,
     color: String? = nil,
     displayName: String = String(),

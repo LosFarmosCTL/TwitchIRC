@@ -15,7 +15,12 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(msg.message, "Howdy!")
     XCTAssertEqual(msg.source?.id, msg.id)
     XCTAssertEqual(msg.source?.roomId, msg.roomId)
-    XCTAssertEqual(msg.source?.badges, ["staff/1", "twitchcon-2024---san-diego/1"])
+    XCTAssertEqual(
+      msg.source?.badges,
+      [
+        Badge(setID: "staff", version: "1"),
+        Badge(setID: "twitchcon-2024---san-diego", version: "1"),
+      ])
     XCTAssertEqual(msg.source?.badgeInfo, [])
     XCTAssertEqual(msg.firstMessage, true)
     XCTAssertEqual(msg.returningChatter, false)
@@ -34,10 +39,12 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(msg.id, "17152d83-1fc8-4869-9d44-5157ee212ff1")
     XCTAssertEqual(msg.source?.roomId, "12826")
     XCTAssertEqual(msg.source?.id, "4dcec0e7-7f79-4a82-8aed-91aac9d0640c")
-    XCTAssertEqual(msg.badges, ["staff/1"])
+    XCTAssertEqual(msg.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(msg.badgeInfo, [])
-    XCTAssertEqual(msg.source?.badges, ["staff/1", "subscriber/12"])
-    XCTAssertEqual(msg.source?.badgeInfo, ["subscriber/12"])
+    XCTAssertEqual(
+      msg.source?.badges,
+      [Badge(setID: "staff", version: "1"), Badge(setID: "subscriber", version: "12")])
+    XCTAssertEqual(msg.source?.badgeInfo, [BadgeInfo(setID: "subscriber", value: "12")])
     XCTAssertEqual(msg.source?.isSubscriber, true)
     XCTAssertFalse(msg.isSubscriber)
     XCTAssertEqual(msg.message, "Howdy!")
@@ -76,10 +83,12 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(userNotice.source?.id, "source-notice")
     XCTAssertEqual(userNotice.rawMessageId, "sharedchatnotice")
     XCTAssertEqual(userNotice.sourceMessageId, "resub")
-    XCTAssertEqual(userNotice.badges, ["staff/1"])
+    XCTAssertEqual(userNotice.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(userNotice.badgeInfo, [])
-    XCTAssertEqual(userNotice.source?.badges, ["staff/1", "subscriber/6"])
-    XCTAssertEqual(userNotice.source?.badgeInfo, ["subscriber/6"])
+    XCTAssertEqual(
+      userNotice.source?.badges,
+      [Badge(setID: "staff", version: "1"), Badge(setID: "subscriber", version: "6")])
+    XCTAssertEqual(userNotice.source?.badgeInfo, [BadgeInfo(setID: "subscriber", value: "6")])
     XCTAssertEqual(userNotice.message, "Great stream -- keep it up!")
     XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
     XCTAssertEqual(userNotice.userLogin, "ronni")
@@ -136,8 +145,8 @@ final class SharedChatTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "local-unknown")
     XCTAssertEqual(userNotice.source?.roomId, "12826")
     XCTAssertEqual(userNotice.source?.id, "source-unknown")
-    XCTAssertEqual(userNotice.source?.badges, ["subscriber/6"])
-    XCTAssertEqual(userNotice.source?.badgeInfo, ["subscriber/6"])
+    XCTAssertEqual(userNotice.source?.badges, [Badge(setID: "subscriber", version: "6")])
+    XCTAssertEqual(userNotice.source?.badgeInfo, [BadgeInfo(setID: "subscriber", value: "6")])
     XCTAssertEqual(userNotice.message, "Still visible")
     XCTAssertEqual(userNotice.systemMessage, "Future!")
     XCTAssertEqual(userNotice.userLogin, "ronni")

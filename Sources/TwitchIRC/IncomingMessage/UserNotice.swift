@@ -6,9 +6,9 @@ public struct UserNotice: MessageWithBadges {
   /// Possible message sent by user.
   public private(set) var message = String()
   /// User's badge info.
-  public private(set) var badgeInfo = [String]()
+  public private(set) var badgeInfo = [BadgeInfo]()
   /// User's badges.
-  public private(set) var badges = [String]()
+  public private(set) var badges = [Badge]()
   /// User's in-chat name color.
   public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
@@ -93,8 +93,8 @@ public struct UserNotice: MessageWithBadges {
     )
   }
   private mutating func parseCommonTags(_ parser: inout ParametersParser) {
-    self.badgeInfo = parser.array(for: "badge-info")
-    self.badges = parser.array(for: "badges")
+    self.badgeInfo = parser.badgeInfo(for: "badge-info")
+    self.badges = parser.badges(for: "badges")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.vip = parser.optionalBool(for: "vip")
@@ -114,8 +114,8 @@ public struct UserNotice: MessageWithBadges {
   public init(
     channel: String,
     message: String = String(),
-    badgeInfo: [String] = [String](),
-    badges: [String] = [String](),
+    badgeInfo: [BadgeInfo] = [],
+    badges: [Badge] = [],
     color: String? = nil,
     displayName: String = String(),
     vip: Bool? = nil,

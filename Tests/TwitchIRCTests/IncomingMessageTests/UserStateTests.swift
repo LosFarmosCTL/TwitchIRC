@@ -12,7 +12,7 @@ final class UserStateTests: XCTestCase {
 
     XCTAssertEqual(userState.channel, "dallas")
     XCTAssertEqual(userState.badgeInfo, [])
-    XCTAssertEqual(userState.badges, ["staff/1"])
+    XCTAssertEqual(userState.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(userState.color, "#0D4200")
     XCTAssertEqual(userState.displayName, "ronni")
     XCTAssertEqual(
@@ -31,7 +31,7 @@ final class UserStateTests: XCTestCase {
 
     XCTAssertEqual(userState.channel, "dallas")
     XCTAssertEqual(userState.badgeInfo, [])
-    XCTAssertEqual(userState.badges, ["staff/1"])
+    XCTAssertEqual(userState.badges, [Badge(setID: "staff", version: "1")])
     XCTAssertEqual(userState.color, "#0D4200")
     XCTAssertEqual(userState.displayName, "ronni")
     XCTAssertEqual(

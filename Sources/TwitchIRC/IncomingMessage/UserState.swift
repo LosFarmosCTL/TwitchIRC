@@ -4,9 +4,9 @@ public struct UserState: MessageWithBadges {
   /// Channel's name with no uppercased/Han characters.
   public private(set) var channel = String()
   /// User's badge info.
-  public private(set) var badgeInfo = [String]()
+  public private(set) var badgeInfo = [BadgeInfo]()
   /// User's badges.
-  public private(set) var badges = [String]()
+  public private(set) var badges = [Badge]()
   /// User's in-chat name color.
   public private(set) var color: String?
   /// User's display name with uppercased/Han characters.
@@ -30,8 +30,8 @@ public struct UserState: MessageWithBadges {
 
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
 
-    self.badgeInfo = parser.array(for: "badge-info")
-    self.badges = parser.array(for: "badges")
+    self.badgeInfo = parser.badgeInfo(for: "badge-info")
+    self.badges = parser.badges(for: "badges")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emoteSets = parser.array(for: "emote-sets")
@@ -48,8 +48,8 @@ public struct UserState: MessageWithBadges {
   /// Creates a message from its required fields and optional metadata.
   public init(
     channel: String,
-    badgeInfo: [String] = [String](),
-    badges: [String] = [String](),
+    badgeInfo: [BadgeInfo] = [],
+    badges: [Badge] = [],
     color: String? = nil,
     displayName: String = String(),
     emoteSets: [String] = [String](),

@@ -5,7 +5,7 @@ public struct Whisper: MessageWithBadges {
   /// The message sent.
   public private(set) var message = String()
   /// Sender's badges.
-  public private(set) var badges = [String]()
+  public private(set) var badges = [Badge]()
   /// Sender's in-chat name color.
   public private(set) var color: String?
   /// Sender's display name with uppercased/Han characters.
@@ -37,7 +37,7 @@ public struct Whisper: MessageWithBadges {
 
     var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
 
-    self.badges = parser.array(for: "badges")
+    self.badges = parser.badges(for: "badges")
     self.color = parser.optionalNonEmptyString(for: "color")
     self.displayName = parser.string(for: "display-name")
     self.emotes = parser.emotes(in: self.message)
@@ -55,7 +55,7 @@ public struct Whisper: MessageWithBadges {
   public init(
     receiver: String,
     message: String,
-    badges: [String] = [String](),
+    badges: [Badge] = [],
     color: String? = nil,
     displayName: String = String(),
     emotes: [Emote] = [],

@@ -7,13 +7,13 @@ final class MessageWithBadgesTests: XCTestCase {
   func testAllTrue() throws {
     let message = MockMessageWithBadges(
       badges: [
-        "global_mod/1",
-        "moderator/1",
-        "broadcaster/1",
-        "subscriber/1",
-        "vip/1",
-        "turbo/1",
-        "staff/1",
+        Badge(setID: "global_mod", version: "1"),
+        Badge(setID: "moderator", version: "1"),
+        Badge(setID: "broadcaster", version: "1"),
+        Badge(setID: "subscriber", version: "1"),
+        Badge(setID: "vip", version: "1"),
+        Badge(setID: "turbo", version: "1"),
+        Badge(setID: "staff", version: "1"),
       ]
     )
 
@@ -28,15 +28,22 @@ final class MessageWithBadgesTests: XCTestCase {
 
   func testModeratorBadgeNames() {
     for badge in ["moderator/1", "lead_moderator/1", "lead_moderator/2"] {
-      XCTAssertTrue(MockMessageWithBadges(badges: [badge]).isMod, badge)
+      XCTAssertTrue(
+        MockMessageWithBadges(badges: [
+          Badge(setID: String(badge.split(separator: "/")[0]), version: "1")
+        ]).isMod, badge)
     }
     for badge in ["moderator_extra/1", "lead_moderator_extra/1", "global_mod/1", "vip/1"] {
-      XCTAssertFalse(MockMessageWithBadges(badges: [badge]).isMod, badge)
+      XCTAssertFalse(
+        MockMessageWithBadges(badges: [
+          Badge(setID: String(badge.split(separator: "/")[0]), version: "1")
+        ]).isMod, badge)
     }
   }
 
   func testLeadModeratorInSharedChatSource() {
-    let source = SharedChatSource(id: "source", roomId: "channel", badges: ["lead_moderator/1"])
+    let source = SharedChatSource(
+      id: "source", roomId: "channel", badges: [Badge(setID: "lead_moderator", version: "1")])
     XCTAssertTrue(source.isMod)
   }
 
@@ -54,5 +61,5 @@ final class MessageWithBadgesTests: XCTestCase {
 }
 
 private struct MockMessageWithBadges: MessageWithBadges {
-  let badges: [String]
+  let badges: [Badge]
 }

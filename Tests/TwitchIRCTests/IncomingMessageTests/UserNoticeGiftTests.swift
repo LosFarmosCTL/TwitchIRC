@@ -14,7 +14,9 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.channel, "forstycup")
     XCTAssertEqual(userNotice.message, "")
     XCTAssertEqual(userNotice.badgeInfo, [])
-    XCTAssertEqual(userNotice.badges, ["staff/1", "premium/1"])
+    XCTAssertEqual(
+      userNotice.badges,
+      [Badge(setID: "staff", version: "1"), Badge(setID: "premium", version: "1")])
     XCTAssertEqual(userNotice.color, "#0000FF")
     XCTAssertEqual(userNotice.displayName, "TWW2")
     XCTAssertEqual(userNotice.emotes, [])
@@ -58,7 +60,9 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.channel, "qa_subs_partner")
     XCTAssertEqual(userNotice.message, "")
     XCTAssertEqual(userNotice.badgeInfo, [])
-    XCTAssertEqual(userNotice.badges, ["broadcaster/1", "subscriber/6"])
+    XCTAssertEqual(
+      userNotice.badges,
+      [Badge(setID: "broadcaster", version: "1"), Badge(setID: "subscriber", version: "6")])
     XCTAssertNil(userNotice.color)
     XCTAssertEqual(userNotice.displayName, "qa_subs_partner")
     XCTAssertEqual(userNotice.emotes, [])
@@ -198,8 +202,10 @@ final class UserNoticeGiftTests: XCTestCase {
 
     XCTAssertEqual(userNotice.channel, "shellive")
     XCTAssertEqual(userNotice.message, "")
-    XCTAssertEqual(userNotice.badgeInfo, ["subscriber/5"])
-    XCTAssertEqual(userNotice.badges, ["subscriber/3", "sub-gifter/10"])
+    XCTAssertEqual(userNotice.badgeInfo, [BadgeInfo(setID: "subscriber", value: "5")])
+    XCTAssertEqual(
+      userNotice.badges,
+      [Badge(setID: "subscriber", version: "3"), Badge(setID: "sub-gifter", version: "10")])
     XCTAssertNil(userNotice.color)
     XCTAssertEqual(userNotice.displayName, "EABare")
     XCTAssertEqual(userNotice.emotes, [])
@@ -251,8 +257,10 @@ final class UserNoticeGiftTests: XCTestCase {
 
     XCTAssertEqual(userNotice.channel, "domino_stein")
     XCTAssertEqual(userNotice.message, "")
-    XCTAssertEqual(userNotice.badgeInfo, ["subscriber/1"])
-    XCTAssertEqual(userNotice.badges, ["subscriber/0", "sub-gifter/1"])
+    XCTAssertEqual(userNotice.badgeInfo, [BadgeInfo(setID: "subscriber", value: "1")])
+    XCTAssertEqual(
+      userNotice.badges,
+      [Badge(setID: "subscriber", version: "0"), Badge(setID: "sub-gifter", version: "1")])
     XCTAssertEqual(userNotice.color, "#8422B2")
     XCTAssertEqual(userNotice.displayName, "ItsMeekz")
     XCTAssertEqual(userNotice.emotes, [])

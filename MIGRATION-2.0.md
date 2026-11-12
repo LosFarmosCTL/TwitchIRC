@@ -16,6 +16,8 @@ more specific adjustments.
   fields no longer use implicitly unwrapped optionals.
 - [Message text and inline media](#message-text-and-inline-media): use normalized
   action text, typed media arrays, and Unicode scalar ranges.
+- [Structured badges](#structured-badges-and-badge-metadata): read set IDs,
+  asset versions, and additional metadata without splitting strings.
 - [Missing metadata](#3-handle-optional-payloads-and-fields): replace empty-payload
   and default-value checks with optional handling. Preserve existing room settings
   when a partial `ROOMSTATE` update omits a field.
@@ -289,6 +291,47 @@ valid entries and the message survive. Raw tag values remain in the raw envelope
 `Emote.isAnimated` was removed: an IRC emote ID does not provide reliable animation
 metadata. Resolve image formats in the application using Twitch's assets/API.
 GIF URLs retain their original value.
+
+## Structured badges and badge metadata
+
+All `badges` properties and initializer arguments are now `[Badge]`, including
+`SharedChatSource.badges` and the `MessageWithBadges` protocol. All `badgeInfo`
+properties and arguments are now `[BadgeInfo]`.
+
+**Before**
+
+```swift
+for badge in chat.badges {
+  let parts = badge.split(separator: "/")
+  print(parts[0], parts[1])
+}
+```
+
+**After**
+
+```swift
+for badge in chat.badges {
+  print(badge.setID, badge.version)
+}
+
+let subscriber = chat.badgeInfo.first { $0.setID == "subscriber" }
+print(subscriber?.value as Any)
+
+let badge = Badge(setID: "subscriber", version: "0")
+let info = BadgeInfo(setID: "subscriber", value: "30")
+```
+
+Badge versions select assets; badge metadata carries additional information.
+For example, `subscriber/0` in `badges` and `subscriber/30` in `badge-info`
+represent an asset version and subscription tenure respectively. They remain
+separate values. IDs, versions, and metadata are strings so unfamiliar badge
+sets and nonnumeric versions survive parsing. Order and duplicates are preserved.
+Malformed entries produce diagnostics and are omitted; valid entries survive.
+Raw values remain available in the raw envelope.
+
+Role helpers such as `isMod` and `isSubscriber` remain available. They now match
+exact set IDs; names such as `subscriber_extra` do not imply subscriber status.
+Both `moderator` and `lead_moderator` continue to satisfy `isMod`.
 
 ## 3. Handle optional payloads and fields
 
