@@ -30,6 +30,9 @@ public struct Notice {
   /// The local notice identifier exactly as received, including underscores.
   /// IRC tag: `msg-id`.
   public private(set) var rawCode: String?
+  /// The user targeted by the action, when supplied; nil when absent or empty.
+  /// IRC tag: `target-user-id`.
+  public private(set) var targetUserID: String?
   /// The server timestamp, in milliseconds since the Unix epoch; nil when absent.
   /// IRC tag: `tmi-sent-ts`.
   public private(set) var timestampMilliseconds: UInt?
@@ -38,19 +41,18 @@ public struct Notice {
   public private(set) var parsingLeftovers = ParsingLeftovers()
 
   init?(contentLhs: String, contentRhs: String) {
+    if contentLhs.hasPrefix("@") {
+      var parser = ParametersParser(String(contentLhs.dropFirst().dropLast(2)))
+      self.rawCode = parser.optionalNonEmptyString(for: "msg-id")
+      self.targetUserID = parser.optionalNonEmptyString(for: "target-user-id")
+      self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
+      self.parsingLeftovers = parser.getLeftOvers(
+        excludedUnavailableKeys: ["msg-id", "target-user-id", "tmi-sent-ts"])
+    }
     if contentLhs.hasPrefix("@"),
-      contentRhs.first == "#",
+      contentRhs.first == "#", let messageIDValue = rawCode,
       let (channel, message) = contentRhs.dropFirst().componentsOneSplit(separatedBy: " :")
     {
-      var parser = ParametersParser(String(contentLhs.dropFirst().dropLast(2)))
-      guard let messageIDValue = parser.optionalString(for: "msg-id"),
-        !messageIDValue.isEmpty
-      else {
-        return nil
-      }
-      self.rawCode = messageIDValue
-      self.timestampMilliseconds = parser.optionalUInt(for: "tmi-sent-ts")
-      self.parsingLeftovers = parser.getLeftOvers(excludedUnavailableKeys: ["tmi-sent-ts"])
       if let code = Code(rawValue: messageIDValue) {
         self.kind = .local(
           channel: String(channel),
@@ -76,11 +78,13 @@ public struct Notice {
   public init(
     kind: Kind,
     rawCode: String? = nil,
+    targetUserID: String? = nil,
     timestampMilliseconds: UInt? = nil,
     parsingLeftovers: ParsingLeftovers = ParsingLeftovers()
   ) {
     self.kind = kind
     self.rawCode = rawCode
+    self.targetUserID = targetUserID
     self.timestampMilliseconds = timestampMilliseconds
     self.parsingLeftovers = parsingLeftovers
   }

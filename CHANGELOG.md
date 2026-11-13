@@ -36,6 +36,7 @@ for before-and-after examples and the complete migration details.
 
 ### Twitch compatibility and fixes
 
+- Expose the optional `target-user-id` tag on notices as `targetUserID`.
 - Decode capability acknowledgements and rejections, preserving unknown names.
 - Recognize lead moderators in badge-based moderator checks.
 - Preserve unknown `USERNOTICE` categories and their common metadata.

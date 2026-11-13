@@ -27,6 +27,8 @@ more specific adjustments.
   when a partial `ROOMSTATE` update omits a field.
 - [Capabilities](#capability-acknowledgements-and-rejections): distinguish accepted
   and rejected requests, and retain unknown capability names.
+- [Targeted notices](#targeted-notice-metadata): read the optional `targetUserID`
+  directly instead of searching leftover tags.
 - [Message categories](#4-update-exhaustive-switches-and-unknown-notice-handling):
   account for new notice cases and notices that now survive typed parsing.
 - [Package dependency](#5-point-your-dependency-at-the-fork): use this fork's URL
@@ -442,6 +444,23 @@ Both prefixed server replies and prefixless responses are accepted.
 `Capabilities(capabilities:)` continues to construct an acknowledgement. Use
 `Capabilities(response: .rejected, rawCapabilities: ["twitch.tv/unknown"])`
 to construct a rejection containing unfamiliar names.
+
+## Targeted notice metadata
+
+`Notice.targetUserID` exposes the IRC `target-user-id` tag, including notices
+with unknown codes. It is nil when the tag is absent or empty. This value
+previously appeared in `parsingLeftovers.unusedPairs`; it is now consumed by
+the typed decoder. Tagged global notices also retain this metadata.
+
+```swift
+if case .notice(let notice) = result.message,
+   let targetUserID = notice.targetUserID {
+  print("This notice concerns user", targetUserID)
+}
+```
+
+The public `Notice` initializer accepts the optional `targetUserID:` argument.
+Raw envelopes still expose the original tag.
 
 ## 3. Handle optional payloads and fields
 
