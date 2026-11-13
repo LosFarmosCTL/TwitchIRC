@@ -25,6 +25,8 @@ more specific adjustments.
 - [Missing metadata](#3-handle-optional-payloads-and-fields): replace empty-payload
   and default-value checks with optional handling. Preserve existing room settings
   when a partial `ROOMSTATE` update omits a field.
+- [Capabilities](#capability-acknowledgements-and-rejections): distinguish accepted
+  and rejected requests, and retain unknown capability names.
 - [Message categories](#4-update-exhaustive-switches-and-unknown-notice-handling):
   account for new notice cases and notices that now survive typed parsing.
 - [Package dependency](#5-point-your-dependency-at-the-fork): use this fork's URL
@@ -413,6 +415,33 @@ default:
 `id` still uniquely identifies a message; `kind`, `messageType`, and notice codes
 classify it. Timestamp types and units, field optionality, and protocol values
 are unchanged by these renames. Old symbol aliases are not provided.
+
+## Capability acknowledgements and rejections
+
+`IncomingMessage.capabilities` now represents both `CAP ACK` and `CAP NAK`.
+Previously, rejection responses were classified as malformed. Check `response`
+before treating capabilities as enabled:
+
+```swift
+if case .capabilities(let reply) = result.message {
+  switch reply.response {
+  case .acknowledged:
+    print("Accepted:", reply.rawCapabilities)
+  case .rejected:
+    print("Rejected:", reply.rawCapabilities)
+  }
+}
+```
+
+`Capabilities.Response` maps `.acknowledged` to the IRC `ACK` subcommand and
+`.rejected` to `NAK`. `capabilities` still lists recognized `Capability` values.
+`rawCapabilities` contains all returned names, including unfamiliar ones, in wire
+order. An unknown capability no longer makes an otherwise valid reply malformed.
+Both prefixed server replies and prefixless responses are accepted.
+
+`Capabilities(capabilities:)` continues to construct an acknowledgement. Use
+`Capabilities(response: .rejected, rawCapabilities: ["twitch.tv/unknown"])`
+to construct a rejection containing unfamiliar names.
 
 ## 3. Handle optional payloads and fields
 

@@ -36,6 +36,7 @@ for before-and-after examples and the complete migration details.
 
 ### Twitch compatibility and fixes
 
+- Decode capability acknowledgements and rejections, preserving unknown names.
 - Recognize lead moderators in badge-based moderator checks.
 - Preserve unknown `USERNOTICE` categories and their common metadata.
 - Decode Modiversary notices, including Shared Chat source notices.

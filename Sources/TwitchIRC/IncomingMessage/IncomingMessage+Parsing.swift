@@ -47,6 +47,9 @@ extension IncomingMessage {
       guard raw.parameters.count == 1, raw.parameters.first?.isEmpty == false else { return nil }
       return command == "PING" ? .ping : .pong
     }
+    if command == "CAP" {
+      return Capabilities(parameters: raw.parameters).map(Self.capabilities)
+    }
     guard raw.prefix != nil else { return nil }
     if let parser = commandParsers[command] {
       return parser(raw.payloadPrefix, raw.parameterText)
@@ -65,7 +68,7 @@ extension IncomingMessage {
   }
 
   private static let supportedCommands: Set<String> = Set(commandParsers.keys).union([
-    "PING", "PONG", "001", "002", "003", "004", "372", "375", "376", "353", "366", "421",
+    "PING", "PONG", "CAP", "001", "002", "003", "004", "372", "375", "376", "353", "366", "421",
   ])
 
   private static func parseNumericReply(_ identifier: String, contentRhs: String) -> Self? {
@@ -95,7 +98,6 @@ extension IncomingMessage {
     "ROOMSTATE": { lhs, rhs in RoomState(contentLhs: lhs, contentRhs: rhs).map(Self.roomState) },
     "USERNOTICE": { lhs, rhs in UserNotice(contentLhs: lhs, contentRhs: rhs).map(Self.userNotice) },
     "USERSTATE": { lhs, rhs in UserState(contentLhs: lhs, contentRhs: rhs).map(Self.userState) },
-    "CAP": { _, rhs in Capabilities(contentRhs: rhs).map(Self.capabilities) },
     "WHISPER": { lhs, rhs in Whisper(contentLhs: lhs, contentRhs: rhs).map(Self.whisper) },
     "RECONNECT": { _, _ in .reconnect },
   ]

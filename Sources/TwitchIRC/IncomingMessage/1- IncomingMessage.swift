@@ -30,7 +30,7 @@ public enum IncomingMessage {
   case userNotice(UserNotice)
   /// A message indicating a user's state in a channel.
   case userState(UserState)
-  /// A message indicating given capabilities after requesting them.
+  /// A response acknowledging or rejecting requested capabilities (`CAP ACK` / `CAP NAK`).
   case capabilities(Capabilities)
   /// A whisper aka Twitch private message.
   case whisper(Whisper)
