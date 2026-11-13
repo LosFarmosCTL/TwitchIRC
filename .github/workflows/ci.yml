@@ -65,3 +65,21 @@ jobs:
         run: |
           swift --version
           git ls-files -z -- '*.swift' | xargs -0 swift format lint --strict --configuration .swift-format
+
+  release-draft:
+    name: Prepare release draft
+    needs: [build, lint, format]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 5
+    steps:
+      - name: Check out the tested commit and version tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Prepare draft from changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/prepare-release.sh

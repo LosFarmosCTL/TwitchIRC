@@ -1,95 +1,116 @@
 # TwitchIRC
 
-[![Build Status](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml/badge.svg)](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml)
- 
-A dependancy-free Swift package that takes care of parsing and serializing Twitch IRC messages.
+[![CI](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml/badge.svg)](https://github.com/LosFarmosCTL/TwitchIRC/actions/workflows/ci.yml)
 
-Upgrading from an earlier version? See the [2.0 migration guide](MIGRATION-2.0.md).
+A dependency-free Swift package for parsing and serializing Twitch IRC messages.
+This is a maintained fork of [MahdiBM/TwitchIRC](https://github.com/MahdiBM/TwitchIRC).
+It provides message models and parsing diagnostics; your application supplies the
+network connection.
 
-## How To Parse
+Requires **Swift 6.4 or later** and uses Swift 6 language mode.
 
-To parse Twitch messages, use `IncomingMessage.parse(ircOutput:)`:
+Upgrading from 1.x? Read the [2.0 migration guide](MIGRATION-2.0.md) for breaking
+changes and before-and-after examples. See the [changelog](CHANGELOG.md) for release notes.
+
+## Installation
+
+Add this fork to your Swift package's dependencies:
+
 ```swift
-/// `websocketOutput` here represents the `String` Twitch sent you over IRC.
-let twitchMessages: [MessageParseResult] = IncomingMessage.parse(ircOutput: websocketOutput)
+.package(url: "https://github.com/LosFarmosCTL/TwitchIRC", from: "2.0.0"),
 ```
-Then to use:
+
+Then add its product to your target:
+
 ```swift
-for result in twitchMessages {
-    if let message = result.message {
-        switch message {
-        /// Switch over each case of the `IncomingMessage` and do whatever you want.
-        }
-    }
+.product(name: "TwitchIRC", package: "TwitchIRC"),
+```
+
+Import the library with `import TwitchIRC`.
+
+## Parsing messages
+
+Pass complete IRC lines, separated by CRLF, to `IncomingMessage.parse(ircOutput:)`.
+Each result contains the original line, a raw IRC envelope when readable, a typed
+parsing outcome, and diagnostics.
+
+```swift
+import TwitchIRC
+
+let input = ":viewer!viewer@viewer.tmi.twitch.tv PRIVMSG #example :Hello!\r\n"
+
+for result in IncomingMessage.parse(ircOutput: input) {
+  switch result.outcome {
+  case .parsed(.privateMessage(let chat)):
+    print("#\(chat.channel) \(chat.userLogin): \(chat.message)")
+  case .parsed:
+    break // Handle other message types here.
+  case .unsupported:
+    print("Unsupported command:", result.rawMessage?.command ?? "unknown")
+  case .malformed:
+    print("Could not decode:", result.text)
+  }
+
+  for diagnostic in result.diagnostics {
+    print(diagnostic)
+  }
 }
 ```
-As an example, this will print any normal chat messages viewers send, in the channels you've joined:
+
+Diagnostics include missing or invalid fields and informational unconsumed tags.
+A parsed message can still have diagnostics; they do not all indicate failure.
+
+## Message text, emotes, and badges
+
+`PrivateMessage.message` contains displayable text. `/me` framing is removed and
+represented by `isAction`. Emotes and GIFs are decoded into typed arrays whose
+ranges refer to that exposed text.
+
+Given a parsed `PrivateMessage` named `chat`:
+
 ```swift
-for result in twitchMessages {
-    if let message = result.message {
-        switch message {
-        case let .privateMessage(privateMessage):
-            print("In channel \(privateMessage.channel), user \(privateMessage.displayName) sent a message: \(privateMessage.message)")
-        default: break
-        }
-    }
+for emote in chat.emotes {
+  print(emote.id, emote.name)
+  if let range = emote.range.stringRange(in: chat.message) {
+    print(chat.message[range])
+  }
+}
+
+for badge in chat.badges {
+  print(badge.setID, badge.version)
+}
+
+if chat.isMod {
+  print("Moderator or lead moderator")
 }
 ```
 
-## How To Serialize
+Media offsets count Unicode scalars, not Swift characters or UTF-16 code units.
+Use the range helpers to convert them safely. Badge asset versions and additional
+`badgeInfo` metadata remain separate values.
 
-To serialize your messages to a proper text form, use `OutgoingMessage.serialize()`:
-```swift
-let outgoingMessage: OutgoingMessage = ...
-let serialized = outgoingMessage.serialize()
-/// Now send `serialized` to Twitch over IRC.
-```
-As an example of serializing, this will send a normal chat message to channel `mahdimmbm`, saying `Testing TwitchIRC :)`:
-```swift
-let outgoingMessage: OutgoingMessage = .privateMessage(to: "mahdimmbm", message: "Testing TwitchIRC :)")
-let serialized = outgoingMessage.serialize()
-/// Now send `serialized` to Twitch over IRC.
-```
-> **Warning**    
-> Twitch has deprecated sending _chat commands_ over websocket, and you need to use the REST API instead.   
-> You can still respond to messages over Websocket.   
-> For more info: https://discuss.dev.twitch.tv/t/deprecation-of-chat-commands-through-irc/40486/83
+Public field documentation names the original IRC tags, including when Swift
+property names differ. Unofficial metadata can be absent or change; use optional
+handling and diagnostics. Raw envelopes retain the original tags for inspection.
 
-## I don't see some info in some messages
-
-TwitchIRC contains all info sent by Twitch. If you don't see something in message types, its probably deprecated.    
-Some of the deprecated keys are `subscriber`, `mod` or `user-type`. You need to instead use the `badges` for those 3 mentioned keys.   
-I'm personally actively looking for any non-parsed info using the `parsingLeftOvers` property that some message types have, and will update the package with the new info as soon as I catch them.
-
-## How To Add TwitchIRC To Your Project
-
-Requires Swift 6.4 or later. The package uses Swift 6 language mode with strict concurrency checking.
-
-To use the `TwitchIRC` library in a SwiftPM project, 
-add the following line to the dependencies in your `Package.swift` file:
+## Serializing messages
 
 ```swift
-.package(url: "https://github.com/MahdiBM/TwitchIRC", from: "1.0.0"),
+let outgoing = OutgoingMessage.privateMessage(
+  to: "example",
+  message: "Hello!"
+)
+let serialized = outgoing.serialize()
+// Send `serialized` using your application's IRC connection.
 ```
 
-Include `"TwitchIRC"` as a dependency for your executable target:
+## Feedback and contributions
 
-```swift
-.target(name: "<target>", dependencies: [
-    .product(name: "TwitchIRC", package: "TwitchIRC"),
-]),
-```
+Please open [issues](https://github.com/LosFarmosCTL/TwitchIRC/issues) and
+[pull requests](https://github.com/LosFarmosCTL/TwitchIRC/pulls) against this fork.
 
-Finally, add `import TwitchIRC` to your source code.
+## License
 
-## Warning
-
-This package includes both official and unofficial info sent to you over IRC by Twitch.   
-Twitch only gurantees the official stuff, and using the unofficial info might result in code breakage in the future.   
-To see what's official and what's not, you can take a look at the [official documentation](https://dev.twitch.tv/docs/irc).
-
-## Communication and Support
-
-If you have any questions, [TwitchDev Discord server](https://discord.gg/twitchdev) will likely prove helpful to you. I'm available there @Mahdi BM#0517.   
-
-Feel free to make PRs or open Issues as well :)
+[MIT](LICENSE). Originally created by [@MahdiBM](https://github.com/MahdiBM).
+This fork builds on his excellent work on the original
+[TwitchIRC library](https://github.com/MahdiBM/TwitchIRC)—thank you for making it available.
