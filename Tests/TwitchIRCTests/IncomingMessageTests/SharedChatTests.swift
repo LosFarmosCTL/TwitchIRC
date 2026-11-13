@@ -102,7 +102,7 @@ final class SharedChatTests: XCTestCase {
     }
     XCTAssertEqual(info.cumulativeMonths, 6)
     XCTAssertEqual(info.streakMonths, 2)
-    XCTAssertTrue(info.shouldShareStreak)
+    XCTAssertEqual(info.shouldShareStreak, true)
     XCTAssertEqual(info.subPlan, .prime)
     XCTAssertEqual(info.subPlanName, "Prime")
   }

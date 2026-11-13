@@ -10,48 +10,48 @@ extension UserNotice.Kind {
   public struct SubInfo: Sendable {
     /// IRC tag: `msg-param-cumulative-months`.
     public private(set) var cumulativeMonths: UInt
-    /// IRC tag: `msg-param-should-share-streak`.
-    public private(set) var shouldShareStreak: Bool
-    /// IRC tag: `msg-param-streak-months`.
-    public private(set) var streakMonths: UInt
+    /// IRC tag: `msg-param-should-share-streak`. Nil when absent.
+    public private(set) var shouldShareStreak: Bool?
+    /// IRC tag: `msg-param-streak-months`. Nil when absent.
+    public private(set) var streakMonths: UInt?
     /// IRC tag: `msg-param-sub-plan`.
     public private(set) var subPlan: SubPlan?
     /// IRC tag: `msg-param-sub-plan-name`.
     public private(set) var subPlanName: String
-    /// IRC tag: `msg-param-months`.
-    public private(set) var months: UInt
-    /// IRC tag: `msg-param-multimonth-duration`.
-    public private(set) var multimonthDuration: UInt
-    /// IRC tag: `msg-param-multimonth-tenure`.
-    public private(set) var multimonthTenure: Bool
-    /// IRC tag: `msg-param-was-gifted`.
-    public private(set) var wasGifted: Bool
-    /// IRC tag: `msg-param-goal-contribution-type`.
-    public private(set) var goalContributionType: String
-    /// IRC tag: `msg-param-goal-current-contributions`.
-    public private(set) var goalCurrentContributions: String
-    /// IRC tag: `msg-param-goal-description`.
-    public private(set) var goalDescription: String
-    /// IRC tag: `msg-param-goal-target-contributions`.
-    public private(set) var goalTargetContributions: String
-    /// IRC tag: `msg-param-goal-user-contributions`.
-    public private(set) var goalUserContributions: String
+    /// IRC tag: `msg-param-months`. Nil when absent.
+    public private(set) var months: UInt?
+    /// IRC tag: `msg-param-multimonth-duration`. Nil when absent.
+    public private(set) var multimonthDuration: UInt?
+    /// IRC tag: `msg-param-multimonth-tenure`. Nil when absent.
+    public private(set) var multimonthTenure: Bool?
+    /// IRC tag: `msg-param-was-gifted`. Nil when absent.
+    public private(set) var wasGifted: Bool?
+    /// IRC tag: `msg-param-goal-contribution-type`. Nil when absent.
+    public private(set) var goalContributionType: String?
+    /// IRC tag: `msg-param-goal-current-contributions`. Nil when absent.
+    public private(set) var goalCurrentContributions: String?
+    /// IRC tag: `msg-param-goal-description`. Nil when absent.
+    public private(set) var goalDescription: String?
+    /// IRC tag: `msg-param-goal-target-contributions`. Nil when absent.
+    public private(set) var goalTargetContributions: String?
+    /// IRC tag: `msg-param-goal-user-contributions`. Nil when absent.
+    public private(set) var goalUserContributions: String?
 
     public init(
       cumulativeMonths: UInt,
-      shouldShareStreak: Bool,
-      streakMonths: UInt,
+      shouldShareStreak: Bool? = nil,
+      streakMonths: UInt? = nil,
       subPlan: UserNotice.Kind.SubPlan?,
       subPlanName: String,
-      months: UInt,
-      multimonthDuration: UInt,
-      multimonthTenure: Bool,
-      wasGifted: Bool,
-      goalContributionType: String,
-      goalCurrentContributions: String,
-      goalDescription: String,
-      goalTargetContributions: String,
-      goalUserContributions: String
+      months: UInt? = nil,
+      multimonthDuration: UInt? = nil,
+      multimonthTenure: Bool? = nil,
+      wasGifted: Bool? = nil,
+      goalContributionType: String? = nil,
+      goalCurrentContributions: String? = nil,
+      goalDescription: String? = nil,
+      goalTargetContributions: String? = nil,
+      goalUserContributions: String? = nil
     ) {
       self.cumulativeMonths = cumulativeMonths
       self.shouldShareStreak = shouldShareStreak
@@ -72,37 +72,38 @@ extension UserNotice.Kind {
     internal init() {
       self.init(
         cumulativeMonths: UInt(),
-        shouldShareStreak: Bool(),
-        streakMonths: UInt(),
+        shouldShareStreak: nil,
+        streakMonths: nil,
         subPlan: nil,
         subPlanName: String(),
-        months: UInt(),
-        multimonthDuration: UInt(),
-        multimonthTenure: Bool(),
-        wasGifted: Bool(),
-        goalContributionType: String(),
-        goalCurrentContributions: String(),
-        goalDescription: String(),
-        goalTargetContributions: String(),
-        goalUserContributions: String()
+        months: nil,
+        multimonthDuration: nil,
+        multimonthTenure: nil,
+        wasGifted: nil,
+        goalContributionType: nil,
+        goalCurrentContributions: nil,
+        goalDescription: nil,
+        goalTargetContributions: nil,
+        goalUserContributions: nil
       )
     }
     init(parser: inout ParametersParser) {
       self.init(
         cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
-        shouldShareStreak: parser.bool(for: "msg-param-should-share-streak"),
-        streakMonths: parser.uint(for: "msg-param-streak-months"),
+        shouldShareStreak: parser.optionalBool(for: "msg-param-should-share-streak"),
+        streakMonths: parser.optionalUInt(for: "msg-param-streak-months"),
         subPlan: parser.representable(for: "msg-param-sub-plan"),
         subPlanName: parser.string(for: "msg-param-sub-plan-name"),
-        months: parser.uint(for: "msg-param-months"),
-        multimonthDuration: parser.uint(for: "msg-param-multimonth-duration"),
-        multimonthTenure: parser.bool(for: "msg-param-multimonth-tenure"),
-        wasGifted: parser.bool(for: "msg-param-was-gifted"),
-        goalContributionType: parser.string(for: "msg-param-goal-contribution-type"),
-        goalCurrentContributions: parser.string(for: "msg-param-goal-current-contributions"),
-        goalDescription: parser.string(for: "msg-param-goal-description"),
-        goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
-        goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
+        months: parser.optionalUInt(for: "msg-param-months"),
+        multimonthDuration: parser.optionalUInt(for: "msg-param-multimonth-duration"),
+        multimonthTenure: parser.optionalBool(for: "msg-param-multimonth-tenure"),
+        wasGifted: parser.optionalBool(for: "msg-param-was-gifted"),
+        goalContributionType: parser.optionalString(for: "msg-param-goal-contribution-type"),
+        goalCurrentContributions: parser.optionalString(
+          for: "msg-param-goal-current-contributions"),
+        goalDescription: parser.optionalString(for: "msg-param-goal-description"),
+        goalTargetContributions: parser.optionalString(for: "msg-param-goal-target-contributions"),
+        goalUserContributions: parser.optionalString(for: "msg-param-goal-user-contributions")
       )
     }
   }
@@ -110,51 +111,51 @@ extension UserNotice.Kind {
   public struct ReSubInfo: Sendable {
     /// IRC tag: `msg-param-cumulative-months`.
     public private(set) var cumulativeMonths: UInt
-    /// IRC tag: `msg-param-should-share-streak`.
-    public private(set) var shouldShareStreak: Bool
-    /// IRC tag: `msg-param-streak-months`.
-    public private(set) var streakMonths: UInt
+    /// IRC tag: `msg-param-should-share-streak`. Nil when absent.
+    public private(set) var shouldShareStreak: Bool?
+    /// IRC tag: `msg-param-streak-months`. Nil when absent.
+    public private(set) var streakMonths: UInt?
     /// IRC tag: `msg-param-sub-plan`.
     public private(set) var subPlan: SubPlan?
     /// IRC tag: `msg-param-sub-plan-name`.
     public private(set) var subPlanName: String
-    /// IRC tag: `msg-param-anon-gift`.
-    public private(set) var anonGift: Bool
-    /// IRC tag: `msg-param-months`.
-    public private(set) var months: UInt
-    /// IRC tag: `msg-param-multimonth-duration`.
-    public private(set) var multimonthDuration: UInt
-    /// IRC tag: `msg-param-multimonth-tenure`.
-    public private(set) var multimonthTenure: Bool
-    /// IRC tag: `msg-param-was-gifted`.
-    public private(set) var wasGifted: Bool
-    /// IRC tag: `msg-param-gift-month-being-redeemed`.
-    public private(set) var giftMonthBeingRedeemed: UInt
-    /// IRC tag: `msg-param-gift-months`.
-    public private(set) var giftMonths: UInt
-    /// IRC tag: `msg-param-gifter-id`.
-    public private(set) var gifterID: String
-    /// IRC tag: `msg-param-gifter-login`.
-    public private(set) var gifterLogin: String
-    /// IRC tag: `msg-param-gifter-name`.
-    public private(set) var gifterName: String
+    /// IRC tag: `msg-param-anon-gift`. Nil when absent.
+    public private(set) var anonGift: Bool?
+    /// IRC tag: `msg-param-months`. Nil when absent.
+    public private(set) var months: UInt?
+    /// IRC tag: `msg-param-multimonth-duration`. Nil when absent.
+    public private(set) var multimonthDuration: UInt?
+    /// IRC tag: `msg-param-multimonth-tenure`. Nil when absent.
+    public private(set) var multimonthTenure: Bool?
+    /// IRC tag: `msg-param-was-gifted`. Nil when absent.
+    public private(set) var wasGifted: Bool?
+    /// IRC tag: `msg-param-gift-month-being-redeemed`. Nil when absent.
+    public private(set) var giftMonthBeingRedeemed: UInt?
+    /// IRC tag: `msg-param-gift-months`. Nil when absent.
+    public private(set) var giftMonths: UInt?
+    /// IRC tag: `msg-param-gifter-id`. Nil when absent.
+    public private(set) var gifterID: String?
+    /// IRC tag: `msg-param-gifter-login`. Nil when absent.
+    public private(set) var gifterLogin: String?
+    /// IRC tag: `msg-param-gifter-name`. Nil when absent.
+    public private(set) var gifterName: String?
 
     public init(
       cumulativeMonths: UInt,
-      shouldShareStreak: Bool,
-      streakMonths: UInt,
+      shouldShareStreak: Bool? = nil,
+      streakMonths: UInt? = nil,
       subPlan: UserNotice.Kind.SubPlan?,
       subPlanName: String,
-      anonGift: Bool,
-      months: UInt,
-      multimonthDuration: UInt,
-      multimonthTenure: Bool,
-      wasGifted: Bool,
-      giftMonthBeingRedeemed: UInt,
-      giftMonths: UInt,
-      gifterID: String,
-      gifterLogin: String,
-      gifterName: String
+      anonGift: Bool? = nil,
+      months: UInt? = nil,
+      multimonthDuration: UInt? = nil,
+      multimonthTenure: Bool? = nil,
+      wasGifted: Bool? = nil,
+      giftMonthBeingRedeemed: UInt? = nil,
+      giftMonths: UInt? = nil,
+      gifterID: String? = nil,
+      gifterLogin: String? = nil,
+      gifterName: String? = nil
     ) {
       self.cumulativeMonths = cumulativeMonths
       self.shouldShareStreak = shouldShareStreak
@@ -176,39 +177,39 @@ extension UserNotice.Kind {
     internal init() {
       self.init(
         cumulativeMonths: UInt(),
-        shouldShareStreak: Bool(),
-        streakMonths: UInt(),
+        shouldShareStreak: nil,
+        streakMonths: nil,
         subPlan: nil,
         subPlanName: String(),
-        anonGift: Bool(),
-        months: UInt(),
-        multimonthDuration: UInt(),
-        multimonthTenure: Bool(),
-        wasGifted: Bool(),
-        giftMonthBeingRedeemed: UInt(),
-        giftMonths: UInt(),
-        gifterID: String(),
-        gifterLogin: String(),
-        gifterName: String()
+        anonGift: nil,
+        months: nil,
+        multimonthDuration: nil,
+        multimonthTenure: nil,
+        wasGifted: nil,
+        giftMonthBeingRedeemed: nil,
+        giftMonths: nil,
+        gifterID: nil,
+        gifterLogin: nil,
+        gifterName: nil
       )
     }
     init(parser: inout ParametersParser) {
       self.init(
         cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
-        shouldShareStreak: parser.bool(for: "msg-param-should-share-streak"),
-        streakMonths: parser.uint(for: "msg-param-streak-months"),
+        shouldShareStreak: parser.optionalBool(for: "msg-param-should-share-streak"),
+        streakMonths: parser.optionalUInt(for: "msg-param-streak-months"),
         subPlan: parser.representable(for: "msg-param-sub-plan"),
         subPlanName: parser.string(for: "msg-param-sub-plan-name"),
-        anonGift: parser.bool(for: "msg-param-anon-gift"),
-        months: parser.uint(for: "msg-param-months"),
-        multimonthDuration: parser.uint(for: "msg-param-multimonth-duration"),
-        multimonthTenure: parser.bool(for: "msg-param-multimonth-tenure"),
-        wasGifted: parser.bool(for: "msg-param-was-gifted"),
-        giftMonthBeingRedeemed: parser.uint(for: "msg-param-gift-month-being-redeemed"),
-        giftMonths: parser.uint(for: "msg-param-gift-months"),
-        gifterID: parser.string(for: "msg-param-gifter-id"),
-        gifterLogin: parser.string(for: "msg-param-gifter-login"),
-        gifterName: parser.string(for: "msg-param-gifter-name")
+        anonGift: parser.optionalBool(for: "msg-param-anon-gift"),
+        months: parser.optionalUInt(for: "msg-param-months"),
+        multimonthDuration: parser.optionalUInt(for: "msg-param-multimonth-duration"),
+        multimonthTenure: parser.optionalBool(for: "msg-param-multimonth-tenure"),
+        wasGifted: parser.optionalBool(for: "msg-param-was-gifted"),
+        giftMonthBeingRedeemed: parser.optionalUInt(for: "msg-param-gift-month-being-redeemed"),
+        giftMonths: parser.optionalUInt(for: "msg-param-gift-months"),
+        gifterID: parser.optionalNonEmptyString(for: "msg-param-gifter-id"),
+        gifterLogin: parser.optionalString(for: "msg-param-gifter-login"),
+        gifterName: parser.optionalString(for: "msg-param-gifter-name")
       )
     }
   }
@@ -217,26 +218,33 @@ extension UserNotice.Kind {
 
 extension UserNotice.Kind.SubInfo {
   static let optionalKeyGroups: [[String]] = [
-    ["msg-param-streak-months"], ["msg-param-goal-description"],
-    [
-      "msg-param-goal-contribution-type", "msg-param-goal-current-contributions",
-      "msg-param-goal-description", "msg-param-goal-target-contributions",
-      "msg-param-goal-user-contributions",
-    ],
+    ["msg-param-should-share-streak"],
+    ["msg-param-streak-months"],
+    ["msg-param-months"],
+    ["msg-param-multimonth-duration"],
+    ["msg-param-multimonth-tenure"],
+    ["msg-param-was-gifted"],
+    ["msg-param-goal-contribution-type"],
+    ["msg-param-goal-current-contributions"],
+    ["msg-param-goal-description"],
+    ["msg-param-goal-target-contributions"],
+    ["msg-param-goal-user-contributions"],
   ]
 }
 
 extension UserNotice.Kind.ReSubInfo {
   static let optionalKeyGroups: [[String]] = [
+    ["msg-param-should-share-streak"],
     ["msg-param-streak-months"],
-    ["msg-param-multimonth-duration", "msg-param-multimonth-tenure"],
-    [
-      "msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months",
-      "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name",
-    ],
-    [
-      "msg-param-months", "msg-param-multimonth-duration", "msg-param-multimonth-tenure",
-      "msg-param-was-gifted",
-    ],
+    ["msg-param-anon-gift"],
+    ["msg-param-months"],
+    ["msg-param-multimonth-duration"],
+    ["msg-param-multimonth-tenure"],
+    ["msg-param-was-gifted"],
+    ["msg-param-gift-month-being-redeemed"],
+    ["msg-param-gift-months"],
+    ["msg-param-gifter-id"],
+    ["msg-param-gifter-login"],
+    ["msg-param-gifter-name"],
   ]
 }

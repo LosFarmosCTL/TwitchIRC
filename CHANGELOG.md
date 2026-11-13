@@ -22,8 +22,9 @@ for before-and-after examples and the complete migration details.
   malformed outcomes, raw IRC envelopes, and structured diagnostics.
 - Public message construction uses explicit initializers. Parsed properties are
   read-only, and required payload kinds no longer use implicitly unwrapped optionals.
-- Missing metadata and nested payloads are represented by optionals. Partial
-  `ROOMSTATE` updates preserve the distinction between absent settings and false/zero.
+- Missing metadata and nested payloads, including conditional notice metadata,
+  are represented by optionals. Partial `ROOMSTATE` updates preserve the distinction
+  between absent settings and false/zero.
 - Emotes and GIFs are typed collections decoded during parsing. Shared Unicode
   scalar ranges provide safe extraction and conversion to Swift string indices.
 - `PrivateMessage.message` exposes normalized `/me` text with an `isAction` flag.

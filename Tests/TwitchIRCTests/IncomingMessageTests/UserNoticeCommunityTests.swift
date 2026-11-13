@@ -34,7 +34,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(info.displayName, "TestChannel")
     XCTAssertEqual(info.login, "testchannel")
     XCTAssertEqual(info.viewerCount, 15)
-    XCTAssertEqual(info.profileImageURL, "")
+    XCTAssertNil(info.profileImageURL)
   }
 
   func testParsedValues5() throws {

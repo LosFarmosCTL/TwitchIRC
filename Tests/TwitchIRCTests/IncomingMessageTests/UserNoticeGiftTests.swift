@@ -39,16 +39,16 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.recipientUserName, "mr_woodchuck")
     XCTAssertEqual(info.subPlan, .tier1)
     XCTAssertEqual(info.subPlanName, "House of Nyoro~n")
-    XCTAssertEqual(info.giftMonths, 0)
-    XCTAssertEqual(info.originID, "")
-    XCTAssertEqual(info.senderCount, 0)
-    XCTAssertEqual(info.funString, "")
-    XCTAssertEqual(info.giftTheme, "")
-    XCTAssertEqual(info.goalContributionType, "")
-    XCTAssertEqual(info.goalCurrentContributions, "")
-    XCTAssertEqual(info.goalDescription, "")
-    XCTAssertEqual(info.goalTargetContributions, "")
-    XCTAssertEqual(info.goalUserContributions, "")
+    XCTAssertNil(info.giftMonths)
+    XCTAssertNil(info.originID)
+    XCTAssertNil(info.senderCount)
+    XCTAssertNil(info.funString)
+    XCTAssertNil(info.giftTheme)
+    XCTAssertNil(info.goalContributionType)
+    XCTAssertNil(info.goalCurrentContributions)
+    XCTAssertNil(info.goalDescription)
+    XCTAssertNil(info.goalTargetContributions)
+    XCTAssertNil(info.goalUserContributions)
   }
 
   func testParsedValues3() throws {
@@ -87,16 +87,16 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.recipientUserName, "tenurecalculator")
     XCTAssertEqual(info.subPlan, .tier1)
     XCTAssertEqual(info.subPlanName, "t111")
-    XCTAssertEqual(info.giftMonths, 0)
-    XCTAssertEqual(info.originID, "")
-    XCTAssertEqual(info.senderCount, 0)
-    XCTAssertEqual(info.funString, "")
-    XCTAssertEqual(info.giftTheme, "")
-    XCTAssertEqual(info.goalContributionType, "")
-    XCTAssertEqual(info.goalCurrentContributions, "")
-    XCTAssertEqual(info.goalDescription, "")
-    XCTAssertEqual(info.goalTargetContributions, "")
-    XCTAssertEqual(info.goalUserContributions, "")
+    XCTAssertNil(info.giftMonths)
+    XCTAssertNil(info.originID)
+    XCTAssertNil(info.senderCount)
+    XCTAssertNil(info.funString)
+    XCTAssertNil(info.giftTheme)
+    XCTAssertNil(info.goalContributionType)
+    XCTAssertNil(info.goalCurrentContributions)
+    XCTAssertNil(info.goalDescription)
+    XCTAssertNil(info.goalTargetContributions)
+    XCTAssertNil(info.goalUserContributions)
   }
 
   func testParsedValues8() throws {
@@ -136,9 +136,9 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(
       info.originID,
       "21 c2 d1 0d c9 61 69 a0 2c 73 ad 42 ad 79 60 5e 72 a5 33 6b")
-    XCTAssertEqual(info.senderCount, 0)
+    XCTAssertNil(info.senderCount)
     XCTAssertEqual(info.funString, "FunStringFive")
-    XCTAssertEqual(info.giftTheme, "")
+    XCTAssertNil(info.giftTheme)
     XCTAssertEqual(info.goalContributionType, "SUB_POINTS")
     XCTAssertEqual(info.goalCurrentContributions, "181")
     XCTAssertEqual(info.goalDescription, "Kochen + 69")
@@ -184,14 +184,14 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(
       info.originID,
       "e0 bf a4 8d e8 49 72 6e 37 1f 32 62 6c 98 53 45 f1 34 15 3e")
-    XCTAssertEqual(info.senderCount, 0)
+    XCTAssertNil(info.senderCount)
     XCTAssertEqual(info.funString, "FunStringOne")
     XCTAssertEqual(info.giftTheme, "lul")
-    XCTAssertEqual(info.goalContributionType, "")
-    XCTAssertEqual(info.goalCurrentContributions, "")
-    XCTAssertEqual(info.goalDescription, "")
-    XCTAssertEqual(info.goalTargetContributions, "")
-    XCTAssertEqual(info.goalUserContributions, "")
+    XCTAssertNil(info.goalContributionType)
+    XCTAssertNil(info.goalCurrentContributions)
+    XCTAssertNil(info.goalDescription)
+    XCTAssertNil(info.goalTargetContributions)
+    XCTAssertNil(info.goalUserContributions)
   }
 
   func testParsedValues15() throws {
@@ -237,13 +237,13 @@ final class UserNoticeGiftTests: XCTestCase {
       "b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"
     )
     XCTAssertEqual(info.senderCount, 0)
-    XCTAssertEqual(info.funString, "")
-    XCTAssertEqual(info.giftTheme, "")
-    XCTAssertEqual(info.goalContributionType, "")
-    XCTAssertEqual(info.goalCurrentContributions, "")
-    XCTAssertEqual(info.goalDescription, "")
-    XCTAssertEqual(info.goalTargetContributions, "")
-    XCTAssertEqual(info.goalUserContributions, "")
+    XCTAssertNil(info.funString)
+    XCTAssertNil(info.giftTheme)
+    XCTAssertNil(info.goalContributionType)
+    XCTAssertNil(info.goalCurrentContributions)
+    XCTAssertNil(info.goalDescription)
+    XCTAssertNil(info.goalTargetContributions)
+    XCTAssertNil(info.goalUserContributions)
     XCTAssertEqual(
       info.communityGiftID,
       "b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"

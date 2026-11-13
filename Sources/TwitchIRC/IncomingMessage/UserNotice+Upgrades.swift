@@ -18,18 +18,18 @@ extension UserNotice.Kind {
   }
 
   public struct GiftPaidUpgradeInfo: Sendable {
-    /// IRC tag: `msg-param-promo-gift-total`.
-    public private(set) var promoGiftTotal: UInt
-    /// IRC tag: `msg-param-promo-name`.
-    public private(set) var promoName: String
+    /// IRC tag: `msg-param-promo-gift-total`. Nil when absent.
+    public private(set) var promoGiftTotal: UInt?
+    /// IRC tag: `msg-param-promo-name`. Nil when absent.
+    public private(set) var promoName: String?
     /// IRC tag: `msg-param-sender-login`.
     public private(set) var senderLogin: String
     /// IRC tag: `msg-param-sender-name`.
     public private(set) var senderName: String
 
     public init(
-      promoGiftTotal: UInt,
-      promoName: String,
+      promoGiftTotal: UInt? = nil,
+      promoName: String? = nil,
       senderLogin: String,
       senderName: String
     ) {
@@ -41,16 +41,16 @@ extension UserNotice.Kind {
 
     internal init() {
       self.init(
-        promoGiftTotal: UInt(),
-        promoName: String(),
+        promoGiftTotal: nil,
+        promoName: nil,
         senderLogin: String(),
         senderName: String()
       )
     }
     init(parser: inout ParametersParser) {
       self.init(
-        promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
-        promoName: parser.string(for: "msg-param-promo-name"),
+        promoGiftTotal: parser.optionalUInt(for: "msg-param-promo-gift-total"),
+        promoName: parser.optionalString(for: "msg-param-promo-name"),
         senderLogin: parser.string(for: "msg-param-sender-login"),
         senderName: parser.string(for: "msg-param-sender-name")
       )
@@ -58,14 +58,14 @@ extension UserNotice.Kind {
   }
 
   public struct AnonGiftPaidUpgradeInfo: Sendable {
-    /// IRC tag: `msg-param-promo-gift-total`.
-    public private(set) var promoGiftTotal: UInt
-    /// IRC tag: `msg-param-promo-name`.
-    public private(set) var promoName: String
+    /// IRC tag: `msg-param-promo-gift-total`. Nil when absent.
+    public private(set) var promoGiftTotal: UInt?
+    /// IRC tag: `msg-param-promo-name`. Nil when absent.
+    public private(set) var promoName: String?
 
     public init(
-      promoGiftTotal: UInt,
-      promoName: String
+      promoGiftTotal: UInt? = nil,
+      promoName: String? = nil
     ) {
       self.promoGiftTotal = promoGiftTotal
       self.promoName = promoName
@@ -73,14 +73,14 @@ extension UserNotice.Kind {
 
     internal init() {
       self.init(
-        promoGiftTotal: UInt(),
-        promoName: String()
+        promoGiftTotal: nil,
+        promoName: nil
       )
     }
     init(parser: inout ParametersParser) {
       self.init(
-        promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
-        promoName: parser.string(for: "msg-param-promo-name")
+        promoGiftTotal: parser.optionalUInt(for: "msg-param-promo-gift-total"),
+        promoName: parser.optionalString(for: "msg-param-promo-name")
       )
     }
   }
@@ -93,12 +93,14 @@ extension UserNotice.Kind.PrimePaidUpgradeInfo {
 
 extension UserNotice.Kind.GiftPaidUpgradeInfo {
   static let optionalKeyGroups: [[String]] = [
-    ["msg-param-promo-gift-total", "msg-param-promo-name"]
+    ["msg-param-promo-gift-total"],
+    ["msg-param-promo-name"],
   ]
 }
 
 extension UserNotice.Kind.AnonGiftPaidUpgradeInfo {
   static let optionalKeyGroups: [[String]] = [
-    ["msg-param-promo-gift-total"], ["msg-param-promo-name"],
+    ["msg-param-promo-gift-total"],
+    ["msg-param-promo-name"],
   ]
 }

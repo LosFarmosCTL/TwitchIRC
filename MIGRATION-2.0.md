@@ -572,6 +572,59 @@ The main scalar changes are:
 `bits` remains a string when present, and timestamps remain millisecond counts;
 this migration does not introduce numeric conversions or change their units.
 
+### Handle conditional metadata inside notice payloads
+
+Optionality also applies inside `UserNotice.Kind` payloads. Fields that depend on
+streak sharing, gifts, promotions, goals, or prior-gifter identity no longer use
+empty strings, zero, or false to represent omitted tags.
+
+The following fields are now optional; their public initializer arguments default
+to nil. Required core event fields keep their existing types.
+
+| Payload | Optional fields |
+| --- | --- |
+| `SubInfo` | `shouldShareStreak`, `streakMonths`, `months`, `multimonthDuration`, `multimonthTenure`, `wasGifted`, all five `goal…` fields |
+| `ReSubInfo` | `shouldShareStreak`, `streakMonths`, `anonGift`, `months`, `multimonthDuration`, `multimonthTenure`, `wasGifted`, `giftMonthBeingRedeemed`, `giftMonths`, `gifterID`, `gifterLogin`, `gifterName` |
+| `SubGiftInfo` | `giftMonths`, `originID`, `senderCount`, `funString`, `giftTheme`, `communityGiftID`, all five `goal…` fields |
+| `SubMysteryGiftInfo` | `originID`, `senderCount`, `giftTheme`, `communityGiftID`, all five `goal…` fields |
+| `GiftPaidUpgradeInfo`, `AnonGiftPaidUpgradeInfo` | `promoGiftTotal`, `promoName` |
+| `RaidInfo` | `profileImageURL` |
+| `CommunityPayForwardInfo`, `StandardPayForwardInfo` | `priorGifterDisplayName`, `priorGifterID`, `priorGifterUserName` |
+
+The five goal fields are `goalContributionType`, `goalCurrentContributions`,
+`goalDescription`, `goalTargetContributions`, and `goalUserContributions`.
+
+For a resubscription payload named `info`:
+
+**Before**
+
+```swift
+if !info.gifterID.isEmpty {
+  print("Gifted by", info.gifterID)
+}
+```
+
+**After**
+
+```swift
+if let gifterID = info.gifterID {
+  print("Gifted by", gifterID)
+}
+
+if info.wasGifted == true {
+  // Twitch explicitly supplied a true value.
+}
+```
+
+A supplied zero or false remains present. Missing values become nil; invalid
+numeric or Boolean values become nil with diagnostics. Optional identifiers and
+URLs also become nil when empty; other optional text preserves explicitly supplied
+empty strings. Partial optional metadata is retained without warnings for other
+omitted optional fields. Core required-tag diagnostics still apply.
+
+`ViewerMilestoneInfo.channelPointsReward`, already optional, can now also be
+omitted from its public initializer.
+
 ### Apply partial room settings without resetting omitted values
 
 `RoomState.emoteOnly`, `followersOnly`, `r9k`, `slow`, `subsOnly`, and `rituals` are

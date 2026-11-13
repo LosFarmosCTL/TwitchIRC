@@ -120,7 +120,7 @@ extension UserNotice.Kind {
       category: String,
       id: String,
       value: UInt,
-      channelPointsReward: UInt?
+      channelPointsReward: UInt? = nil
     ) {
       self.category = category
       self.id = id
