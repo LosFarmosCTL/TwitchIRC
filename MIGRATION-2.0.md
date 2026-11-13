@@ -14,7 +14,7 @@ more specific adjustments.
 - [Construction and mutation](#2-update-message-construction-and-mutation): use
   explicit public initializers. Parsed properties are read-only, and required enum
   fields no longer use implicitly unwrapped optionals.
-- [Decoded tag values](#decoded-irc-tag-values): remove manual IRCv3 unescaping
+- [Tag value encoding and decoding](#irc-tag-value-encoding-and-decoding): remove manual IRCv3 unescaping
   from consumers of typed fields.
 - [Message text and inline media](#message-text-and-inline-media): use normalized
   action text, typed media arrays, and Unicode scalar ranges.
@@ -235,7 +235,7 @@ case .local, .unknownLocal:
 Do not replace these fields with application defaults: every successfully created
 instance has its required kind or action.
 
-## Decoded IRC tag values
+## IRC tag value encoding and decoding
 
 Typed fields now decode IRCv3 tag escapes once. For example, `display-name=Some\sName`
 exposes `displayName == "Some Name"`, and `reply-parent-msg-body=hello\sworld`
@@ -251,6 +251,20 @@ backslash followed by `s` remains a literal backslash and `s`, not a space.
 `MessageParseResult.text`, `rawMessage.tags`, and parsing leftovers retain original
 wire values for inspection. Message body text is not tag-unescaped, and explicit
 public initializers accept already-decoded values.
+
+Outgoing `clientNonce` and `messageIDToReply` values are escaped by `serialize()`.
+Pass ordinary, unescaped strings; remove manual tag escaping from callers. Values
+without special characters, such as UUIDs and hexadecimal nonces, serialize as before.
+
+```swift
+let outgoing = OutgoingMessage.privateMessage(
+  to: "example", message: "Hello", clientNonce: "a b;c\\d")
+// Serialized tag: client-nonce=a\sb\:c\\d
+```
+
+This encoding applies only to tag values. Message bodies are neither tag-escaped
+nor normalized or validated by serialization; callers remain responsible for
+supplying suitable body text.
 
 ## Message text and inline media
 

@@ -27,15 +27,16 @@ public enum OutgoingMessage {
   case pong
 
   /// Serializes this message into a string that can be sent to Twitch over IRC.
+  /// Tag values are IRCv3-escaped; message body text is emitted as supplied.
   public func serialize() -> String {
     switch self {
     case .privateMessage(let channel, let message, let messageIDToReply, let clientNonce):
       var prefixes = [String]()
       if let messageID = messageIDToReply, !messageID.isEmpty {
-        prefixes.append("reply-parent-msg-id=\(messageID)")
+        prefixes.append("reply-parent-msg-id=\(IRCMessageTagValue.encode(messageID))")
       }
       if let clientNonce = clientNonce, !clientNonce.isEmpty {
-        prefixes.append("client-nonce=\(clientNonce)")
+        prefixes.append("client-nonce=\(IRCMessageTagValue.encode(clientNonce))")
       }
       let prefix = prefixes.isEmpty ? "" : "@\(prefixes.joined(separator: ";")) "
       return prefix + "PRIVMSG #\(channel) :\(message)"
