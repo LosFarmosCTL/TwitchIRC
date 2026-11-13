@@ -24,7 +24,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "e9176cd8-5e22-4684-ad40-ce53c2561c5e")
     XCTAssertEqual(userNotice.userLogin, "tww2")
     XCTAssertEqual(userNotice.roomID, "19571752")
-    XCTAssertEqual(userNotice.systemMessage, #"TWW2\sgifted\sa\sTier\s1\ssub\sto\sMr_Woodchuck!"#)
+    XCTAssertEqual(userNotice.systemMessage, "TWW2 gifted a Tier 1 sub to Mr_Woodchuck!")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_521_159_445_153)
     XCTAssertEqual(userNotice.userID, "13405587")
     XCTAssertTrue(
@@ -38,7 +38,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.recipientID, "89614178")
     XCTAssertEqual(info.recipientUserName, "mr_woodchuck")
     XCTAssertEqual(info.subPlan, .tier1)
-    XCTAssertEqual(info.subPlanName, #"House\sof\sNyoro~n"#)
+    XCTAssertEqual(info.subPlanName, "House of Nyoro~n")
     XCTAssertEqual(info.giftMonths, 0)
     XCTAssertEqual(info.originID, "")
     XCTAssertEqual(info.senderCount, 0)
@@ -72,7 +72,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "196450059")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"An\sanonymous\suser\sgifted\sa\sTier\s1\ssub\sto\sTenureCalculator!\s"#)
+      "An anonymous user gifted a Tier 1 sub to TenureCalculator! ")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_542_063_432_068)
     XCTAssertEqual(userNotice.userID, "196450059")
     XCTAssertTrue(
@@ -117,7 +117,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.userLogin, "ananonymousgifter")
     XCTAssertEqual(userNotice.roomID, "506507314")
     XCTAssertEqual(
-      userNotice.systemMessage, #"An\sanonymous\suser\sgifted\sa\sTier\s1\ssub\sto\srtg_richy!\s"#)
+      userNotice.systemMessage, "An anonymous user gifted a Tier 1 sub to rtg_richy! ")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_643_135_914_821)
     XCTAssertEqual(userNotice.userID, "274598607")
     XCTAssertTrue(
@@ -131,17 +131,17 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.recipientID, "645584945")
     XCTAssertEqual(info.recipientUserName, "rtg_richy")
     XCTAssertEqual(info.subPlan, .tier1)
-    XCTAssertEqual(info.subPlanName, #"Channel\sSubscription\s(dennisrlf_)"#)
+    XCTAssertEqual(info.subPlanName, "Channel Subscription (dennisrlf_)")
     XCTAssertEqual(info.giftMonths, 1)
     XCTAssertEqual(
       info.originID,
-      #"21\sc2\sd1\s0d\sc9\s61\s69\sa0\s2c\s73\sad\s42\sad\s79\s60\s5e\s72\sa5\s33\s6b"#)
+      "21 c2 d1 0d c9 61 69 a0 2c 73 ad 42 ad 79 60 5e 72 a5 33 6b")
     XCTAssertEqual(info.senderCount, 0)
     XCTAssertEqual(info.funString, "FunStringFive")
     XCTAssertEqual(info.giftTheme, "")
     XCTAssertEqual(info.goalContributionType, "SUB_POINTS")
     XCTAssertEqual(info.goalCurrentContributions, "181")
-    XCTAssertEqual(info.goalDescription, #"Kochen\s+\s69"#)
+    XCTAssertEqual(info.goalDescription, "Kochen + 69")
     XCTAssertEqual(info.goalTargetContributions, "299")
     XCTAssertEqual(info.goalUserContributions, "1")
   }
@@ -165,7 +165,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "123721524")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"An\sanonymous\suser\sgifted\sa\sTier\s1\ssub\sto\sprofessorlive_cr!\s"#)
+      "An anonymous user gifted a Tier 1 sub to professorlive_cr! ")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_643_495_894_080)
     XCTAssertEqual(userNotice.userID, "274598607")
     XCTAssertTrue(
@@ -183,7 +183,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.giftMonths, 1)
     XCTAssertEqual(
       info.originID,
-      #"e0\sbf\sa4\s8d\se8\s49\s72\s6e\s37\s1f\s32\s62\s6c\s98\s53\s45\sf1\s34\s15\s3e"#)
+      "e0 bf a4 8d e8 49 72 6e 37 1f 32 62 6c 98 53 45 f1 34 15 3e")
     XCTAssertEqual(info.senderCount, 0)
     XCTAssertEqual(info.funString, "FunStringOne")
     XCTAssertEqual(info.giftTheme, "lul")
@@ -215,7 +215,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "54443609")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"EABare\\sgifted\\sa\\sTier\\s1\\ssub\\sto\\sjosefernandezxc!"#
+      "EABare\\sgifted\\sa\\sTier\\s1\\ssub\\sto\\sjosefernandezxc!"
     )
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_699_496_601_758)
     XCTAssertEqual(userNotice.userID, "816456923")
@@ -230,11 +230,11 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.recipientID, "497056606")
     XCTAssertEqual(info.recipientUserName, "josefernandezxc")
     XCTAssertEqual(info.subPlan, .tier1)
-    XCTAssertEqual(info.subPlanName, #"Channel\\sSubscription\\s(zsheli)"#)
+    XCTAssertEqual(info.subPlanName, "Channel\\sSubscription\\s(zsheli)")
     XCTAssertEqual(info.giftMonths, 1)
     XCTAssertEqual(
       info.originID,
-      #"b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"#
+      "b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"
     )
     XCTAssertEqual(info.senderCount, 0)
     XCTAssertEqual(info.funString, "")
@@ -246,7 +246,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(info.goalUserContributions, "")
     XCTAssertEqual(
       info.communityGiftID,
-      #"b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"#
+      "b9\\s31\\s3e\\s61\\s1f\\s74\\sa1\\s59\\scc\\sa1\\sb7\\s96\\sbb\\sdb\\s8c\\s10\\sd9\\s90\\s68\\sea"
     )
   }
   func testParsedValues10() throws {
@@ -269,7 +269,7 @@ final class UserNoticeGiftTests: XCTestCase {
     XCTAssertEqual(userNotice.userLogin, "itsmeekz")
     XCTAssertEqual(userNotice.roomID, "117855516")
     XCTAssertEqual(
-      userNotice.systemMessage, #"ItsMeekz\sconverted\sfrom\sa\sPrime\ssub\sto\sa\sTier\s1\ssub!"#)
+      userNotice.systemMessage, "ItsMeekz converted from a Prime sub to a Tier 1 sub!")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_643_569_662_528)
     XCTAssertEqual(userNotice.userID, "608094265")
     XCTAssertTrue(

@@ -27,7 +27,7 @@ final class UserNoticeSubscriptionTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "db25007f-7a18-43eb-9379-80131e44d633")
     XCTAssertEqual(userNotice.userLogin, "ronni")
     XCTAssertEqual(userNotice.roomID, "1337")
-    XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
+    XCTAssertEqual(userNotice.systemMessage, "ronni has subscribed for 6 months!")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_507_246_572_675)
     XCTAssertEqual(userNotice.userID, "1337")
     XCTAssertNil(userNotice.sourceKind)

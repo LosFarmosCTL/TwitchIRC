@@ -113,7 +113,7 @@ struct ParametersParser {
 
   mutating func optionalString(for key: String) -> String? {
     if let stored = self.get(for: key) {
-      return stored.element.value
+      return IRCMessageTagValue.decode(stored.element.value)
     } else {
       return nil
     }
@@ -137,7 +137,7 @@ struct ParametersParser {
 
   mutating func optionalUInt(for key: String) -> UInt? {
     if let stored = self.get(for: key) {
-      if let uint = UInt(stored.element.value) {
+      if let uint = UInt(IRCMessageTagValue.decode(stored.element.value)) {
         return uint
       } else {
         self.appendUnparsedKey(pair: stored.element, type: UInt.self)
@@ -154,7 +154,7 @@ struct ParametersParser {
 
   mutating func optionalInt(for key: String) -> Int? {
     if let stored = self.get(for: key) {
-      if let int = Int(stored.element.value) {
+      if let int = Int(IRCMessageTagValue.decode(stored.element.value)) {
         return int
       } else {
         self.appendUnparsedKey(pair: stored.element, type: Int.self)
@@ -171,7 +171,7 @@ struct ParametersParser {
 
   mutating func optionalBool(for key: String) -> Bool? {
     if let stored = self.get(for: key) {
-      let value = stored.element.value
+      let value = IRCMessageTagValue.decode(stored.element.value)
       if value == "1" || value == "true" {
         return true
       } else if value == "0" || value == "false" {
@@ -194,7 +194,7 @@ struct ParametersParser {
     as type: R.Type = R.self
   ) -> R? where R: RawRepresentable, R.RawValue == String {
     if let stored = self.get(for: key) {
-      if let representable = R.init(rawValue: stored.element.value) {
+      if let representable = R.init(rawValue: IRCMessageTagValue.decode(stored.element.value)) {
         return representable
       } else {
         self.appendUnparsedKey(pair: stored.element, type: R.self)

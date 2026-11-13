@@ -79,7 +79,7 @@ final class PrivateMessageReplyTests: XCTestCase {
         == .init(
           displayName: "RoyaleAlchemist", userLogin: "royalealchemist",
           message:
-            "Clash\\sRoyale\\sAPI\\sestá\\sde\\svuelta\\sPogChamp\\sPogChamp\\s.\\sSi\\shubo\\sun\\smantenimiento\\so\\suna\\sinterrupción\\sdel\\sservicio,\\sya\\sdebería\\shaber\\sterminado.\\sRoyale\\sAlchemist\\snecesitará\\sentre\\s5\\sy\\s1     0\\sminutos\\spara\\srecuperarse\\spor\\scompleto\\s|\\s@Pompeyo4",
+            "Clash Royale API está de vuelta PogChamp PogChamp . Si hubo un mantenimiento o una interrupción del servicio, ya debería haber terminado. Royale Alchemist necesitará entre 5 y 1     0 minutos para recuperarse por completo | @Pompeyo4",
           id: "0e772349-8bcd-42cb-9c91-1c9eece83af8", userID: "684111155")
     )
     XCTAssertTrue(
@@ -123,7 +123,7 @@ final class PrivateMessageReplyTests: XCTestCase {
       try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
-          message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
+          message: "por\\sque\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
           userID: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(
@@ -168,7 +168,7 @@ final class PrivateMessageReplyTests: XCTestCase {
       try XCTUnwrap(msg.replyParent)
         == .init(
           displayName: "PF_josegamer", userLogin: "pf_josegamer",
-          message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
+          message: "por\\sque\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32",
           userID: "545021421"), "\(String(describing: msg.replyParent))"
     )
     XCTAssertTrue(

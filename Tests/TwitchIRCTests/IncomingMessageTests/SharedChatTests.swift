@@ -90,7 +90,7 @@ final class SharedChatTests: XCTestCase {
       [Badge(setID: "staff", version: "1"), Badge(setID: "subscriber", version: "6")])
     XCTAssertEqual(userNotice.source?.badgeInfo, [BadgeInfo(setID: "subscriber", value: "6")])
     XCTAssertEqual(userNotice.message, "Great stream -- keep it up!")
-    XCTAssertEqual(userNotice.systemMessage, #"ronni\shas\ssubscribed\sfor\s6\smonths!"#)
+    XCTAssertEqual(userNotice.systemMessage, "ronni has subscribed for 6 months!")
     XCTAssertEqual(userNotice.userLogin, "ronni")
     XCTAssertEqual(userNotice.userID, "1337")
     XCTAssertTrue(userNotice.parsingLeftovers.isEmpty, "\(userNotice.parsingLeftovers)")

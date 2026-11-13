@@ -16,6 +16,8 @@ for before-and-after examples and the complete migration details.
 
 ### Breaking changes
 
+- Typed tag-backed fields decode IRCv3 escapes once; raw envelopes and leftovers
+  retain their original wire values.
 - Parsing returns named `MessageParseResult` values with parsed, unsupported, and
   malformed outcomes, raw IRC envelopes, and structured diagnostics.
 - Public message construction uses explicit initializers. Parsed properties are

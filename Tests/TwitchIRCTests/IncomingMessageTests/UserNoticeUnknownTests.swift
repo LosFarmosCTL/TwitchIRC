@@ -21,7 +21,7 @@ final class UserNoticeUnknownTests: XCTestCase {
       XCTAssertEqual(notice.displayName, "Viewer")
       XCTAssertEqual(notice.badges, [Badge(setID: "lead_moderator", version: "1")])
       XCTAssertTrue(notice.isMod)
-      XCTAssertEqual(notice.systemMessage, #"A\sfuture\snotice"#)
+      XCTAssertEqual(notice.systemMessage, "A future notice")
       XCTAssertEqual(notice.timestampMilliseconds, 1_780_142_048_673)
       XCTAssertEqual(
         notice.parsingLeftovers.unusedPairs.map(\.key), ["msg-param-future", "msg-param-empty"])

@@ -14,6 +14,8 @@ more specific adjustments.
 - [Construction and mutation](#2-update-message-construction-and-mutation): use
   explicit public initializers. Parsed properties are read-only, and required enum
   fields no longer use implicitly unwrapped optionals.
+- [Decoded tag values](#decoded-irc-tag-values): remove manual IRCv3 unescaping
+  from consumers of typed fields.
 - [Message text and inline media](#message-text-and-inline-media): use normalized
   action text, typed media arrays, and Unicode scalar ranges.
 - [Structured badges](#structured-badges-and-badge-metadata): read set IDs,
@@ -228,6 +230,23 @@ case .local, .unknownLocal:
 
 Do not replace these fields with application defaults: every successfully created
 instance has its required kind or action.
+
+## Decoded IRC tag values
+
+Typed fields now decode IRCv3 tag escapes once. For example, `display-name=Some\sName`
+exposes `displayName == "Some Name"`, and `reply-parent-msg-body=hello\sworld`
+exposes `replyParent?.message == "hello world"`. This also applies to system
+messages, subscription plan names, and other tag-backed values.
+
+Remove any manual tag-unescaping step applied to typed fields. The sequences
+`\s`, `\:`, `\\`, `\r`, and `\n` decode to a space, semicolon, backslash,
+carriage return, and newline respectively. Unknown escapes drop their backslash;
+a final unmatched backslash is dropped. Decoding is single-pass, so an escaped
+backslash followed by `s` remains a literal backslash and `s`, not a space.
+
+`MessageParseResult.text`, `rawMessage.tags`, and parsing leftovers retain original
+wire values for inspection. Message body text is not tag-unescaped, and explicit
+public initializers accept already-decoded values.
 
 ## Message text and inline media
 

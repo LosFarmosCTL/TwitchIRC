@@ -15,7 +15,7 @@ final class UserNoticeModiversaryTests: XCTestCase {
     XCTAssertEqual(info.months, 108)
     XCTAssertEqual(notice.rawKind, "modiversary")
     XCTAssertEqual(notice.message, "I'm celebrating my 9 year Mod Anniversary!")
-    XCTAssertEqual(notice.systemMessage, #"has\sbeen\sa\smoderator\sfor\s24\smonths!"#)
+    XCTAssertEqual(notice.systemMessage, "has been a moderator for 24 months!")
     XCTAssertEqual(notice.channel, "twitchdev")
     XCTAssertEqual(notice.userLogin, "bluelava")
     XCTAssertTrue(notice.isMod)

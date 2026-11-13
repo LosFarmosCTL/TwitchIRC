@@ -22,7 +22,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "3d830f12-795c-447d-af3c-ea05e40fbddb")
     XCTAssertEqual(userNotice.userLogin, "testchannel")
     XCTAssertEqual(userNotice.roomID, "56379257")
-    XCTAssertEqual(userNotice.systemMessage, #"15\sraiders\sfrom\sTestChannel\shave\sjoined\n!"#)
+    XCTAssertEqual(userNotice.systemMessage, "15 raiders from TestChannel have joined\n!")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_507_246_572_675)
     XCTAssertEqual(userNotice.userID, "123456")
     XCTAssertTrue(
@@ -54,7 +54,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "37feed0f-b9c7-4c3a-b475-21c6c6d21c3d")
     XCTAssertEqual(userNotice.userLogin, "seventest1")
     XCTAssertEqual(userNotice.roomID, "6316121")
-    XCTAssertEqual(userNotice.systemMessage, #"Seventoes\sis\snew\shere!"#)
+    XCTAssertEqual(userNotice.systemMessage, "Seventoes is new here!")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_508_363_903_826)
     XCTAssertEqual(userNotice.userID, "131260580")
     XCTAssertTrue(
@@ -90,7 +90,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "629935431")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"pazza_cr4\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sdillydilby\sto\sthe\scommunity!"#
+      "pazza_cr4 is paying forward the Gift they got from dillydilby to the community!"
     )
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_642_853_857_868)
     XCTAssertEqual(userNotice.userID, "757980712")
@@ -127,7 +127,7 @@ final class UserNoticeCommunityTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "180980116")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"GissihatHunger\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sBenenator_007\sto\scuteMaggi!"#
+      "GissihatHunger is paying forward the Gift they got from Benenator_007 to cuteMaggi!"
     )
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_642_857_017_198)
     XCTAssertEqual(userNotice.userID, "449423975")

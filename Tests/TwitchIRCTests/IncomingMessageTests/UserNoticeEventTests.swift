@@ -56,7 +56,7 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.id, "9734d325-603f-42a8-a728-2032943d1786")
     XCTAssertEqual(userNotice.userLogin, "lf_patocarlo_papi")
     XCTAssertEqual(userNotice.roomID, "473386056")
-    XCTAssertEqual(userNotice.systemMessage, #"LF_patocarlo_papi\\sCheered\\swith\\s$1.00"#)
+    XCTAssertEqual(userNotice.systemMessage, "LF_patocarlo_papi\\sCheered\\swith\\s$1.00")
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_664_487_028_027)
     XCTAssertEqual(userNotice.userID, "494211968")
     XCTAssertTrue(
@@ -92,7 +92,7 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "18798485")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"LukeCaboom:\\sDonated\\sUSD\\s5\\sto\\ssupport\\sWounded\\sWarrior\\sProject"#
+      "LukeCaboom:\\sDonated\\sUSD\\s5\\sto\\ssupport\\sWounded\\sWarrior\\sProject"
     )
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_664_727_225_702)
     XCTAssertEqual(userNotice.userID, "514556756")
@@ -102,7 +102,7 @@ final class UserNoticeEventTests: XCTestCase {
 
     let info: Action.CharityDonationInfo = try unwrapInnerValue(action: userNotice.kind)
 
-    XCTAssertEqual(info.charityName, #"Wounded\\sWarrior\\sProject"#)
+    XCTAssertEqual(info.charityName, "Wounded\\sWarrior\\sProject")
     XCTAssertEqual(info.amount, 500)
     XCTAssertEqual(info.currency, "USD")
     XCTAssertEqual(info.exponent, 2)
@@ -132,7 +132,7 @@ final class UserNoticeEventTests: XCTestCase {
     XCTAssertEqual(userNotice.roomID, "442187430")
     XCTAssertEqual(
       userNotice.systemMessage,
-      #"metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!"#
+      "metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!"
     )
     XCTAssertEqual(userNotice.timestampMilliseconds, 1_678_130_127_599)
     XCTAssertEqual(userNotice.userID, "224637183")
