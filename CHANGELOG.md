@@ -5,6 +5,8 @@ Successful CI on main prepares a draft release; publishing remains manual. -->
 
 ## Unreleased
 
+## 2.1.0
+
 - Accept `msg-param-recipient-name` as a fallback and lowercase `prime` as a
   subscription plan value in `USERNOTICE` parsing.
 - Add array overloads for outgoing `JOIN` and `PART` to send multiple channels
