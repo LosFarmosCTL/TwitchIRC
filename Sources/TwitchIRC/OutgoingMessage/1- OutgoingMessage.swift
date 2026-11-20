@@ -26,6 +26,20 @@ public enum OutgoingMessage {
   /// Pong Twitch.
   case pong
 
+  /// Joins channels in one command. Returns nil for an empty array.
+  /// Supply lowercase channel names without the `#` prefix.
+  public static func join(to channels: [String]) -> Self? {
+    guard !channels.isEmpty else { return nil }
+    return .join(to: channels.joined(separator: ",#"))
+  }
+
+  /// Parts from channels in one command. Returns nil for an empty array.
+  /// Supply lowercase channel names without the `#` prefix.
+  public static func part(from channels: [String]) -> Self? {
+    guard !channels.isEmpty else { return nil }
+    return .part(from: channels.joined(separator: ",#"))
+  }
+
   /// Serializes this message into a string that can be sent to Twitch over IRC.
   /// Tag values are IRCv3-escaped; message body text is emitted as supplied.
   public func serialize() -> String {
