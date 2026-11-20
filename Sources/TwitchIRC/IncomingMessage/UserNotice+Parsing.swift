@@ -3,6 +3,19 @@ struct ParsedUserNotice {
   let optionalKeyGroups: [[String]]
 }
 
+extension ParametersParser {
+  mutating func userNoticeRecipientName() -> String {
+    // Twitch's USERNOTICE table lists recipient-user-name, but its subgift example uses recipient-name.
+    // https://dev.twitch.tv/docs/chat/irc/#usernotice-tags
+    let primaryKey = "msg-param-recipient-user-name"
+    let fallbackKey = "msg-param-recipient-name"
+    if !contains(any: [primaryKey]), contains(any: [fallbackKey]) {
+      return string(for: fallbackKey)
+    }
+    return string(for: primaryKey)
+  }
+}
+
 extension UserNotice.Kind {
   static func parse(id: String?, parser: inout ParametersParser) -> ParsedUserNotice? {
     guard let id, let parse = payloadParsers[id] else { return nil }

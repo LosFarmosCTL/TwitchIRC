@@ -224,3 +224,18 @@ struct ParametersParser {
     }
   #endif
 }
+
+extension ParametersParser {
+  mutating func userNoticeSubPlan() -> UserNotice.Kind.SubPlan? {
+    guard let stored = get(for: "msg-param-sub-plan") else { return nil }
+    let value = IRCMessageTagValue.decode(stored.element.value)
+
+    // Twitch's USERNOTICE table shows lowercase prime, but its resub example uses Prime.
+    // https://dev.twitch.tv/docs/chat/irc/#usernotice-tags
+    if value == "prime" { return .prime }
+    if let plan = UserNotice.Kind.SubPlan(rawValue: value) { return plan }
+
+    appendUnparsedKey(pair: stored.element, type: UserNotice.Kind.SubPlan.self)
+    return nil
+  }
+}

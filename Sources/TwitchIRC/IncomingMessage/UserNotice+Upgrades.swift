@@ -12,7 +12,7 @@ extension UserNotice.Kind {
     }
     init(parser: inout ParametersParser) {
       self.init(
-        subPlan: parser.representable(for: "msg-param-sub-plan")
+        subPlan: parser.userNoticeSubPlan()
       )
     }
   }

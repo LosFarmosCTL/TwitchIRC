@@ -5,6 +5,9 @@ Successful CI on main prepares a draft release; publishing remains manual. -->
 
 ## Unreleased
 
+- Accept `msg-param-recipient-name` as a fallback and lowercase `prime` as a
+  subscription plan value in `USERNOTICE` parsing.
+
 ## 2.0.0
 
 This release modernizes the public API and expands Twitch IRC compatibility.

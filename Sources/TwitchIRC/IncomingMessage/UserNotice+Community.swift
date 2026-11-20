@@ -132,7 +132,7 @@ extension UserNotice.Kind {
         priorGifterUserName: parser.optionalString(for: "msg-param-prior-gifter-user-name"),
         recipientDisplayName: parser.string(for: "msg-param-recipient-display-name"),
         recipientID: parser.string(for: "msg-param-recipient-id"),
-        recipientUserName: parser.string(for: "msg-param-recipient-user-name")
+        recipientUserName: parser.userNoticeRecipientName()
       )
     }
   }
